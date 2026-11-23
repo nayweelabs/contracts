@@ -6,12 +6,13 @@ metadata:
   created_at: 2026-11-23T07:22:35.778Z
   created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
 spec:
-  column: backlog
-  order: 0.9999847412109375
+  column: in-progress
+  order: 0.5
   summary: 'mankit/v1 license file: spec.started with the start day, binary path and file time'
   tags: [feature, 'epic:license', 'feature:license-check', 'product:contracts']
   work:
     agent: claude-opus-5-5
+    branch: feat/trial-started/license-check
   description: |
     #feature #epic:license #feature:license-check #product:contracts
 
@@ -38,3 +39,6 @@ spec:
     Size S.
   links:
     depends_on: [KBN-20261123-b3fc]
+  lifecycle:
+    active_at: 2026-11-23T15:11:54.189Z
+    active_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
