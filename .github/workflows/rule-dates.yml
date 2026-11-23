@@ -10,6 +10,6 @@ permissions:
 
 jobs:
   rule-dates:
-    uses: ElderlyGate/.github/.github/workflows/rule-dates.yml@main
+    uses: nayweelabs/.github/.github/workflows/rule-dates.yml@main
     with:
       files: constitution/tech-stack.md constitution/mission.md
