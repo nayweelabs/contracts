@@ -57,7 +57,8 @@ The tests check that:
 - every schema is valid against draft 2020-12;
 - every sample meets its schema, and every schema has a sample;
 - every event in an `events.asyncapi.yaml` is a valid event, with its schema and sample;
-- every file in `testdata/bad/` is refused by its schema;
+- every file in `testdata/bad/<dir>/<version>/<kind>/` is refused by its schema;
+- every license file in `testdata/good/` and the sample meets the rules its schema cannot read from the signed payload, and each in `testdata/bad/mankit/v1/license-file/payload/` breaks one of them (the schema's descriptions say which);
 - every file in `testdata/good/` meets its schema: the shapes a schema takes beyond its one sample;
 - every upgrade pair in `testdata/upgrade/` (`<case>.v1.json` and `<case>.v2.json`) is a sample of the older version and the sample of the newer one its upgrade step makes, no file is without its partner, and every `<case>.refused.json` is refused by the step;
 - the apiVersion table lists each form once, and each old form in one row only; a row with old forms has its upgrade command.
