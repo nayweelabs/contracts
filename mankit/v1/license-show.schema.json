@@ -152,11 +152,12 @@
       ],
       "properties": {
         "kind": {
-          "description": "Which kind of license it is, so a reader knows what it covers. org: features of several or all products, read by every app; product: features of this app alone (ADR-L8); trial: a trial key, which opens every enterprise feature of every product and names none (ADR-L9).",
+          "description": "Which kind of license it is, so a reader knows what it covers. org: features of several or all products, read by every app; product: features of this app alone (ADR-L8); trial: a trial key, which opens every enterprise feature of every product and names none (ADR-L9); release-trial: the trial key built into one release of one app, which starts a trial of that app by itself (ADR-L9).",
           "enum": [
             "org",
             "product",
-            "trial"
+            "trial",
+            "release-trial"
           ]
         },
         "for": {
@@ -164,7 +165,7 @@
           "$ref": "license-payload.schema.json#/properties/for"
         },
         "until": {
-          "description": "The license's last day, as its signed payload says.",
+          "description": "The license's last day, as its signed payload says; for a release-trial, the last day of the trial it started (its start day plus days, less one), not the key's own until.",
           "$ref": "license-payload.schema.json#/properties/until"
         },
         "daysLeft": {

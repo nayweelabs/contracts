@@ -23,20 +23,19 @@
       "$ref": "license-show.schema.json#/$defs/license/properties/kind"
     },
     "for": {
-      "description": "The person or org the license names, never a machine, so whoever has the file sees whose it was (ADR-L4); never only spaces.",
+      "description": "The person or org the license names, never a machine, so whoever has the file sees whose it was (ADR-L4); for a release-trial, the release it belongs to, for example \"acme-app v1.2.0\"; never only spaces.",
       "type": "string",
       "pattern": "\\S"
     },
     "products": {
-      "description": "The enterprise feature ids the license names, per product id, so an app opens a feature only when its own product id names it (ADR-L2). An org license names one or more products, a product license exactly one; a trial key names none, as it opens every enterprise feature (ADR-L9).",
+      "description": "The enterprise feature ids the license names, per product id, so an app opens a feature only when its own product id names it (ADR-L2). An org license names one or more products, a product license exactly one; a trial key names none, as it opens every enterprise feature (ADR-L9); a release-trial names exactly one, its app, with no feature ids, as it opens every enterprise feature of that app (ADR-L9).",
       "type": "object",
       "propertyNames": {
         "minLength": 1
       },
       "additionalProperties": {
-        "description": "The product's enterprise feature ids, as its feature list names them; never empty.",
+        "description": "The product's enterprise feature ids, as its feature list names them; never empty, but for a release-trial's, which is always empty.",
         "type": "array",
-        "minItems": 1,
         "items": {
           "$ref": "defs.schema.json#/$defs/featureState/properties/id"
         }
@@ -48,9 +47,14 @@
       "format": "date"
     },
     "until": {
-      "description": "The license's last day, an RFC 3339 date in UTC, never before issued; after it its features lock again (ADR-L3).",
+      "description": "The license's last day, an RFC 3339 date in UTC, never before issued; after it its features lock again (ADR-L3). For a release-trial, the last day it may start a trial, not the last day a trial runs: a trial started on that day still runs its days.",
       "type": "string",
       "format": "date"
+    },
+    "days": {
+      "description": "How long each trial a release-trial starts runs, in whole days, its first day counted, so every install of the release gets a trial of the same length (ADR-L9). Only a release-trial has it, and it always has it. The signing tool writes 14 unless told another length; any length of 1 or more is valid.",
+      "type": "integer",
+      "minimum": 1
     },
     "keyId": {
       "description": "The id of the key that signed it, so an app checks it against the keys its build trusts (ADR-L5, L6).",
@@ -113,6 +117,55 @@
         "properties": {
           "products": {
             "minProperties": 1
+          }
+        }
+      }
+    },
+    {
+      "description": "A release-trial names exactly one product, its app, with no feature ids, and how long its trials run (ADR-L9).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "release-trial"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "products",
+          "days"
+        ],
+        "properties": {
+          "products": {
+            "minProperties": 1,
+            "maxProperties": 1,
+            "additionalProperties": {
+              "maxItems": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "Only a release-trial has days, and every other kind names one or more feature ids per product it names (ADR-L2, L9).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "release-trial"
+          }
+        }
+      },
+      "else": {
+        "not": {
+          "required": [
+            "days"
+          ]
+        },
+        "properties": {
+          "products": {
+            "additionalProperties": {
+              "minItems": 1
+            }
           }
         }
       }
