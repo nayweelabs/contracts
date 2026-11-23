@@ -165,7 +165,7 @@
           "$ref": "license-payload.schema.json#/properties/for"
         },
         "until": {
-          "description": "The license's last day, as its signed payload says.",
+          "description": "The license's last day, as its signed payload says; for a release-trial, the last day of the trial it started (its start day plus days, less one), not the key's own until.",
           "$ref": "license-payload.schema.json#/properties/until"
         },
         "daysLeft": {
