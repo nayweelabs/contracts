@@ -59,7 +59,7 @@
           "contentEncoding": "base64"
         },
         "started": {
-          "description": "The trial this file started, written by the app beside the signed payload, only in a file whose payload is a release-trial (ADR-L9). The signing tool writes the file without it; the app adds it when it writes its built-in release-trial key as its license file on a start with no license, and writes it anew when the app is reinstalled or updated. Unsigned, as the key is signed once per release but a trial starts once per machine: the signature covers the payload alone, so this record never breaks it. Editing it can stretch a trial, which ADR-L9 accepts, as a reinstall gives a fresh trial too; it never opens more than the signed payload names. A rule no schema can say, as the kind sits inside the signed payload: only a release-trial's file has it.",
+          "description": "The trial this file started, written by the app beside the signed payload (ADR-L9). The signing tool writes the file without it; the app adds it when it writes its built-in release-trial key as its license file on a start with no license, and writes it anew when the app is reinstalled or updated. Unsigned, as the key is signed once per release but a trial starts once per machine: the signature covers the payload alone, so this record never breaks it. Editing it can stretch a trial, which ADR-L9 accepts, as a reinstall gives a fresh trial too; it never opens more than the signed payload names. A rule no schema can say, as the kind sits inside the signed payload: only a release-trial's file has it.",
           "type": "object",
           "required": [
             "day",
@@ -68,7 +68,7 @@
           ],
           "properties": {
             "day": {
-              "description": "The day the trial started, an RFC 3339 date in UTC, never after the payload's until. The trial runs the payload's days from it, this day counted, so license-show.schema.json's licenses[].until for this file is reckoned from it.",
+              "description": "The day the trial started, an RFC 3339 date in UTC, never after the payload's until. The trial runs the payload's days from it, so license-show.schema.json's licenses[].until for this file is reckoned from it.",
               "type": "string",
               "format": "date"
             },
