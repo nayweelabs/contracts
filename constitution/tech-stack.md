@@ -17,8 +17,9 @@ apiversion/v1/      every apiVersion form, the old forms it replaces and its kin
 
 ## Rules
 
-- **CT-RULE-1** 2026-11-11 · changed 2026-11-13 · A version's schemas do not change once an app has released it. A change that a reader would notice is a new version. One exception: where a field is an open word (a `code` with a pattern, not a fixed list), its description may gain an entry for a new word; a word already listed never changes its meaning and is never reused.
+- **CT-RULE-1** 2026-11-11 · changed 2026-11-23 · A version's schemas do not change once an app has released it. A change that a reader would notice is a new version, which comes only with the next shared major (CT-RULE-6). One exception: where a field is an open word (a `code` with a pattern, not a fixed list), its description may gain an entry for a new word; a word already listed never changes its meaning and is never reused.
 - **CT-RULE-2** 2026-11-11 · Every schema has at least one sample. The app's own tests check that its real answer matches each sample, so a sample can be written before the app gives that answer.
 - **CT-RULE-3** 2026-11-11 · A new version comes with its upgrade step from the one before, tested with samples of both versions.
 - **CT-RULE-4** 2026-11-11 · An app's own shapes allow no fields beyond those listed. Two shapes stay open: a design's `spec`, written by its user, and the `spec` of a record that two app versions share at once (ADR-S15), so an older reader accepts fields a newer app adds.
 - **CT-RULE-5** 2026-11-12 · Every field in a schema has a description that says what it is and why it exists. The schema is where a field's meaning is written down; code, READMEs and designs point to it instead of repeating it.
+- **CT-RULE-6** 2026-11-23 · Every contract and file format carries the shared major as its version (V-10): apiVersion `naywee/<product>/<form>/v<N>`, like `designer/app/v11`, `design/v11`, `layout/v11`, `license/v11`. Each shared major renames every format, even one with no change of its own, so that one migrate run upgrades a file.
