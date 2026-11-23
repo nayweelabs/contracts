@@ -1,0 +1,40 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261123-e088
+  title: 'License file: an unsigned started record for a release trial'
+  created_at: 2026-11-23T07:22:35.778Z
+  created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+spec:
+  column: backlog
+  order: 0.9999847412109375
+  summary: 'mankit/v1 license file: spec.started with the start day, binary path and file time'
+  tags: [feature, 'epic:license', 'feature:license-check', 'product:contracts']
+  work:
+    agent: claude-opus-5-5
+  description: |
+    #feature #epic:license #feature:license-check #product:contracts
+
+    # License file: an unsigned started record for a release trial
+
+    ## Why
+    An app writes its built-in release-trial key as its license file on a start with no license, and renews it when the app is reinstalled or updated (ADR-L9). To know when the trial started and which install started it, the file keeps a record beside the signed payload. The signature covers the payload alone, so the record is unsigned and changes nothing the license opens.
+
+    ## Changes
+    - `spec.started` in `license-file.schema.json`: written by the app, only in a file whose payload is a release-trial:
+      - `day`: the day the trial started, an RFC 3339 date in UTC; the trial runs `days` from it.
+      - `binary`: the path of the app binary that started it.
+      - `fileTime`: that binary's file time; installs write binaries fresh, so a reinstall or an update gives a new time.
+    - `spec` stays open (CT-RULE-4): an older app ignores `started`.
+    - What no schema can say, in the descriptions: `started` belongs only in a release-trial's file; `day` is never after the payload's `until`; the trial's last day is `day` plus the payload's `days` less one; `started` never opens more than the signed payload names.
+    - Samples, good and bad cases (a started with no day, a day that is no date, a binary that is empty).
+
+    ## Waits on
+    The contracts card for the release-trial kind (License payload: kind release-trial with days).
+
+    ## Done when
+    - [ ] The file schema says the above, with samples, good and bad cases, and `go test ./...` passes.
+
+    Size S.
+  links:
+    depends_on: [KBN-20261123-b3fc]

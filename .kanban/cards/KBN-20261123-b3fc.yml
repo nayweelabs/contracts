@@ -1,0 +1,38 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261123-b3fc
+  title: 'License payload: kind release-trial with days'
+  created_at: 2026-11-23T07:22:35.689Z
+  created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+spec:
+  column: backlog
+  order: 0.999969482421875
+  summary: 'mankit/v1 payload: kind release-trial, days, and what until and for mean for it'
+  tags: [feature, 'epic:license', 'feature:license-check', 'product:contracts']
+  work:
+    agent: claude-opus-5-5
+  description: |
+    #feature #epic:license #feature:license-check #product:contracts
+
+    # License payload: kind release-trial with days
+
+    ## Why
+    Every release of an app carries its own signed trial key, built in, and starts a 14-day trial by itself on its first start with no license (ADR-L9). The payload has no kind for that key yet: the trial kind is a person's key, which runs from its issued day. The new kind's meaning belongs here, its one home (CT-RULE-5).
+
+    ## Changes
+    - `kind`: a new value `release-trial` in the kind list `license-show.schema.json` names, with what it covers: one release of one app, which starts a trial by itself.
+    - `days`: a new field, the length of each trial the key starts, in whole days, 14 by default; only a release-trial has it.
+    - `until` for a release-trial: the last day it may start a trial, not the last day a trial runs (a trial started on that day still runs its `days`).
+    - `for` for a release-trial: the release it belongs to, for example "acme-app v1.2.0".
+    - `products` for a release-trial: exactly one product, its app, naming no feature ids, as it opens every enterprise feature of that app (ADR-L9).
+    - An older app refuses a kind it does not know, so a release-trial never opens anything in an app built before it (safe).
+    - Samples, good and bad cases (a release-trial with no days, with days on another kind, naming two products or none, days of zero).
+
+    ## Waits on
+    Nothing.
+
+    ## Done when
+    - [ ] The payload schema and the kind list say the above, with samples, good and bad cases, and `go test ./...` passes.
+
+    Size S.
