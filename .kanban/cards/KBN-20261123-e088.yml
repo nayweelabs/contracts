@@ -6,12 +6,13 @@ metadata:
   created_at: 2026-11-23T07:22:35.778Z
   created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
 spec:
-  column: backlog
-  order: 0.9999847412109375
+  column: done
+  order: 0.9999999999999432
   summary: 'mankit/v1 license file: spec.started with the start day, binary path and file time'
   tags: [feature, 'epic:license', 'feature:license-check', 'product:contracts']
   work:
     agent: claude-opus-5-5
+    branch: feat/trial-started/license-check
   description: |
     #feature #epic:license #feature:license-check #product:contracts
 
@@ -33,8 +34,13 @@ spec:
     The contracts card for the release-trial kind (License payload: kind release-trial with days).
 
     ## Done when
-    - [ ] The file schema says the above, with samples, good and bad cases, and `go test ./...` passes.
+    - [x] The file schema says the above, with samples, good and bad cases, and `go test ./...` passes.
 
     Size S.
   links:
     depends_on: [KBN-20261123-b3fc]
+  lifecycle:
+    active_at: 2026-11-23T15:11:54.189Z
+    active_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+    done_at: 2026-11-23T15:14:53.491Z
+    done_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
