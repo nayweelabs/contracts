@@ -34,7 +34,7 @@ spec:
     Nothing.
 
     ## Done when
-    - [ ] The payload schema and the kind list say the above, with samples, good and bad cases, and `go test ./...` passes.
+    - [x] The payload schema and the kind list say the above, with samples, good and bad cases, and `go test ./...` passes.
 
     Size S.
   lifecycle:
