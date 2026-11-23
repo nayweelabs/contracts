@@ -1,0 +1,19 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261123-78f1
+  title: 'license show: a release-trial key that has not started'
+  created_at: 2026-11-23T15:47:01.711Z
+  created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+spec:
+  column: in-progress
+  order: 0.5
+  tags: [feature, 'epic:license', 'feature:license-check', 'product:contracts']
+  description: "#feature #epic:license #feature:license-check #product:contracts\n\n# license show: a release-trial key that has not started\n\n## Why\nv0.41.0's license show says a release-trial's `until` is the last day of the trial it started. A release-trial key with no `started` record (put there by hand with `<app> license add`) has started no trial: mankit lists it with the key's own until, it opens nothing, and it counts as none. No app has released on v0.41.0 yet, so a fix release is allowed (CT-RULE-1).\n\n## Changes (descriptions only)\n- `licenses[].until`: for a release-trial with no started record, the key's own until, the last day it may start a trial.\n- `licenses[].ended`: for such a key, that day has passed.\n- `data.state`: a release-trial with no started record counts as none, as it opens nothing.\n- A good case: a listed unstarted release-trial, invented data.\n\n## Done when\n- [ ] The descriptions say the above, the good case passes, and `go test ./...` passes.\n\nSize XS.\n"
+  summary: 'mankit/v1 license show: what until, ended and state say for a release-trial key with no started record'
+  work:
+    agent: claude-opus-5-5
+    branch: fix/unstarted-release-trial/license-check
+  lifecycle:
+    active_at: 2026-11-23T15:47:12.914Z
+    active_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
