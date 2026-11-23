@@ -1,0 +1,9 @@
+{
+  "id": "lic-acme-app-v1.2.0-trial",
+  "kind": "release-trial",
+  "for": "acme-app v1.2.0",
+  "issued": "2026-11-23",
+  "until": "2027-11-23",
+  "days": 14,
+  "keyId": "prod-2026"
+}

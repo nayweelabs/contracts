@@ -1,0 +1,17 @@
+{
+  "id": "lic-20261123-acme",
+  "kind": "org",
+  "for": "Acme Ltd",
+  "products": {
+    "acme-app": [
+      "share"
+    ],
+    "acme-tool": [
+      "sync"
+    ]
+  },
+  "issued": "2026-11-23",
+  "until": "2027-11-23",
+  "days": 14,
+  "keyId": "prod-2026"
+}
