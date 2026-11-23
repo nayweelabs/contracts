@@ -34,7 +34,7 @@
       "additionalProperties": false
     },
     "spec": {
-      "description": "The signed license: the payload's bytes and the signature over them. Open: a newer nw-license may add fields here, and an older app accepts them (CT-RULE-4).",
+      "description": "The signed license: the payload's bytes and the signature over them, and for a release-trial the unsigned record of the trial it started. Open: a newer nw-license or app may add fields here, and an older app accepts them (CT-RULE-4).",
       "type": "object",
       "required": [
         "payload",
@@ -57,6 +57,33 @@
           "type": "string",
           "pattern": "^[A-Za-z0-9+/]{86}==$",
           "contentEncoding": "base64"
+        },
+        "started": {
+          "description": "The trial this file started, written by the app beside the signed payload, only in a file whose payload is a release-trial (ADR-L9). The signing tool writes the file without it; the app adds it when it writes its built-in release-trial key as its license file on a start with no license, and writes it anew when the app is reinstalled or updated. Unsigned, as the key is signed once per release but a trial starts once per machine: the signature covers the payload alone, so this record never breaks it. Editing it can stretch a trial, which ADR-L9 accepts, as a reinstall gives a fresh trial too; it never opens more than the signed payload names. A rule no schema can say, as the kind sits inside the signed payload: only a release-trial's file has it.",
+          "type": "object",
+          "required": [
+            "day",
+            "binary",
+            "fileTime"
+          ],
+          "properties": {
+            "day": {
+              "description": "The day the trial started, an RFC 3339 date in UTC, never after the payload's until. The trial runs the payload's days from it, this day counted, so license-show.schema.json's licenses[].until for this file is reckoned from it.",
+              "type": "string",
+              "format": "date"
+            },
+            "binary": {
+              "description": "The path of the app binary that started the trial, so a reader sees which install started it.",
+              "type": "string",
+              "minLength": 1
+            },
+            "fileTime": {
+              "description": "That binary's file time (its last modification) when the trial started, RFC 3339. Installs write binaries fresh, so a reinstall or an update gives a new time, by which the app tells a new install from the one that started the trial.",
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false
         }
       }
     }
