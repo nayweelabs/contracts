@@ -11,7 +11,7 @@
       "day": "2026-12-03",
       "binary": "/home/ada/.local/bin/acme-app",
       "fileTime": "2026-12-03T09:14:05Z",
-      "machine": "ada-laptop"
+      "note": "started by the setup script"
     }
   }
 }
