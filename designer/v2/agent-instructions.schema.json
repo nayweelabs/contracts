@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElderlyGate/contracts/designer/v2/agent-instructions.schema.json",
+  "title": "agent instructions",
+  "description": "The rules e-designer gives an AI agent that works on a design, as one document per level: built-in (shipped with the app), machine (the user's own, for every project on this machine) and project (kept with the design, for everyone who works on it). The agent gets the three merged by rule id: a project rule beats a machine rule of the same id, which beats a built-in one, and a remove at a higher level takes the rule away. A reader that shows the merged rules shows each rule's origin, the level whose document gave it, so the user sees where a rule came from and which document to change. The level is where the document is read from, never a field in it.",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "apiVersion": {
+      "description": "The form the document is in, so a reader knows which schema it meets (apiversion/v1/forms.yaml). The same at every level, so one reader reads all three.",
+      "const": "elderlygate/designer/agent/v1"
+    },
+    "kind": {
+      "description": "Always AgentInstructions, the kind of this document.",
+      "const": "AgentInstructions"
+    },
+    "metadata": {
+      "description": "What names the document for people.",
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "description": "A short name for people, such as the project's or the team's, shown beside the level when a reader lists where the rules came from.",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "spec": {
+      "description": "What this level says to the agent.",
+      "type": "object",
+      "required": [
+        "rules"
+      ],
+      "properties": {
+        "rules": {
+          "description": "This level's rules, each named by its id. An id is listed once per document; the merge with the other levels goes by id, so a rule here either adds a new rule, replaces the lower level's rule of the same id, or removes it. Order is the order the agent reads them in; a replaced rule keeps its lower level's place.",
+          "type": "array",
+          "items": {
+            "description": "One rule: an id with a text, or an id with remove. One list for both, so each id has exactly one word per level and a document can never both set and remove the same rule.",
+            "type": "object",
+            "required": [
+              "id"
+            ],
+            "properties": {
+              "id": {
+                "description": "The rule's name, which the levels are merged by: lowercase words joined by a hyphen, starting with a letter, at most 32 characters (the org's id form), like read-with-cli. An id keeps its meaning, so a higher level that names it means that rule.",
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+                "maxLength": 32
+              },
+              "text": {
+                "description": "What the agent is told, in plain words. Set at this level, it is the rule the agent gets, whatever a lower level says for the same id.",
+                "type": "string",
+                "minLength": 1
+              },
+              "remove": {
+                "description": "Always true: this level takes away the lower levels' rule of this id, so the agent does not get it. Written with no text, as a removed rule says nothing. A remove that finds no lower rule of its id removes nothing.",
+                "const": true
+              }
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "text"
+                ]
+              },
+              {
+                "required": [
+                  "remove"
+                ]
+              }
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
