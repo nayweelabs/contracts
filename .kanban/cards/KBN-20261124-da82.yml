@@ -12,7 +12,7 @@ spec:
   tags: [feature, 'epic:agent-instructions', 'feature:agent-instructions', 'product:contracts']
   work:
     agent: claude-opus-5-5
-    branch: chore/agent-steps-card/agent-instructions
+    branch: feat/agent-instructions-schema/agent-instructions
   description: |
     #feature #epic:agent-instructions #feature:agent-instructions #product:contracts
 
