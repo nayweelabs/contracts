@@ -23,7 +23,7 @@
     },
     "issued": "2026-11-06",
     "until": "next year",
-    "keyId": "prod-2026"
+    "keyId": "test-2026"
   },
   "errors": []
 }

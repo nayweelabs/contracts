@@ -23,7 +23,7 @@
         "offerEnds": "2027-11-20",
         "daysLeft": 14,
         "ended": false,
-        "keyId": "prod-2026",
+        "keyId": "test-2026",
         "window": {
           "of": 14
         }

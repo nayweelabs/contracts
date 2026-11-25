@@ -1,0 +1,25 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261125-d7cd
+  title: Sample key id test-2026
+  created_at: 2026-11-25T19:46:32.442Z
+  created_by: elderlygate-ai
+spec:
+  column: done
+  order: 0.5
+  summary: samples and tests name key test-2026, not the real prod-2026
+  tags: [test, upkeep, 'product:contracts']
+  description: |
+    Samples and test data name an invented key id, `test-2026`, instead of `prod-2026`, the id of a real signing key.
+
+    - Every `prod-2026` in `*/samples/` and `testdata/` becomes `test-2026`.
+    - No schema changes.
+
+    Done when: `git grep prod-2026` finds nothing outside board cards, and `go test ./...` passes.
+  work:
+    agent: claude-opus-5-5
+    branch: test/test-key-id/upkeep
+  lifecycle:
+    done_at: 2026-11-25T19:46:45.812Z
+    done_by: elderlygate-ai
