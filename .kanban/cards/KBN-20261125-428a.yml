@@ -9,7 +9,7 @@ spec:
   column: done
   order: 0.5
   tags: [feature, 'epic:naywee', 'feature:naywee-names', 'product:contracts']
-  description: |+
+  description: |
     # contracts keeps only the latest version
 
     #feature #epic:naywee #feature:naywee-names #product:contracts
@@ -35,15 +35,6 @@ spec:
     ## Open
 
     none
-      work:
-    agent: claude-opus-5-5
-    branch: feat/only-latest/naywee-names
-      lifecycle:
-    active_at: 2026-11-25T20:18:18.096Z
-    active_by: elderlygate-ai
-    done_at: 2026-11-25T20:24:25.635Z
-    done_by: elderlygate-ai
-
   work:
     agent: claude-opus-5-5
     branch: feat/only-latest/naywee-names
