@@ -10,6 +10,35 @@
   "data": [
     {
       "design": "lending",
+      "designFiles": {
+        "moves": [
+          {
+            "from": "definitions.yml",
+            "to": "definitions.yml"
+          },
+          {
+            "from": "block/CMP-DESK.yml",
+            "to": "block/CMP-DESK.yml"
+          }
+        ],
+        "steps": [
+          {
+            "command": "apply",
+            "kind": "Apply",
+            "data": [
+              {
+                "event": "updated",
+                "file": ".designer/lending/definitions.yml",
+                "kind": "Definitions",
+                "id": "lending",
+                "before": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                "after": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+              }
+            ],
+            "errors": []
+          }
+        ]
+      },
       "links": {
         "moves": [
           {
@@ -73,6 +102,10 @@
     },
     {
       "design": "returns",
+      "designFiles": {
+        "nothing": "every file of returns is design/v3",
+        "moves": []
+      },
       "links": {
         "nothing": "returns has no Connection and no old line word",
         "moves": []

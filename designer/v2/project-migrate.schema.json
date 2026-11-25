@@ -34,10 +34,11 @@
           "description": "One entry per design of the project, in the order they were migrated, so a reader sees what each step did or would do in each design.",
           "type": "array",
           "items": {
-            "description": "One design: its id, and what each step of the migration found or did in it.",
+            "description": "One design: its id, and what each step of the migration (design files, links, layout, in that order) found or did in it.",
             "type": "object",
             "required": [
               "design",
+              "designFiles",
               "links",
               "layout"
             ],
@@ -46,6 +47,70 @@
                 "description": "The design, by its id, so a project with several designs says whose files changed.",
                 "type": "string",
                 "minLength": 1
+              },
+              "designFiles": {
+                "description": "The design files step: each resource file and definitions.yml brought from design/v2 to design/v3 (apiversion/v1/forms.yaml), each file rewritten whole where it stands, with its old style fields moved to styles, colours and rules; or why there was nothing to do.",
+                "type": "object",
+                "required": [
+                  "moves"
+                ],
+                "properties": {
+                  "nothing": {
+                    "description": "Why this step had nothing to do, in words for people: every file of the design is already design/v3; present only then, and then moves is empty and steps absent.",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "moves": {
+                    "description": "Each file the step rewrites, in the order it works through them.",
+                    "type": "array",
+                    "items": {
+                      "description": "One file the step rewrites.",
+                      "type": "object",
+                      "required": [
+                        "from",
+                        "to"
+                      ],
+                      "properties": {
+                        "from": {
+                          "description": "The file in design/v2, by its path inside the design's folder.",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "to": {
+                          "description": "The file in design/v3, by its path inside the design's folder; always the same path, as the step rewrites each file where it stands.",
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "steps": {
+                    "description": "Each command the step ran, in order; present only on a real run, never on --dry-run, so a reader sees where a run stopped.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "defs.schema.json#/$defs/step"
+                    }
+                  }
+                },
+                "if": {
+                  "required": [
+                    "nothing"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "moves": {
+                      "maxItems": 0
+                    }
+                  },
+                  "not": {
+                    "required": [
+                      "steps"
+                    ]
+                  }
+                },
+                "additionalProperties": false
               },
               "links": {
                 "description": "The links step: each Connection file moved to link/ as a Link, and definitions.yml and design.yml rewritten where they say an old line word; or why there was nothing to do.",

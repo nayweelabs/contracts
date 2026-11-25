@@ -10,6 +10,9 @@
   "data": [
     {
       "design": "lending",
+      "designFiles": {
+        "moves": []
+      },
       "links": {
         "moves": [
           {
@@ -73,6 +76,9 @@
     },
     {
       "design": "returns",
+      "designFiles": {
+        "moves": []
+      },
       "links": {
         "nothing": "returns has no Connection and no old line word",
         "moves": []

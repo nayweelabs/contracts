@@ -10,6 +10,14 @@
   "data": [
     {
       "design": "lending",
+      "designFiles": {
+        "moves": [
+          {
+            "from": "definitions.yml",
+            "to": "definitions.yml"
+          }
+        ]
+      },
       "links": {
         "moves": [
           {
@@ -52,6 +60,10 @@
     },
     {
       "design": "returns",
+      "designFiles": {
+        "nothing": "every file of returns is design/v3",
+        "moves": []
+      },
       "links": {
         "nothing": "returns has no Connection and no old line word",
         "moves": []

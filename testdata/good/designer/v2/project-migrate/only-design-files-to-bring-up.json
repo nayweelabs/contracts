@@ -1,0 +1,53 @@
+{
+  "apiVersion": "elderlygate/designer/app/v2",
+  "kind": "ProjectMigrate",
+  "source": {
+    "name": "lending",
+    "app": "designer",
+    "version": "9.6.0",
+    "contract": "v2"
+  },
+  "data": [
+    {
+      "design": "lending",
+      "designFiles": {
+        "moves": [
+          {
+            "from": "definitions.yml",
+            "to": "definitions.yml"
+          },
+          {
+            "from": "block/CMP-DESK.yml",
+            "to": "block/CMP-DESK.yml"
+          }
+        ],
+        "steps": [
+          {
+            "command": "apply",
+            "kind": "Apply",
+            "data": [
+              {
+                "event": "updated",
+                "file": ".designer/lending/definitions.yml",
+                "kind": "Definitions",
+                "id": "lending",
+                "before": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                "after": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+              }
+            ],
+            "errors": []
+          }
+        ]
+      },
+      "links": {
+        "nothing": "lending has no Connection and no old line word",
+        "moves": []
+      },
+      "layout": {
+        "nothing": "layout.yml of lending is layout/v2 and no Group file carries a size",
+        "groups": 0
+      }
+    }
+  ],
+  "errors": []
+}
