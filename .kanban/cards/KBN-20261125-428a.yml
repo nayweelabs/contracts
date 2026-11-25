@@ -6,7 +6,7 @@ metadata:
   created_at: 2026-11-25T20:18:13.187Z
   created_by: elderlygate-ai
 spec:
-  column: in-progress
+  column: done
   order: 0.5
   tags: [feature, 'epic:naywee', 'feature:naywee-names', 'product:contracts']
   description: |
@@ -27,9 +27,9 @@ spec:
 
     ## Done when
 
-    - [ ] No file refers to envelope/v1, mankit/v1 or designer/v1.
-    - [ ] No upgrade step or upgrade testdata is left.
-    - [ ] Every test case of a deleted mankit/v1 answer that v2 lacks is kept, on envelope/v2.
+    - [x] No file refers to envelope/v1, mankit/v1 or designer/v1.
+    - [x] No upgrade step or upgrade testdata is left.
+    - [x] Every test case of a deleted mankit/v1 answer that v2 lacks is kept, on envelope/v2.
     - [ ] go test ./... green and CI green.
 
     ## Open
@@ -41,3 +41,5 @@ spec:
   lifecycle:
     active_at: 2026-11-25T20:18:18.096Z
     active_by: elderlygate-ai
+    done_at: 2026-11-25T20:24:25.635Z
+    done_by: elderlygate-ai
