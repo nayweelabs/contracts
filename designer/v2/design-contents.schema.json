@@ -75,9 +75,12 @@
                           "type": "object",
                           "properties": {
                             "version": {
-                              "description": "The form of layout.yml, so a reader knows how to read views.",
+                              "description": "The form of layout.yml, so a reader knows how to read views: 2, or 3, which adds each line's sides in the view.",
                               "type": "integer",
-                              "minimum": 2
+                              "enum": [
+                                2,
+                                3
+                              ]
                             },
                             "views": {
                               "description": "Each view's boxes, lines and hexagon, keyed by view name, as apply --help describes them; the board writes them, so their inner shape is the layout program's.",
