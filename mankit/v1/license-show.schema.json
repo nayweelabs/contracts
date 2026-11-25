@@ -41,12 +41,12 @@
               "$ref": "license-payload.schema.json#/properties/until"
             },
             "sentence": {
-              "description": "The one sentence a reader shows for the app's license state, made by mankit's license check and shown word for word: readers never build or change it, so the CLI, the web badge and panel and the TUI say the same. Present when the state has one: a running trial with its days left and last day, an ended trial, no license while a release-trial's offer has ended, and a running paid license with whom it names. Absent otherwise. Its words are the license check's to choose.",
+              "description": "The one sentence a reader shows for the app's license state, made by mankit's license check and shown word for word: readers never build or change it, so the CLI, the web badge and panel and the TUI say the same. Present when the state has one: a running trial with its days left and last day, an ended trial, no license while a release-trial's offer has ended, and licensed: the running paid license, naming whom it is for. Absent otherwise. Its words are the license check's to choose.",
               "type": "string",
               "minLength": 1
             },
             "warn": {
-              "description": "True when a reader shows the license state in its warn colour; the answer decides and readers never do (ADR-L3, L9). True for ending, for a trial with 3 or fewer days left (the license check's 3 days), for trial-ended and for ended. Absent or false otherwise.",
+              "description": "True when a reader shows the license state in its warn colour; the answer decides and readers never do (the owner's license-badge decision of 25 Nov). True for ending, for a trial in its last days, as the license check counts them, for trial-ended and for ended. Absent or false otherwise.",
               "type": "boolean"
             },
             "build": {
@@ -158,6 +158,27 @@
                 "properties": {
                   "warn": {
                     "const": false
+                  }
+                }
+              }
+            },
+            {
+              "description": "A state that warns never has warn false: ending, ended and trial-ended always warn.",
+              "if": {
+                "properties": {
+                  "state": {
+                    "enum": [
+                      "ending",
+                      "ended",
+                      "trial-ended"
+                    ]
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "warn": {
+                    "const": true
                   }
                 }
               }
