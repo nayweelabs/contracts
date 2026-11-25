@@ -1,0 +1,16 @@
+{
+  "apiVersion": "elderlygate/designer/agent/v1",
+  "kind": "AgentInstructions",
+  "metadata": {
+    "name": "sample-shop"
+  },
+  "spec": {
+    "rules": [
+      {
+        "id": "read-with-cli",
+        "text": "Read with the CLI.",
+        "level": "project"
+      }
+    ]
+  }
+}
