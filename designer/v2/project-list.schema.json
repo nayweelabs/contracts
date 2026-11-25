@@ -42,7 +42,7 @@
             ],
             "properties": {
               "name": {
-                "description": "The project's name on this machine, unique in the list: the name --project takes and a picker shows. It is the folder's name unless another was given when it was added, so two folders with the same name can both be added. A project that reads has a name that follows the one rule for a served project's name (projectName), so it can be an event's source; a project listed under another name before that rule is an unavailable row, its unreadable saying why, so a reader still lists it and the user can rename it.",
+                "description": "The project's name on this machine, unique in the list: the name --project takes and a picker shows. It is the folder's name unless another was given when it was added, so two folders with the same name can both be added. Any text here, as a name listed before the rule is still a row; the rule and that row are projectName's (defs.schema.json).",
                 "type": "string",
                 "minLength": 1
               },
@@ -85,6 +85,7 @@
               ],
               "properties": {
                 "name": {
+                  "description": "A project that reads has a name that meets projectName (defs.schema.json), the one rule for a served project's name.",
                   "$ref": "defs.schema.json#/$defs/projectName"
                 }
               }
