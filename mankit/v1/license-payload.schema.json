@@ -23,7 +23,7 @@
       "$ref": "license-show.schema.json#/$defs/license/properties/kind"
     },
     "for": {
-      "description": "The person or org the license names, never a machine, so whoever has the file sees whose it was (ADR-L4); for a release-trial, the release it belongs to, for example \"acme-app v1.2.0\"; never only spaces.",
+      "description": "The person or org the license names, never a machine, so whoever has the file sees whose it was (ADR-L4); for a release-trial, the product line it belongs to, for example \"acme-app 1\"; never only spaces.",
       "type": "string",
       "pattern": "\\S"
     },
@@ -52,7 +52,7 @@
       "format": "date"
     },
     "days": {
-      "description": "How long each trial a release-trial starts runs, in whole days, its first day counted, so every install of the release gets a trial of the same length (ADR-L9). Only a release-trial has it, and it always has it. The signing tool writes 14 unless told another length; any length of 1 or more is valid.",
+      "description": "How long each trial a release-trial starts runs, in whole days, its first day counted, so every install of the product line's releases gets a trial of the same length (ADR-L9). Only a release-trial has it, and it always has it. The signing tool writes 14 unless told another length; any length of 1 or more is valid.",
       "type": "integer",
       "minimum": 1
     },
