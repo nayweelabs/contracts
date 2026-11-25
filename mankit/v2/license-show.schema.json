@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElderlyGate/contracts/mankit/v2/license-show.schema.json",
+  "title": "license show",
+  "description": "The LicenseShow answer on envelope/v2, for an app whose contract is on envelope/v2 (an app on envelope/v1 answers by mankit/v1). What it answers, and its data, are mankit/v1's license-show.schema.json, the one home of both.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v2/envelope.schema.json"
+    },
+    {
+      "properties": {
+        "kind": {
+          "$ref": "../v1/license-show.schema.json#/$defs/kind"
+        },
+        "data": {
+          "$ref": "../v1/license-show.schema.json#/$defs/data"
+        }
+      }
+    }
+  ]
+}

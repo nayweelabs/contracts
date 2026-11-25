@@ -10,71 +10,77 @@
     {
       "properties": {
         "kind": {
-          "description": "Always Help, the kind of this answer, so a reader knows which schema its data meets.",
-          "const": "Help"
+          "$ref": "#/$defs/kind"
         },
         "data": {
-          "description": "The app's help: what it is, how to start it, its commands and flags, and its old forms.",
-          "type": "object",
-          "required": [
-            "name",
-            "what",
-            "start",
-            "commands",
-            "flags",
-            "more",
-            "old"
-          ],
-          "properties": {
-            "name": {
-              "description": "The app's command, the first word of every command line, so a reader builds each full form from it.",
-              "type": "string",
-              "minLength": 1
-            },
-            "what": {
-              "description": "One line: what the app is, as the layout's first line says it. Empty when the app says nothing.",
-              "type": "string"
-            },
-            "start": {
-              "description": "How to start the app and where to run it, one line each, as the layout's Start section. Empty when the app says nothing.",
-              "type": "array",
-              "items": {
-                "type": "string",
-                "minLength": 1
-              }
-            },
-            "commands": {
-              "description": "The commands people see, the ones the layout lists, in its order: each thing with its own verbs and things, each command that has no thing. A hidden command is left out; an old form is only in old.",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/command"
-              }
-            },
-            "flags": {
-              "description": "The app's own flags, those the layout's Flags section lists. Empty when it has none.",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/flag"
-              }
-            },
-            "more": {
-              "description": "The repository URL, as the layout's More line gives it, so a person finds the source and the docs. Empty when the app names none.",
-              "type": "string"
-            },
-            "old": {
-              "description": "The hidden old forms of renamed commands, each with the full form it runs: an old form still runs for one release and says the new name on stderr (G-STACK-5). Listed here, and never in the layout, so a reader moves a script to the full form. Empty when there is none.",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/oldForm"
-              }
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/data"
         }
       }
     }
   ],
   "$defs": {
+    "kind": {
+      "description": "Always Help, the kind of this answer, so a reader knows which schema its data meets.",
+      "const": "Help"
+    },
+    "data": {
+      "description": "The app's help: what it is, how to start it, its commands and flags, and its old forms.",
+      "type": "object",
+      "required": [
+        "name",
+        "what",
+        "start",
+        "commands",
+        "flags",
+        "more",
+        "old"
+      ],
+      "properties": {
+        "name": {
+          "description": "The app's command, the first word of every command line, so a reader builds each full form from it.",
+          "type": "string",
+          "minLength": 1
+        },
+        "what": {
+          "description": "One line: what the app is, as the layout's first line says it. Empty when the app says nothing.",
+          "type": "string"
+        },
+        "start": {
+          "description": "How to start the app and where to run it, one line each, as the layout's Start section. Empty when the app says nothing.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "commands": {
+          "description": "The commands people see, the ones the layout lists, in its order: each thing with its own verbs and things, each command that has no thing. A hidden command is left out; an old form is only in old.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/command"
+          }
+        },
+        "flags": {
+          "description": "The app's own flags, those the layout's Flags section lists. Empty when it has none.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/flag"
+          }
+        },
+        "more": {
+          "description": "The repository URL, as the layout's More line gives it, so a person finds the source and the docs. Empty when the app names none.",
+          "type": "string"
+        },
+        "old": {
+          "description": "The hidden old forms of renamed commands, each with the full form it runs: an old form still runs for one release and says the new name on stderr (G-STACK-5). Listed here, and never in the layout, so a reader moves a script to the full form. Empty when there is none.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/oldForm"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "command": {
       "description": "One command: a thing, which holds verbs and things of its own, or a verb, which runs.",
       "type": "object",
