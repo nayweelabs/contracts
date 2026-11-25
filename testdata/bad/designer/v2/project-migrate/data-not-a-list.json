@@ -12,7 +12,6 @@
       "name": "lending",
       "folder": "/work/lending"
     },
-    "nothing": "every file of lending is in its current form, so there is nothing to migrate",
     "files": []
   },
   "errors": []

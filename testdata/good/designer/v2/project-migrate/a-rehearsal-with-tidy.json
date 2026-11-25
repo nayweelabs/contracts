@@ -1,0 +1,66 @@
+{
+  "apiVersion": "elderlygate/designer/app/v2",
+  "kind": "ProjectMigrate",
+  "source": {
+    "name": "lending",
+    "app": "designer",
+    "version": "9.6.0",
+    "contract": "v2"
+  },
+  "data": [
+    {
+      "design": "lending",
+      "links": {
+        "moves": [
+          {
+            "from": "connection/CMP-DESK--calls--CMP-SHELF.yml",
+            "to": "link/CMP-DESK--calls--CMP-SHELF.yml"
+          },
+          {
+            "from": "definitions.yml",
+            "to": "definitions.yml"
+          },
+          {
+            "from": "connection/CMP-OLD.yml",
+            "to": "connection/CMP-OLD.yml",
+            "says": "names no source, so it cannot become a Link"
+          }
+        ]
+      },
+      "layout": {
+        "groups": 1,
+        "placed": [
+          {
+            "view": "runtime",
+            "boxes": [
+              "CMP-DESK",
+              "CMP-SHELF",
+              "GRP-LIBRARY"
+            ],
+            "hexagon": []
+          }
+        ],
+        "tidied": [
+          {
+            "view": "runtime",
+            "lines": 1,
+            "sides": [],
+            "moves": []
+          }
+        ]
+      }
+    },
+    {
+      "design": "returns",
+      "links": {
+        "nothing": "returns has no Connection and no old line word",
+        "moves": []
+      },
+      "layout": {
+        "nothing": "layout.yml of returns is layout/v2 and no Group file carries a size",
+        "groups": 0
+      }
+    }
+  ],
+  "errors": []
+}

@@ -7,38 +7,40 @@
     "version": "9.6.0",
     "contract": "v2"
   },
-  "data": {
-    "project": {
-      "name": "lending",
-      "folder": "/work/lending"
-    },
-    "files": [
-      {
-        "design": "lending",
-        "file": "connection/CMP-DESK--calls--CMP-SHELF.yml",
-        "from": {
-          "apiVersion": "elderlygate/designer/design/v2",
-          "kind": "Connection"
-        },
-        "to": {
-          "apiVersion": "elderlygate/designer/design/v2",
-          "kind": "Link"
-        },
-        "movedTo": "link/CMP-DESK--calls--CMP-SHELF.yml",
-        "did": "rewritten as a Link"
+  "data": [
+    {
+      "design": "lending",
+      "links": {
+        "moves": [
+          {
+            "from": "connection/CMP-DESK--calls--CMP-SHELF.yml",
+            "to": "link/CMP-DESK--calls--CMP-SHELF.yml"
+          },
+          {
+            "from": "definitions.yml",
+            "to": "definitions.yml"
+          }
+        ],
+        "steps": [
+          {
+            "command": "apply",
+            "kind": "Apply",
+            "data": [
+              {
+                "event": "updated",
+                "file": ".designer/lending/layout.yml",
+                "kind": "Layout",
+                "id": "lending",
+                "before": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "after": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+              }
+            ],
+            "errors": []
+          }
+        ]
       },
-      {
-        "design": "lending",
-        "file": "layout.yml",
-        "from": {
-          "apiVersion": "elderlygate/designer/layout/v1",
-          "kind": "Layout"
-        },
-        "to": {
-          "apiVersion": "elderlygate/designer/layout/v2",
-          "kind": "Layout"
-        },
-        "did": "written as a Resource; 3 box(es) given a place",
+      "layout": {
+        "groups": 1,
         "placed": [
           {
             "view": "runtime",
@@ -48,17 +50,37 @@
               "GRP-LIBRARY"
             ]
           }
+        ],
+        "steps": [
+          {
+            "command": "apply",
+            "kind": "Apply",
+            "data": [
+              {
+                "event": "updated",
+                "file": ".designer/lending/layout.yml",
+                "kind": "Layout",
+                "id": "lending",
+                "before": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "after": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+              }
+            ],
+            "errors": []
+          }
         ]
       }
-    ],
-    "steps": [
-      {
-        "command": "apply",
-        "kind": "Apply",
-        "data": [],
-        "errors": []
+    },
+    {
+      "design": "returns",
+      "links": {
+        "nothing": "returns has no Connection and no old line word",
+        "moves": []
+      },
+      "layout": {
+        "nothing": "layout.yml of returns is layout/v2 and no Group file carries a size",
+        "groups": 0
       }
-    ]
-  },
+    }
+  ],
   "errors": []
 }
