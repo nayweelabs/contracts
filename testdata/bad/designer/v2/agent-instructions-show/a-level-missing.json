@@ -1,0 +1,46 @@
+{
+  "apiVersion": "elderlygate/designer/app/v2",
+  "kind": "AgentInstructionsShow",
+  "source": {
+    "name": "sample-shop",
+    "app": "designer",
+    "version": "6.15.0",
+    "contract": "v2"
+  },
+  "data": {
+    "rules": [
+      {
+        "id": "read-with-cli",
+        "text": "Read the design with the CLI, one thing at a time; never open a whole design file to find one block.",
+        "origin": "project"
+      },
+      {
+        "id": "ask-before-delete",
+        "text": "Ask before deleting a block, and say which links go with it.",
+        "origin": "built-in"
+      },
+      {
+        "id": "explain-in-short-words",
+        "text": "Explain a change in short, plain words before making it.",
+        "origin": "machine"
+      },
+      {
+        "id": "name-blocks-by-role",
+        "text": "Name a new block by what it does for the shop, like Checkout or Price list, never by its technology.",
+        "origin": "project"
+      }
+    ],
+    "levels": [
+      {
+        "level": "built-in",
+        "found": true
+      },
+      {
+        "level": "machine",
+        "path": "/home/user/.config/designer/agent.yml",
+        "found": true
+      }
+    ]
+  },
+  "errors": []
+}
