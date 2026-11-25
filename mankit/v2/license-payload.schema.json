@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElderlyGate/contracts/mankit/v2/license-payload.schema.json",
+  "title": "license payload",
+  "description": "What a license file signs (license-file.schema.json's spec.payload, once decoded): whom it is for, its kind, the enterprise features it names per product, its first and last day and the key that signed it (ADR-L1, L4, L6, L8, L9). nw-licenser writes it and mankit's licenses package reads it. Open: a newer nw-licenser may add fields here, and an older app accepts them (CT-RULE-4), as several app versions read the org license at once (ADR-S15). A field that narrows what a license opens needs a new apiVersion (CT-RULE-1); an added field never narrows it. The signature still covers the payload's bytes exactly, a field the app does not know included. Two rules no schema can say: until is never before issued, and id is the file's metadata.id.",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "for",
+    "issued",
+    "until",
+    "keyId"
+  ],
+  "properties": {
+    "id": {
+      "description": "The license's id, which nw-licenser writes, signed so it cannot be changed: the license file's metadata.id must be the same, so a signed id names the file, and mankit refuses a file whose two ids differ (ADR-S15).",
+      "type": "string",
+      "pattern": "^\\S+$"
+    },
+    "kind": {
+      "description": "Which kind of license it is; license-show.schema.json's licenses[].kind says what each kind covers (ADR-L8, L9).",
+      "$ref": "license-show.schema.json#/$defs/license/properties/kind"
+    },
+    "for": {
+      "description": "The person or org the license names, never a machine, so whoever has the file sees whose it was (ADR-L4); for a release-trial, the product line it belongs to, for example \"acme-app 1\"; never only spaces.",
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "products": {
+      "description": "The enterprise feature ids the license names, per product id, so an app opens a feature only when its own product id names it (ADR-L2). An org license names one or more products, a product license exactly one; a trial key names none, as it opens every enterprise feature (ADR-L9); a release-trial names exactly one, its app, with no feature ids, as it opens every enterprise feature of that app (ADR-L9).",
+      "type": "object",
+      "propertyNames": {
+        "minLength": 1
+      },
+      "additionalProperties": {
+        "description": "The product's enterprise feature ids, as its feature list names them; never empty, but for a release-trial's, which is always empty.",
+        "type": "array",
+        "items": {
+          "$ref": "defs.schema.json#/$defs/featureState/properties/id"
+        }
+      }
+    },
+    "issued": {
+      "description": "The license's first day, an RFC 3339 date in UTC; a trial key runs from it (ADR-L9).",
+      "type": "string",
+      "format": "date"
+    },
+    "until": {
+      "description": "The license's last day, an RFC 3339 date in UTC, never before issued; after it its features lock again (ADR-L3). For a release-trial, the day its trial offer ends, not the last day a trial runs: a trial started on that day still runs its days.",
+      "type": "string",
+      "format": "date"
+    },
+    "days": {
+      "description": "How long each trial a release-trial starts runs, in whole days, its first day counted, so every install of the product line's releases gets a trial of the same length (ADR-L9). Only a release-trial has it, and it always has it. The signing tool writes 14 unless told another length; any length of 1 or more is valid.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "keyId": {
+      "description": "The id of the key that signed it, so an app checks it against the keys its build trusts (ADR-L5, L6).",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "allOf": [
+    {
+      "description": "A trial key names no products (ADR-L9).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "trial"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "products": {
+            "maxProperties": 0
+          }
+        }
+      }
+    },
+    {
+      "description": "A product license names exactly one product (ADR-L8).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "product"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "products"
+        ],
+        "properties": {
+          "products": {
+            "minProperties": 1,
+            "maxProperties": 1
+          }
+        }
+      }
+    },
+    {
+      "description": "An org license names its products, one or more (ADR-L8).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "org"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "products"
+        ],
+        "properties": {
+          "products": {
+            "minProperties": 1
+          }
+        }
+      }
+    },
+    {
+      "description": "A release-trial names exactly one product, its app, with no feature ids, and how long its trials run (ADR-L9).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "release-trial"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "products",
+          "days"
+        ],
+        "properties": {
+          "products": {
+            "minProperties": 1,
+            "maxProperties": 1,
+            "additionalProperties": {
+              "maxItems": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "description": "Only a release-trial has days, and every other kind names one or more feature ids per product it names (ADR-L2, L9).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "release-trial"
+          }
+        }
+      },
+      "else": {
+        "not": {
+          "required": [
+            "days"
+          ]
+        },
+        "properties": {
+          "products": {
+            "additionalProperties": {
+              "minItems": 1
+            }
+          }
+        }
+      }
+    }
+  ]
+}

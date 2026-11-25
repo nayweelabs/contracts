@@ -31,7 +31,7 @@ func TestValidateTakesASample(t *testing.T) {
 }
 
 func TestValidateIsSafeFromManyGoroutines(t *testing.T) {
-	doc, err := os.ReadFile("envelope/v1/samples/envelope.json")
+	doc, err := os.ReadFile("envelope/v2/samples/envelope.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,10 +39,10 @@ func TestValidateIsSafeFromManyGoroutines(t *testing.T) {
 		t.Run(fmt.Sprint(i), func(t *testing.T) {
 			t.Parallel()
 			for range 50 {
-				if err := contracts.Validate("envelope/v1/envelope.schema.json", doc); err != nil {
+				if err := contracts.Validate("envelope/v2/envelope.schema.json", doc); err != nil {
 					t.Error(err)
 				}
-				if err := contracts.Validate("designer/v1/version.schema.json", doc); err == nil {
+				if err := contracts.Validate("version/v1/version.schema.json", doc); err == nil {
 					t.Error("a greeting was taken as a version")
 				}
 			}
@@ -51,20 +51,20 @@ func TestValidateIsSafeFromManyGoroutines(t *testing.T) {
 }
 
 func TestValidateRefusesABrokenDocument(t *testing.T) {
-	doc, err := os.ReadFile("testdata/bad/envelope/v1/envelope/missing-ran.json")
+	doc, err := os.ReadFile("testdata/bad/envelope/v2/envelope/no-source.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := contracts.Validate("envelope/v1/envelope.schema.json", doc); err == nil {
-		t.Fatal("a document without ran was taken")
+	if err := contracts.Validate("envelope/v2/envelope.schema.json", doc); err == nil {
+		t.Fatal("a document without source was taken")
 	}
 }
 
 func TestValidateFollowsAReferenceToAnotherSchema(t *testing.T) {
-	doc := []byte(`{"apiVersion":"elderlygate/example/app/v1","kind":"Greeting","ran":{"name":"example","app":"example","version":"1.0.0","contract":"v1"},"data":null,` +
-		`"errors":[{"apiVersion":"elderlygate/example/app/v1","kind":"Error","code":"unsupported_contract","message":"no v3"}]}`)
-	if err := contracts.Validate("envelope/v1/envelope.schema.json", doc); err == nil {
-		t.Fatal("an unsupported_contract error without its supported versions was taken")
+	doc := []byte(`{"apiVersion":"elderlygate/example/app/v2","kind":"Greeting","source":{"name":"example","app":"example","version":"2.0.0","contract":"v2"},"data":null,` +
+		`"errors":[{"apiVersion":"elderlygate/contracts/problem/v1","kind":"Problem","type":"unsupported_contract"}]}`)
+	if err := contracts.Validate("envelope/v2/envelope.schema.json", doc); err == nil {
+		t.Fatal("a Problem without its detail was taken")
 	}
 }
 
@@ -76,13 +76,13 @@ func TestValidateNamesAMissingSchema(t *testing.T) {
 }
 
 func TestValidateRefusesADocumentThatIsNotJSON(t *testing.T) {
-	if err := contracts.Validate("envelope/v1/envelope.schema.json", []byte("not json")); err == nil {
+	if err := contracts.Validate("envelope/v2/envelope.schema.json", []byte("not json")); err == nil {
 		t.Fatal("a document that is not JSON was taken")
 	}
 }
 
 func TestAServerRecordTakesNewSpecFieldsButNoNewHeader(t *testing.T) {
-	sample, err := os.ReadFile("mankit/v1/samples/server.json")
+	sample, err := os.ReadFile("mankit/v2/samples/server.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -97,19 +97,19 @@ func TestAServerRecordTakesNewSpecFieldsButNoNewHeader(t *testing.T) {
 	}
 	rec.Spec["queue"] = "a field a newer app adds"
 	newer, _ := json.Marshal(rec)
-	if err := contracts.Validate("mankit/v1/server.schema.json", newer); err != nil {
+	if err := contracts.Validate("mankit/v2/server.schema.json", newer); err != nil {
 		t.Fatalf("a record from a newer app was refused: %v", err)
 	}
 	delete(rec.Spec, "queue")
 	rec.Metadata["host"] = "a renamed header"
 	changed, _ := json.Marshal(rec)
-	if err := contracts.Validate("mankit/v1/server.schema.json", changed); err == nil {
+	if err := contracts.Validate("mankit/v2/server.schema.json", changed); err == nil {
 		t.Fatal("a record with a new header field was taken")
 	}
 }
 
 func TestATicketTakesNewSpecFieldsButNoNewHeader(t *testing.T) {
-	sample, err := os.ReadFile("mankit/v1/samples/queue-ticket.json")
+	sample, err := os.ReadFile("mankit/v2/samples/queue-ticket.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -127,7 +127,7 @@ func TestATicketTakesNewSpecFieldsButNoNewHeader(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := contracts.Validate("mankit/v1/queue-ticket.schema.json", newer); err != nil {
+	if err := contracts.Validate("mankit/v2/queue-ticket.schema.json", newer); err != nil {
 		t.Fatalf("a ticket from a newer app was refused: %v", err)
 	}
 	delete(ticket.Spec, "priority")
@@ -137,7 +137,7 @@ func TestATicketTakesNewSpecFieldsButNoNewHeader(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := contracts.Validate("mankit/v1/queue-ticket.schema.json", renamed); err == nil {
+	if err := contracts.Validate("mankit/v2/queue-ticket.schema.json", renamed); err == nil {
 		t.Fatal("a ticket with a renamed header field was taken")
 	}
 }
@@ -158,7 +158,7 @@ func licenseFileProblem(raw []byte) error {
 	if err := json.Unmarshal(raw, &file); err != nil {
 		return err
 	}
-	if err := contracts.Validate("mankit/v1/license-payload.schema.json", file.Spec.Payload); err != nil {
+	if err := contracts.Validate("mankit/v2/license-payload.schema.json", file.Spec.Payload); err != nil {
 		return fmt.Errorf("its payload: %w", err)
 	}
 	var payload struct {
@@ -193,8 +193,8 @@ func licenseFileProblem(raw []byte) error {
 }
 
 func TestLicenseFilePayloads(t *testing.T) {
-	files, _ := filepath.Glob("testdata/good/mankit/v1/license-file/*.json")
-	files = append(files, "mankit/v1/samples/license-file.json")
+	files, _ := filepath.Glob("testdata/good/mankit/v2/license-file/*.json")
+	files = append(files, "mankit/v2/samples/license-file.json")
 	for _, path := range files {
 		raw, err := os.ReadFile(path)
 		if err != nil {
@@ -206,9 +206,9 @@ func TestLicenseFilePayloads(t *testing.T) {
 	}
 }
 
-// Each file in testdata/bad/mankit/v1/license-file/payload/ meets the file schema but breaks one rule only its payload decides.
+// Each file in testdata/bad/mankit/v2/license-file/payload/ meets the file schema but breaks one rule only its payload decides.
 func TestLicenseFilePayloadRulesAreCaught(t *testing.T) {
-	files, _ := filepath.Glob("testdata/bad/mankit/v1/license-file/payload/*.json")
+	files, _ := filepath.Glob("testdata/bad/mankit/v2/license-file/payload/*.json")
 	if len(files) == 0 {
 		t.Fatal("no broken license files found")
 	}
@@ -217,7 +217,7 @@ func TestLicenseFilePayloadRulesAreCaught(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if err := contracts.Validate("mankit/v1/license-file.schema.json", raw); err != nil {
+		if err := contracts.Validate("mankit/v2/license-file.schema.json", raw); err != nil {
 			t.Errorf("%s: breaks the file schema, not only a payload rule: %v", path, err)
 		}
 		if licenseFileProblem(raw) == nil {

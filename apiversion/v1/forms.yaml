@@ -13,10 +13,6 @@ forms:
     kinds: [Layout]
     note: "A design's layout.yml as a Resource holding every drawn box's place (designer/v2 layout-file.schema.json). layout/v1 is the bare layout.yml before it, with no apiVersion line (its shape: the layout/v1 branch of designer/v2 design-contents.schema.json)"
     upgrade: hubman product migrate designer <folder>
-  - new: elderlygate/designer/app/v1
-    app: designer
-    kinds: [Version, DesignList, BlockList, Block, ProjectList, Config, ConfigConfirm, ConfigPaths, RawFile, DesignContents, Views, Resource, Board, Revision, FeatureList, Changes, Apply, FocusSet, FocusClear, TidyLayout, TidyLines, ArrangeLayout, MigrateLayout, AgentInstructionsShow]
-    note: Answers and events of designer, contract v1. Answer kinds not listed here are in the envelope only for now, with no schema of their own yet
   - new: elderlygate/designer/app/v2
     app: designer
     kinds: [DesignList, BlockList, Block, ProjectList, Config, ConfigConfirm, ConfigPaths, RawFile, DesignContents, Views, Resource, Board, Revision, FeatureList, Changes, Apply, FocusSet, FocusClear, TidyLayout, TidyLines, ArrangeLayout, ProjectMigrate, AgentInstructionsShow]
@@ -68,8 +64,8 @@ forms:
   - new: elderlygate/contracts/question/v1
     app: contracts
     kinds: [Question]
-    note: The one answer for a change waiting for a yes, in every app (ADR-S04); its wrapper follows the reader's contract version
+    note: The one answer for a change waiting for a yes, in every app (ADR-S04); it is wrapped in envelope/v2
   - new: elderlygate/contracts/version/v1
     app: contracts
     kinds: [Version]
-    note: The one version answer every app serves in every contract version (ADR-S03); designer/v1 Version stays until each app moves
+    note: The one version answer every app serves in every contract version (ADR-S03)

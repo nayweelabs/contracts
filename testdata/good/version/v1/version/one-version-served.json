@@ -1,7 +1,7 @@
 {
   "apiVersion": "elderlygate/contracts/version/v1",
   "kind": "Version",
-  "ran": {
+  "source": {
     "name": "example",
     "app": "example",
     "version": "1.0.0",
