@@ -1,0 +1,38 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261125-aa23
+  title: Trial-key descriptions cite the ADR that holds them
+  created_at: 2026-11-25T12:30:51.447Z
+  created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+spec:
+  column: backlog
+  order: 0.9999980926513672
+  summary: trial-kind descriptions cite ADR-L9, which now holds only the release-trial
+  tags: ['epic:license', 'feature:license-check', 'product:mankit']
+  work:
+    agent: claude-opus-5-5
+  description: |
+    # Trial-key descriptions cite the ADR that holds them
+
+    ## Why
+    ADR-L9 now covers only the release-trial: one key per product line, built into each release. The descriptions of the plain `trial` kind, a trial key that opens every enterprise feature of every product and names none, still cite ADR-L9:
+    - `mankit/v1/license-show.schema.json`, the `kind` description (line 205): "trial: a trial key, which opens every enterprise feature of every product and names none (ADR-L9)".
+    - `mankit/v1/license-payload.schema.json`, the `products` description (line 31): "a trial key names none, as it opens every enterprise feature (ADR-L9)".
+    - `mankit/v1/license-payload.schema.json`, the `allOf` rule description (line 67): "A trial key names no products (ADR-L9)."
+
+    ## What
+    - Find which ADR of the org's license ADRs (ADR-L1..L10), if any, holds the plain trial key now.
+    - Cite that ADR in the three descriptions above, in place of ADR-L9 for the `trial` kind; the release-trial parts keep ADR-L9.
+    - If no ADR holds the plain trial key, change nothing and write it under Open for the owner.
+    - Descriptions only: no field, enum, type, required list or rule changes.
+
+    ## Done when
+    - [ ] Every description of the `trial` kind cites an ADR that holds it, or the gap is an Open point for the owner.
+    - [ ] The release-trial descriptions still cite ADR-L9.
+    - [ ] No schema change other than description text.
+    - [ ] `go test ./...` passes.
+    - [ ] Review passed.
+
+    ## Open
+    none
