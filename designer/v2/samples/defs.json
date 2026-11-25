@@ -293,34 +293,6 @@
     "width": 180,
     "height": 72
   },
-  "migratedView": {
-    "view": "structure",
-    "boxes": 2,
-    "moved": [],
-    "framesMoved": [
-      "GRP-CORE"
-    ],
-    "shrunk": [],
-    "badgesKept": 1,
-    "badgesMiddle": 2,
-    "badgesUndrawn": 0,
-    "rects": {
-      "CMP-API": {
-        "before": {
-          "x": 300,
-          "y": 140,
-          "width": 180,
-          "height": 72
-        },
-        "after": {
-          "x": 300,
-          "y": 140,
-          "width": 180,
-          "height": 72
-        }
-      }
-    }
-  },
   "step": {
     "command": "apply",
     "kind": "Apply",

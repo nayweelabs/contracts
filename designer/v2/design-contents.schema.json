@@ -62,19 +62,25 @@
                       "minimum": 0
                     },
                     "document": {
-                      "description": "The document as its file holds it: a resource, or for the kind Layout, layout.yml.",
+                      "description": "The document as its file holds it: a resource, or for the kind Layout, layout.yml, as the layout/v2 Resource or the bare form layout/v1 before it.",
                       "oneOf": [
                         {
                           "$ref": "defs.schema.json#/$defs/document"
                         },
                         {
-                          "description": "layout.yml as read: where the boxes and lines of each view sit. Its version says its form; a version 1 file is refused by the board, which says to run nw-designer project migrate.",
+                          "$ref": "layout-file.schema.json"
+                        },
+                        {
+                          "description": "layout.yml as read in the form layout/v1 (apiversion/v1/forms.yaml names it and its upgrade): where the boxes and lines of each view sit, which may leave boxes without a place.",
                           "type": "object",
                           "properties": {
                             "version": {
-                              "description": "The form of layout.yml, so a reader knows how to read views.",
+                              "description": "The form of layout.yml, so a reader knows how to read views: 2, or 3, which adds each line's sides in the view.",
                               "type": "integer",
-                              "minimum": 2
+                              "enum": [
+                                2,
+                                3
+                              ]
                             },
                             "views": {
                               "description": "Each view's boxes, lines and hexagon, keyed by view name, as apply --help describes them; the board writes them, so their inner shape is the layout program's.",

@@ -1,0 +1,120 @@
+{
+  "apiVersion": "elderlygate/designer/app/v2",
+  "kind": "ProjectMigrate",
+  "source": {
+    "name": "lending",
+    "app": "designer",
+    "version": "9.6.0",
+    "contract": "v2"
+  },
+  "data": [
+    {
+      "design": "lending",
+      "designFiles": {
+        "moves": [
+          {
+            "from": "definitions.yml",
+            "to": "definitions.yml"
+          },
+          {
+            "from": "block/CMP-DESK.yml",
+            "to": "block/CMP-DESK.yml"
+          }
+        ],
+        "steps": [
+          {
+            "command": "apply",
+            "kind": "Apply",
+            "data": [
+              {
+                "event": "updated",
+                "file": ".designer/lending/definitions.yml",
+                "kind": "Definitions",
+                "id": "lending",
+                "before": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                "after": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+              }
+            ],
+            "errors": []
+          }
+        ]
+      },
+      "links": {
+        "moves": [
+          {
+            "from": "connection/CMP-DESK--calls--CMP-SHELF.yml",
+            "to": "link/CMP-DESK--calls--CMP-SHELF.yml"
+          },
+          {
+            "from": "definitions.yml",
+            "to": "definitions.yml"
+          }
+        ],
+        "steps": [
+          {
+            "command": "apply",
+            "kind": "Apply",
+            "data": [
+              {
+                "event": "updated",
+                "file": ".designer/lending/layout.yml",
+                "kind": "Layout",
+                "id": "lending",
+                "before": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "after": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+              }
+            ],
+            "errors": []
+          }
+        ]
+      },
+      "layout": {
+        "groups": 1,
+        "placed": [
+          {
+            "view": "runtime",
+            "boxes": [
+              "CMP-DESK",
+              "CMP-SHELF",
+              "GRP-LIBRARY"
+            ],
+            "hexagon": []
+          }
+        ],
+        "steps": [
+          {
+            "command": "apply",
+            "kind": "Apply",
+            "data": [
+              {
+                "event": "updated",
+                "file": ".designer/lending/layout.yml",
+                "kind": "Layout",
+                "id": "lending",
+                "before": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "after": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+              }
+            ],
+            "errors": []
+          }
+        ]
+      }
+    },
+    {
+      "design": "returns",
+      "designFiles": {
+        "nothing": "every file of returns is design/v3",
+        "moves": []
+      },
+      "links": {
+        "nothing": "returns has no Connection and no old line word",
+        "moves": []
+      },
+      "layout": {
+        "nothing": "layout.yml of returns is layout/v2 and no Group file carries a size",
+        "groups": 2
+      }
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,295 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElderlyGate/contracts/designer/v2/project-migrate.schema.json",
+  "title": "project migrate",
+  "description": "The answer of nw-designer project migrate [<name>] [--dry-run]: every design of one project brought up one level, to the forms this build writes (ADR-S16), or what it would do. A file two or more levels older, newer, or unreadable is refused and nothing is written.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v2/envelope.schema.json"
+    },
+    {
+      "properties": {
+        "apiVersion": {
+          "description": "Always elderlygate/designer/app/v2: the form of designer's answers. An app's answers keep the family app (apiversion/v1/forms.yaml), apart from the files they describe.",
+          "const": "elderlygate/designer/app/v2"
+        },
+        "kind": {
+          "description": "Always ProjectMigrate, the kind of this answer, so a reader knows which schema its data meets.",
+          "const": "ProjectMigrate"
+        },
+        "source": {
+          "description": "Where the answer came from; this contract fixes the app and the contract version, so an answer from anything else fails here.",
+          "properties": {
+            "app": {
+              "description": "Always designer, the product ID of the app that gives this answer.",
+              "const": "designer"
+            },
+            "contract": {
+              "description": "Always v2, the contract version this schema belongs to.",
+              "const": "v2"
+            }
+          }
+        },
+        "data": {
+          "description": "One entry per design of the project, in the order they were migrated, so a reader sees what each step did or would do in each design.",
+          "type": "array",
+          "items": {
+            "description": "One design: its id, and what each step of the migration (design files, links, layout, in that order) found or did in it.",
+            "type": "object",
+            "required": [
+              "design",
+              "designFiles",
+              "links",
+              "layout"
+            ],
+            "properties": {
+              "design": {
+                "description": "The design, by its id, so a project with several designs says whose files changed.",
+                "type": "string",
+                "minLength": 1
+              },
+              "designFiles": {
+                "description": "The design files step: each resource file and definitions.yml brought from design/v2 to design/v3 (apiversion/v1/forms.yaml), each file rewritten whole where it stands, with its old style fields moved to styles, colours and rules; or why there was nothing to do.",
+                "type": "object",
+                "required": [
+                  "moves"
+                ],
+                "properties": {
+                  "nothing": {
+                    "description": "Why this step had nothing to do, in words for people: every file of the design is already design/v3; present only then, and then moves is empty and steps absent.",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "moves": {
+                    "description": "Each file the step rewrites, in the order it works through them.",
+                    "type": "array",
+                    "items": {
+                      "description": "One file the step rewrites.",
+                      "type": "object",
+                      "required": [
+                        "from",
+                        "to"
+                      ],
+                      "properties": {
+                        "from": {
+                          "description": "The file in design/v2, by its path inside the design's folder.",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "to": {
+                          "description": "The file in design/v3, by its path inside the design's folder; always the same path, as the step rewrites each file where it stands.",
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "steps": {
+                    "description": "Each command the step ran, in order; present only on a real run, never on --dry-run, so a reader sees where a run stopped.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "defs.schema.json#/$defs/step"
+                    }
+                  }
+                },
+                "if": {
+                  "required": [
+                    "nothing"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "moves": {
+                      "maxItems": 0
+                    }
+                  },
+                  "not": {
+                    "required": [
+                      "steps"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "links": {
+                "description": "The links step: each Connection file moved to link/ as a Link, and definitions.yml and design.yml rewritten where they say an old line word; or why there was nothing to do.",
+                "type": "object",
+                "required": [
+                  "moves"
+                ],
+                "properties": {
+                  "nothing": {
+                    "description": "Why this step had nothing to do, in words for people; present only then, and then moves is empty and steps absent.",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "moves": {
+                    "description": "Each file the step moves, rewrites or drops, in the order it works through them.",
+                    "type": "array",
+                    "items": {
+                      "description": "One file and where it goes.",
+                      "type": "object",
+                      "required": [
+                        "from",
+                        "to"
+                      ],
+                      "properties": {
+                        "from": {
+                          "description": "The file before the step, by its path inside the design's folder.",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "to": {
+                          "description": "The file after the step, by its path inside the design's folder; the same path when the file is rewritten where it stands.",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "says": {
+                          "description": "Why the file is dropped rather than moved, in words for people; absent for a file that is moved or rewritten.",
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "steps": {
+                    "description": "Each command the step ran, in order; present only on a real run, never on --dry-run, so a reader sees where a run stopped.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "defs.schema.json#/$defs/step"
+                    }
+                  }
+                },
+                "if": {
+                  "required": [
+                    "nothing"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "moves": {
+                      "maxItems": 0
+                    }
+                  },
+                  "not": {
+                    "required": [
+                      "steps"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              "layout": {
+                "description": "The layout step: layout.yml brought from layout/v1 to layout/v2 (apiversion/v1/forms.yaml), every box each view draws given a place, and every Group file's size taken out; or why there was nothing to do.",
+                "type": "object",
+                "required": [
+                  "groups"
+                ],
+                "properties": {
+                  "nothing": {
+                    "description": "Why this step had nothing to do, in words for people: layout.yml is already layout/v2 and no Group file carries a size; present only then, and then groups is 0 and placed, steps and tidied are absent.",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "groups": {
+                    "description": "How many Group files lose the size they carried, which only layout.yml keeps.",
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "placed": {
+                    "description": "What the step gave a place, one entry per view that had a box without one; absent when every box already had one.",
+                    "type": "array",
+                    "items": {
+                      "description": "The boxes of one view given a place, worked out once by the same rule a write uses.",
+                      "type": "object",
+                      "required": [
+                        "view",
+                        "boxes",
+                        "hexagon"
+                      ],
+                      "properties": {
+                        "view": {
+                          "description": "The view, by its name in design.yml, so a reader shows each view's new places apart.",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "boxes": {
+                          "description": "The boxes and groups placed in the view's rows, by id, in id order, so a person sees which got a place.",
+                          "type": "array",
+                          "items": {
+                            "description": "A resource id.",
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "hexagon": {
+                          "description": "The blocks placed on the view's hexagon, by id, in id order; always empty when the view draws no hexagon.",
+                          "type": "array",
+                          "items": {
+                            "description": "A resource id.",
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "steps": {
+                    "description": "Each command the step ran, in order; present only on a real run, never on --dry-run, so a reader sees where a run stopped.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "defs.schema.json#/$defs/step"
+                    }
+                  },
+                  "tidied": {
+                    "description": "What tidying each view's lines did, one entry per view, when the person also asked for the lines to be tidied; absent otherwise.",
+                    "type": "array",
+                    "items": {
+                      "$ref": "defs.schema.json#/$defs/tidiedView"
+                    }
+                  }
+                },
+                "if": {
+                  "required": [
+                    "nothing"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "groups": {
+                      "const": 0
+                    }
+                  },
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "placed"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "steps"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "tidied"
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  ]
+}
