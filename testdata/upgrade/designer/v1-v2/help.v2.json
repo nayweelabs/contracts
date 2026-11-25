@@ -1,0 +1,89 @@
+{
+  "apiVersion": "elderlygate/designer/app/v2",
+  "kind": "Help",
+  "source": {
+    "name": "designer",
+    "app": "designer",
+    "version": "9.0.0",
+    "contract": "v2"
+  },
+  "data": {
+    "commands": [
+      {
+        "commands": [],
+        "flags": [],
+        "name": "help",
+        "summary": "Help about any command",
+        "usage": "help [command]"
+      },
+      {
+        "commands": [
+          {
+            "commands": [],
+            "flags": [
+              {
+                "name": "check",
+                "type": "bool",
+                "usage": "fail unless at least one server is listed and every one answers"
+              },
+              {
+                "default": "table",
+                "name": "output",
+                "shorthand": "o",
+                "type": "string",
+                "usage": "output format: table, json or yaml"
+              }
+            ],
+            "name": "list",
+            "summary": "List the servers on this machine",
+            "usage": "server list [addr]"
+          },
+          {
+            "commands": [],
+            "flags": [],
+            "name": "stop",
+            "summary": "Stop a server",
+            "usage": "server stop [addr|name]"
+          }
+        ],
+        "flags": [],
+        "name": "server",
+        "summary": "The servers of this app on this machine",
+        "usage": "server"
+      }
+    ],
+    "flags": [
+      {
+        "name": "theme",
+        "shorthand": "t",
+        "type": "string",
+        "usage": "the colours"
+      }
+    ],
+    "more": "https://github.com/nayweelabs/e-designer",
+    "name": "e-designer",
+    "old": [
+      {
+        "now": "server list",
+        "words": "servers"
+      },
+      {
+        "now": "server stop",
+        "words": "servers stop"
+      },
+      {
+        "args": [
+          "wait"
+        ],
+        "now": "queue set",
+        "words": "config queue wait"
+      }
+    ],
+    "start": [
+      "e-designer serve --detach",
+      "run it in the project's folder"
+    ],
+    "what": "a live visual board for a design project"
+  },
+  "errors": []
+}

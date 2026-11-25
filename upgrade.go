@@ -278,9 +278,13 @@ func swapForm(v any, from, to string) any {
 	return v
 }
 
-// DesignerSchema is the schema of a designer answer kind.
+// DesignerSchema is the schema of a designer answer kind: designer's own, or for an answer mankit gives every app mankit's of the same version, as designer/app/v1 and v2 are on the envelopes of mankit/v1 and v2.
 func DesignerSchema(version, kind string) string {
-	return "designer/" + version + "/" + schemaFile(kind)
+	own := "designer/" + version + "/" + schemaFile(kind)
+	if !inFS(own) && inFS(MankitSchema(version, kind)) {
+		return MankitSchema(version, kind)
+	}
+	return own
 }
 
 // MankitSchema is the schema of an answer kind mankit gives every app.
