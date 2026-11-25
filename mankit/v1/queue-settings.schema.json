@@ -14,81 +14,86 @@
           "const": "QueueSettings"
         },
         "data": {
-          "description": "The two settings of the app's change queue.",
+          "$ref": "#/$defs/data"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "data": {
+      "description": "The two settings of the app's change queue.",
+      "type": "object",
+      "required": [
+        "wait",
+        "limit"
+      ],
+      "properties": {
+        "wait": {
+          "description": "How long a change waits for its turn before it gives up, as the app takes it now.",
           "type": "object",
           "required": [
-            "wait",
-            "limit"
+            "value",
+            "default",
+            "set"
           ],
           "properties": {
-            "wait": {
-              "description": "How long a change waits for its turn before it gives up, as the app takes it now.",
-              "type": "object",
-              "required": [
-                "value",
-                "default",
-                "set"
-              ],
-              "properties": {
-                "value": {
-                  "type": "string",
-                  "pattern": "^([0-9]+(\\.[0-9]+)?(h|m|s))+$",
-                  "description": "The duration in effect, as a Go duration of hours, minutes and seconds such as 45s or 2m0s, never zero or in units below a second: the config's value when it sets one, else the default.",
-                  "not": {
-                    "pattern": "^(0+(\\.0+)?(h|m|s))+$"
-                  }
-                },
-                "default": {
-                  "type": "string",
-                  "pattern": "^([0-9]+(\\.[0-9]+)?(h|m|s))+$",
-                  "description": "The duration, in the same form, mankit takes when the config sets none, so a person sees what removing the row would give.",
-                  "not": {
-                    "pattern": "^(0+(\\.0+)?(h|m|s))+$"
-                  }
-                },
-                "set": {
-                  "description": "True when the app's config.yaml sets the row, so a person knows the value is chosen, not the default.",
-                  "type": "boolean"
-                }
-              },
-              "additionalProperties": false
+            "value": {
+              "type": "string",
+              "pattern": "^([0-9]+(\\.[0-9]+)?(h|m|s))+$",
+              "description": "The duration in effect, as a Go duration of hours, minutes and seconds such as 45s or 2m0s, never zero or in units below a second: the config's value when it sets one, else the default.",
+              "not": {
+                "pattern": "^(0+(\\.0+)?(h|m|s))+$"
+              }
             },
-            "limit": {
-              "description": "How long a change may hold its turn before it is stopped, as the app takes it now.",
-              "type": "object",
-              "required": [
-                "value",
-                "default",
-                "set"
-              ],
-              "properties": {
-                "value": {
-                  "type": "string",
-                  "pattern": "^([0-9]+(\\.[0-9]+)?(h|m|s))+$",
-                  "description": "The duration in effect, as a Go duration of hours, minutes and seconds such as 45s or 2m0s, never zero or in units below a second: the config's value when it sets one, else the default.",
-                  "not": {
-                    "pattern": "^(0+(\\.0+)?(h|m|s))+$"
-                  }
-                },
-                "default": {
-                  "type": "string",
-                  "pattern": "^([0-9]+(\\.[0-9]+)?(h|m|s))+$",
-                  "description": "The duration, in the same form, mankit takes when the config sets none, so a person sees what removing the row would give.",
-                  "not": {
-                    "pattern": "^(0+(\\.0+)?(h|m|s))+$"
-                  }
-                },
-                "set": {
-                  "description": "True when the app's config.yaml sets the row, so a person knows the value is chosen, not the default.",
-                  "type": "boolean"
-                }
-              },
-              "additionalProperties": false
+            "default": {
+              "type": "string",
+              "pattern": "^([0-9]+(\\.[0-9]+)?(h|m|s))+$",
+              "description": "The duration, in the same form, mankit takes when the config sets none, so a person sees what removing the row would give.",
+              "not": {
+                "pattern": "^(0+(\\.0+)?(h|m|s))+$"
+              }
+            },
+            "set": {
+              "description": "True when the app's config.yaml sets the row, so a person knows the value is chosen, not the default.",
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "limit": {
+          "description": "How long a change may hold its turn before it is stopped, as the app takes it now.",
+          "type": "object",
+          "required": [
+            "value",
+            "default",
+            "set"
+          ],
+          "properties": {
+            "value": {
+              "type": "string",
+              "pattern": "^([0-9]+(\\.[0-9]+)?(h|m|s))+$",
+              "description": "The duration in effect, as a Go duration of hours, minutes and seconds such as 45s or 2m0s, never zero or in units below a second: the config's value when it sets one, else the default.",
+              "not": {
+                "pattern": "^(0+(\\.0+)?(h|m|s))+$"
+              }
+            },
+            "default": {
+              "type": "string",
+              "pattern": "^([0-9]+(\\.[0-9]+)?(h|m|s))+$",
+              "description": "The duration, in the same form, mankit takes when the config sets none, so a person sees what removing the row would give.",
+              "not": {
+                "pattern": "^(0+(\\.0+)?(h|m|s))+$"
+              }
+            },
+            "set": {
+              "description": "True when the app's config.yaml sets the row, so a person knows the value is chosen, not the default.",
+              "type": "boolean"
             }
           },
           "additionalProperties": false
         }
-      }
+      },
+      "additionalProperties": false
     }
-  ]
+  }
 }

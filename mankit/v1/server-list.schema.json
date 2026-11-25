@@ -14,29 +14,34 @@
           "const": "ServerList"
         },
         "data": {
-          "description": "One row per server record found on this machine.",
-          "type": "array",
-          "items": {
-            "description": "One server: its record and whether it answers.",
-            "type": "object",
-            "required": [
-              "record",
-              "answering"
-            ],
-            "properties": {
-              "record": {
-                "description": "The record the server wrote when it started (server.schema.json). It says what the server claimed; only answering says whether it runs now.",
-                "$ref": "server.schema.json"
-              },
-              "answering": {
-                "description": "The record's address answered as this app just now. A record can outlive its server, so this is the field to believe.",
-                "type": "boolean"
-              }
-            },
-            "additionalProperties": false
-          }
+          "$ref": "#/$defs/data"
         }
       }
     }
-  ]
+  ],
+  "$defs": {
+    "data": {
+      "description": "One row per server record found on this machine.",
+      "type": "array",
+      "items": {
+        "description": "One server: its record and whether it answers.",
+        "type": "object",
+        "required": [
+          "record",
+          "answering"
+        ],
+        "properties": {
+          "record": {
+            "description": "The record the server wrote when it started (server.schema.json). It says what the server claimed; only answering says whether it runs now.",
+            "$ref": "server.schema.json"
+          },
+          "answering": {
+            "description": "The record's address answered as this app just now. A record can outlive its server, so this is the field to believe.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
 }

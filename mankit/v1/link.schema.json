@@ -14,21 +14,26 @@
           "const": "Link"
         },
         "data": {
-          "description": "The link that opens the page.",
-          "type": "object",
-          "required": [
-            "url"
-          ],
-          "properties": {
-            "url": {
-              "description": "The address of the server's page with its token as ?token=. Opening it leaves the token in a cookie, so the page's calls pass the server's token guard (ADR-S04).",
-              "type": "string",
-              "pattern": "^https?://[^/]+/\\?token=."
-            }
-          },
-          "additionalProperties": false
+          "$ref": "#/$defs/data"
         }
       }
     }
-  ]
+  ],
+  "$defs": {
+    "data": {
+      "description": "The link that opens the page.",
+      "type": "object",
+      "required": [
+        "url"
+      ],
+      "properties": {
+        "url": {
+          "description": "The address of the server's page with its token as ?token=. Opening it leaves the token in a cookie, so the page's calls pass the server's token guard (ADR-S04).",
+          "type": "string",
+          "pattern": "^https?://[^/]+/\\?token=."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
 }

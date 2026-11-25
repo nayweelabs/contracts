@@ -14,181 +14,184 @@
           "const": "LicenseShow"
         },
         "data": {
-          "description": "The app's license state, its build, the licenses it took and refused, the counts and its features.",
-          "type": "object",
-          "required": [
-            "state",
-            "build",
-            "licenses",
-            "refused",
-            "counts",
-            "features"
-          ],
-          "properties": {
-            "state": {
-              "description": "What the License group says, one word for the license state of the whole app; whether the build is a release is build's alone to say. The first of these decides it: a running paid license, then an ended paid license, then a running trial key, then an ended trial key, then none. A license not begun yet, whose issued day is still to come, counts as none here, though licenses lists it; so does a release-trial with no started record, as it opens nothing. none: no license, so use is free and nothing warns (ADR-L3); trial: a trial key runs (ADR-L9); trial-ended: the trial key has ended, so use is free again (ADR-L3, L9); licensed: a paid license runs; ending: a paid license ADR-L3's built-in threshold license-expiring warns about; ended: a paid license has ended; ADR-L3's notice stays until it is replaced or removed.",
-              "enum": [
-                "none",
-                "trial",
-                "trial-ended",
-                "licensed",
-                "ending",
-                "ended"
-              ]
-            },
-            "endedOn": {
-              "description": "The last day of the paid license that ended, the one whose end set state to ended: the latest until among the ended paid licenses. So the notice of ADR-L3 names the day, and a page never picks a license. Present exactly when state is ended.",
-              "$ref": "license-payload.schema.json#/properties/until"
-            },
-            "sentence": {
-              "description": "The one sentence a reader shows for the app's license state, made by mankit's license check and shown word for word: readers never build or change it, so the CLI, the web badge and panel and the TUI say the same. Present when the state has one: a running trial with its days left and last day, an ended trial, no license while a release-trial's offer has ended, and licensed: the running paid license, naming whom it is for. Absent otherwise. Its words are the license check's to choose.",
-              "type": "string",
-              "minLength": 1
-            },
-            "warn": {
-              "description": "True when a reader shows the license state in its warn colour; the answer decides and readers never do (ADR-L3). True for ending, for a trial in its last days, as ADR-L3's built-in threshold license-expiring counts them, for trial-ended and for ended. Absent or false otherwise.",
-              "type": "boolean"
-            },
-            "build": {
-              "description": "This build, so a reader knows which keys' licenses it accepts (ADR-L5).",
-              "type": "object",
-              "required": [
-                "release"
-              ],
-              "properties": {
-                "release": {
-                  "description": "True for a release from a tag, which accepts prod-key licenses only; false for every other build, which accepts dev-key licenses only (ADR-L5). Set by the build, never by a flag, setting or environment variable.",
-                  "type": "boolean"
-                }
-              },
-              "additionalProperties": false
-            },
-            "licenses": {
-              "description": "Every license file the app read and took, the org license first and then the product license; a trial key takes the product license's place (ADR-L8). A file it refused is in refused instead, never here. Empty when there is none, so a reader tells no license from a failure.",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/license"
-              }
-            },
-            "refused": {
-              "description": "Every license file the app read but did not take, so a refused file never shows as a license and a person sees why (ADR-L1, L5, L6, L8). Its reason is one of signature, untrusted_key, other_build, unreadable, wrong_place and id_mismatch, each meaning what problem/v1's reason says. Empty when none was refused.",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/refusedFile"
-              }
-            },
-            "counts": {
-              "description": "How many features there are of each tier, how many are on and how many are locked, so the License group shows them without counting (ADR-L2).",
-              "type": "object",
-              "required": [
-                "free",
-                "enterprise",
-                "on",
-                "locked"
-              ],
-              "properties": {
-                "free": {
-                  "description": "The features whose tier is free.",
-                  "type": "integer",
-                  "minimum": 0
-                },
-                "enterprise": {
-                  "description": "The features whose tier is enterprise.",
-                  "type": "integer",
-                  "minimum": 0
-                },
-                "on": {
-                  "description": "The features that are on.",
-                  "type": "integer",
-                  "minimum": 0
-                },
-                "locked": {
-                  "description": "The enterprise features a license closes, those with by license.",
-                  "type": "integer",
-                  "minimum": 0
-                }
-              },
-              "additionalProperties": false
-            },
-            "features": {
-              "description": "Every feature of the app, in the order its feature list gives them: its feature state and where it is unlocked from, so the License group draws this answer alone (ADR-L2, L8).",
-              "type": "array",
-              "items": {
-                "$ref": "#/$defs/feature"
-              }
-            }
-          },
-          "additionalProperties": false,
-          "allOf": [
-            {
-              "description": "Only an ended paid license has a day it ended, and it always has one.",
-              "if": {
-                "properties": {
-                  "state": {
-                    "const": "ended"
-                  }
-                }
-              },
-              "then": {
-                "required": [
-                  "endedOn"
-                ]
-              },
-              "else": {
-                "not": {
-                  "required": [
-                    "endedOn"
-                  ]
-                }
-              }
-            },
-            {
-              "description": "Only a state that can warn has warn true: none and licensed never warn.",
-              "if": {
-                "properties": {
-                  "state": {
-                    "enum": [
-                      "none",
-                      "licensed"
-                    ]
-                  }
-                }
-              },
-              "then": {
-                "properties": {
-                  "warn": {
-                    "const": false
-                  }
-                }
-              }
-            },
-            {
-              "description": "A state that warns never has warn false: ending, ended and trial-ended always warn.",
-              "if": {
-                "properties": {
-                  "state": {
-                    "enum": [
-                      "ending",
-                      "ended",
-                      "trial-ended"
-                    ]
-                  }
-                }
-              },
-              "then": {
-                "properties": {
-                  "warn": {
-                    "const": true
-                  }
-                }
-              }
-            }
-          ]
+          "$ref": "#/$defs/data"
         }
       }
     }
   ],
   "$defs": {
+    "data": {
+      "description": "The app's license state, its build, the licenses it took and refused, the counts and its features.",
+      "type": "object",
+      "required": [
+        "state",
+        "build",
+        "licenses",
+        "refused",
+        "counts",
+        "features"
+      ],
+      "properties": {
+        "state": {
+          "description": "What the License group says, one word for the license state of the whole app; whether the build is a release is build's alone to say. The first of these decides it: a running paid license, then an ended paid license, then a running trial key, then an ended trial key, then none. A license not begun yet, whose issued day is still to come, counts as none here, though licenses lists it; so does a release-trial with no started record, as it opens nothing. none: no license, so use is free and nothing warns (ADR-L3); trial: a trial key runs (ADR-L9); trial-ended: the trial key has ended, so use is free again (ADR-L3, L9); licensed: a paid license runs; ending: a paid license ADR-L3's built-in threshold license-expiring warns about; ended: a paid license has ended; ADR-L3's notice stays until it is replaced or removed.",
+          "enum": [
+            "none",
+            "trial",
+            "trial-ended",
+            "licensed",
+            "ending",
+            "ended"
+          ]
+        },
+        "endedOn": {
+          "description": "The last day of the paid license that ended, the one whose end set state to ended: the latest until among the ended paid licenses. So the notice of ADR-L3 names the day, and a page never picks a license. Present exactly when state is ended.",
+          "$ref": "license-payload.schema.json#/properties/until"
+        },
+        "sentence": {
+          "description": "The one sentence a reader shows for the app's license state, made by mankit's license check and shown word for word: readers never build or change it, so the CLI, the web badge and panel and the TUI say the same. Present when the state has one: a running trial with its days left and last day, an ended trial, no license while a release-trial's offer has ended, and licensed: the running paid license, naming whom it is for. Absent otherwise. Its words are the license check's to choose.",
+          "type": "string",
+          "minLength": 1
+        },
+        "warn": {
+          "description": "True when a reader shows the license state in its warn colour; the answer decides and readers never do (ADR-L3). True for ending, for a trial in its last days, as ADR-L3's built-in threshold license-expiring counts them, for trial-ended and for ended. Absent or false otherwise.",
+          "type": "boolean"
+        },
+        "build": {
+          "description": "This build, so a reader knows which keys' licenses it accepts (ADR-L5).",
+          "type": "object",
+          "required": [
+            "release"
+          ],
+          "properties": {
+            "release": {
+              "description": "True for a release from a tag, which accepts prod-key licenses only; false for every other build, which accepts dev-key licenses only (ADR-L5). Set by the build, never by a flag, setting or environment variable.",
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "licenses": {
+          "description": "Every license file the app read and took, the org license first and then the product license; a trial key takes the product license's place (ADR-L8). A file it refused is in refused instead, never here. Empty when there is none, so a reader tells no license from a failure.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/license"
+          }
+        },
+        "refused": {
+          "description": "Every license file the app read but did not take, so a refused file never shows as a license and a person sees why (ADR-L1, L5, L6, L8). Its reason is one of signature, untrusted_key, other_build, unreadable, wrong_place and id_mismatch, each meaning what problem/v1's reason says. Empty when none was refused.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/refusedFile"
+          }
+        },
+        "counts": {
+          "description": "How many features there are of each tier, how many are on and how many are locked, so the License group shows them without counting (ADR-L2).",
+          "type": "object",
+          "required": [
+            "free",
+            "enterprise",
+            "on",
+            "locked"
+          ],
+          "properties": {
+            "free": {
+              "description": "The features whose tier is free.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "enterprise": {
+              "description": "The features whose tier is enterprise.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "on": {
+              "description": "The features that are on.",
+              "type": "integer",
+              "minimum": 0
+            },
+            "locked": {
+              "description": "The enterprise features a license closes, those with by license.",
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "features": {
+          "description": "Every feature of the app, in the order its feature list gives them: its feature state and where it is unlocked from, so the License group draws this answer alone (ADR-L2, L8).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/feature"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "description": "Only an ended paid license has a day it ended, and it always has one.",
+          "if": {
+            "properties": {
+              "state": {
+                "const": "ended"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "endedOn"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "endedOn"
+              ]
+            }
+          }
+        },
+        {
+          "description": "Only a state that can warn has warn true: none and licensed never warn.",
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "none",
+                  "licensed"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "warn": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "description": "A state that warns never has warn false: ending, ended and trial-ended always warn.",
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "ending",
+                  "ended",
+                  "trial-ended"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "warn": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    },
     "license": {
       "description": "One license file the app read: whom it names, until when, and the key that signed it.",
       "type": "object",
