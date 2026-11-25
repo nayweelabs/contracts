@@ -10,8 +10,7 @@
     {
       "properties": {
         "kind": {
-          "description": "Always Help, the kind of this answer, so a reader knows which schema its data meets.",
-          "const": "Help"
+          "$ref": "#/$defs/kind"
         },
         "data": {
           "$ref": "#/$defs/data"
@@ -20,6 +19,10 @@
     }
   ],
   "$defs": {
+    "kind": {
+      "description": "Always Help, the kind of this answer, so a reader knows which schema its data meets.",
+      "const": "Help"
+    },
     "data": {
       "description": "The app's help: what it is, how to start it, its commands and flags, and its old forms.",
       "type": "object",

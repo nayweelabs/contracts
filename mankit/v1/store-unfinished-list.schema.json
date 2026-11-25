@@ -10,8 +10,7 @@
     {
       "properties": {
         "kind": {
-          "description": "Always StoreUnfinishedList, the kind of this answer, so a reader knows which schema its data meets.",
-          "const": "StoreUnfinishedList"
+          "$ref": "#/$defs/kind"
         },
         "data": {
           "$ref": "#/$defs/data"
@@ -20,6 +19,10 @@
     }
   ],
   "$defs": {
+    "kind": {
+      "description": "Always StoreUnfinishedList, the kind of this answer, so a reader knows which schema its data meets.",
+      "const": "StoreUnfinishedList"
+    },
     "data": {
       "description": "The changes cut short in the scope, or in the one thing asked for.",
       "type": "object",

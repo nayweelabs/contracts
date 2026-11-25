@@ -10,8 +10,7 @@
     {
       "properties": {
         "kind": {
-          "description": "Always QueueSettings, the kind of this answer, so a reader knows which schema its data meets.",
-          "const": "QueueSettings"
+          "$ref": "#/$defs/kind"
         },
         "data": {
           "$ref": "#/$defs/data"
@@ -20,6 +19,10 @@
     }
   ],
   "$defs": {
+    "kind": {
+      "description": "Always QueueSettings, the kind of this answer, so a reader knows which schema its data meets.",
+      "const": "QueueSettings"
+    },
     "data": {
       "description": "The two settings of the app's change queue.",
       "type": "object",

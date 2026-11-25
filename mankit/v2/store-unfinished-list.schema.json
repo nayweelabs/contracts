@@ -10,7 +10,7 @@
     {
       "properties": {
         "kind": {
-          "$ref": "../v1/store-unfinished-list.schema.json#/allOf/1/properties/kind"
+          "$ref": "../v1/store-unfinished-list.schema.json#/$defs/kind"
         },
         "data": {
           "$ref": "../v1/store-unfinished-list.schema.json#/$defs/data"

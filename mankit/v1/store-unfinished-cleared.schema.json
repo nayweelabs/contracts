@@ -10,8 +10,7 @@
     {
       "properties": {
         "kind": {
-          "description": "Always StoreUnfinishedCleared, the kind of this answer, so a reader knows which schema its data meets.",
-          "const": "StoreUnfinishedCleared"
+          "$ref": "#/$defs/kind"
         },
         "data": {
           "$ref": "#/$defs/data"
@@ -20,6 +19,10 @@
     }
   ],
   "$defs": {
+    "kind": {
+      "description": "Always StoreUnfinishedCleared, the kind of this answer, so a reader knows which schema its data meets.",
+      "const": "StoreUnfinishedCleared"
+    },
     "data": {
       "description": "The thing asked for and the changes whose marks were removed.",
       "type": "object",

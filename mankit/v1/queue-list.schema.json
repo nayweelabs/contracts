@@ -10,8 +10,7 @@
     {
       "properties": {
         "kind": {
-          "description": "Always QueueList, the kind of this answer, so a reader knows which schema its data meets.",
-          "const": "QueueList"
+          "$ref": "#/$defs/kind"
         },
         "data": {
           "$ref": "#/$defs/data"
@@ -20,6 +19,10 @@
     }
   ],
   "$defs": {
+    "kind": {
+      "description": "Always QueueList, the kind of this answer, so a reader knows which schema its data meets.",
+      "const": "QueueList"
+    },
     "data": {
       "description": "One served thing's queue: its line and its skipped files.",
       "type": "object",

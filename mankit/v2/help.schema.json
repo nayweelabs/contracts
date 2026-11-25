@@ -10,7 +10,7 @@
     {
       "properties": {
         "kind": {
-          "$ref": "../v1/help.schema.json#/allOf/1/properties/kind"
+          "$ref": "../v1/help.schema.json#/$defs/kind"
         },
         "data": {
           "$ref": "../v1/help.schema.json#/$defs/data"

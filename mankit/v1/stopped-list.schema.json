@@ -10,8 +10,7 @@
     {
       "properties": {
         "kind": {
-          "description": "Always StoppedList, the kind of this answer, so a reader knows which schema its data meets.",
-          "const": "StoppedList"
+          "$ref": "#/$defs/kind"
         },
         "data": {
           "$ref": "#/$defs/data"
@@ -20,6 +19,10 @@
     }
   ],
   "$defs": {
+    "kind": {
+      "description": "Always StoppedList, the kind of this answer, so a reader knows which schema its data meets.",
+      "const": "StoppedList"
+    },
     "data": {
       "description": "One row per server that servers stop tried to stop.",
       "type": "array",
