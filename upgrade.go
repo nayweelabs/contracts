@@ -132,8 +132,7 @@ func UpgradeMankit(v1 []byte) ([]byte, error) {
 	if err := json.Unmarshal(v1, &head); err != nil {
 		return nil, err
 	}
-	// mankit/v2 holds only the answers, so it alone says which kinds mankit answers for every app.
-	if !inFS(MankitSchema("v2", head.Kind)) {
+	if !mankitAnswer(head.Kind) {
 		return nil, fmt.Errorf("not an answer mankit gives every app: kind %q", head.Kind)
 	}
 	if err := Validate(MankitSchema("v1", head.Kind), v1); err != nil {
@@ -281,10 +280,15 @@ func swapForm(v any, from, to string) any {
 // DesignerSchema is the schema of a designer answer kind: designer's own, or for an answer mankit gives every app mankit's of the same version, as designer/app/v1 and v2 are on the envelopes of mankit/v1 and v2.
 func DesignerSchema(version, kind string) string {
 	own := "designer/" + version + "/" + schemaFile(kind)
-	if !inFS(own) && inFS(MankitSchema(version, kind)) {
+	if !inFS(own) && mankitAnswer(kind) {
 		return MankitSchema(version, kind)
 	}
 	return own
+}
+
+// mankitAnswer is whether kind is an answer mankit gives every app: mankit/v2 holds only the answers, so it alone is the list.
+func mankitAnswer(kind string) bool {
+	return inFS(MankitSchema("v2", kind))
 }
 
 // MankitSchema is the schema of an answer kind mankit gives every app.
