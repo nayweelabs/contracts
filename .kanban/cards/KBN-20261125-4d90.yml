@@ -20,12 +20,13 @@ spec:
     A build is a release only when the release build stamped it with a release tag (mankit build.Released, ADR-L5). The description of `running.released` still names the old rule: a clean checkout of the tag on main.
 
     ## What
-    - In `designer/v1/meta.schema.json`, set the description of `running.released` to: "the build was stamped with a release tag by the release build (mankit build.Released, ADR-L5)".
+    - In `designer/v1/meta.schema.json`, replace only the rule sentence of the description of `running.released` and keep the other two, so it reads: "Whether this is a release: the build was stamped with a release tag by the release build (mankit build.Released, ADR-L5). Decided by the server, so every page agrees; a page that is not a release wears the preview banner."
     - Description text only: no field, type or required list changes.
     - Version: release it as a minor version (`feat`), since a field's meaning changes.
 
     ## Done when
     - [ ] `running.released` carries the new description.
+    - [ ] The banner sentence stays: "Decided by the server, so every page agrees; a page that is not a release wears the preview banner."
     - [ ] No other field of the schema changes.
     - [ ] Released as a minor version.
 
