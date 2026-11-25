@@ -15,16 +15,17 @@ spec:
   description: |
     #bug #epic:same-shape-designer #feature:layout-place #product:contracts #product:designer
 
-    # designer/v1: layout.yml version 4 and the migrate's placed boxes
+    # designer/v2: layout/v2 and the ProjectMigrate answer
 
-    e-designer's boxes stop being placed live on every draw (e-designer card KBN-20261119-0fe2): a place is worked out once and kept in layout.yml.
+    A box's place is worked out once and kept in layout.yml, so the board never places boxes live (the jump fix). The new form and its migration live in designer/app/v2 only; designer/app/v1 stays as released.
 
     ## Change
-    - design-contents: layout.yml `version` 4 means every box each view draws has its place, and every hexagon block its place in `hexagon`; versions 2 and 3 may leave boxes without one. `views` says `hexagon` holds every hexagon block's place at version 4.
-    - migrate-layout gains `placed` (defs `placedView`: view, boxes, hexagon): what migrating to version 4 gave a place.
+    - forms.yaml: row `elderlygate/designer/layout/v2`, old `layout/v1` (the bare layout.yml, version 2|3), upgrade `hubman product migrate designer <folder>`.
+    - designer/v2: layout-file schema (layout/v2: every drawn box placed); ProjectMigrate, the answer of `nw-designer project migrate [name] [--dry-run]`, one entry per design (its id, the links step, the layout step). No MigrateLayout.
+    - forms.yaml's designer/app/v2 note no longer says v1 is answered by converting down (ADR-S16 since constitution#101).
 
     ## Done when
-    - Samples and test cases pass; e-designer's migrate answer passes.
+    - Samples and test cases pass; designer's ProjectMigrate answer validates against the schema.
   lifecycle:
     active_at: 2026-11-19T22:56:35.784Z
     active_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
