@@ -62,3 +62,11 @@ The tests check that:
 - every file in `testdata/good/` meets its schema: the shapes a schema takes beyond its one sample;
 - every upgrade pair in `testdata/upgrade/` (`<case>.v1.json` and `<case>.v2.json`) is a sample of the older version and the sample of the newer one its upgrade step makes, no file is without its partner, and every `<case>.refused.json` is refused by the step;
 - the apiVersion table lists each form once, and each old form in one row only; a row with old forms has its upgrade command.
+
+## License
+
+Elastic License 2.0 (ELv2), see [LICENSE.txt](LICENSE.txt).
+You may use, copy and change this code. You may not offer it as a hosted or managed service,
+and you may not remove or get around its license keys.
+
+Versions released before this license was added carried no license: all rights reserved.
