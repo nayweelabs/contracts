@@ -5,7 +5,7 @@
   "description": "What nw-licenser key list answers with -o json: every key of the signer, its id and its public key, the list apps' builds trust, so the owner copies it into a build without reading a private key (ADR-L6, L7).",
   "allOf": [
     {
-      "$ref": "../../envelope/v1/envelope.schema.json"
+      "$ref": "../../envelope/v2/envelope.schema.json"
     },
     {
       "properties": {
@@ -17,7 +17,7 @@
           "description": "Always KeyList, the kind of this answer, so a reader knows which schema its data meets.",
           "const": "KeyList"
         },
-        "ran": {
+        "source": {
           "description": "Where the answer came from; this contract fixes the app and the contract version, so an answer from anything else fails here.",
           "properties": {
             "app": {
