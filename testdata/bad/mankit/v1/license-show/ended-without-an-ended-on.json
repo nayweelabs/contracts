@@ -19,7 +19,7 @@
         "until": "2026-11-01",
         "daysLeft": 0,
         "ended": true,
-        "keyId": "prod-2026"
+        "keyId": "test-2026"
       }
     ],
     "refused": [],
