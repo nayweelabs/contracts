@@ -14,7 +14,7 @@ The rules and the layout of the folders are in `constitution/tech-stack.md`; the
 - `mankit/v2/`: the answers of mankit's own commands in `mankit/v1/`, on envelope/v2, for an app whose contract is on envelope/v2 (designer/app/v2 first); an app on envelope/v1 answers by `mankit/v1/`. Each takes its kind and data from `mankit/v1/` (`$defs/data`), where they are written. `UpgradeMankit` is the step from v1.
 - `<app>/<version>/`: one app's contract, named by its product ID. `designer/v1/` is the first.
 - `control-room/v1/`: control-room's answers, on envelope/v2: the snapshot (`Snapshot`), its settings (`SettingList`), the outlaws (`OutlawList`) and the work list (`WorkList`), with the shapes they share in `defs.schema.json`. Its other kinds are in the envelope only for now (forms.yaml).
-- `license/v1/`: nw-license's answers, on envelope/v1: `nw-license key list` (`KeyList`) and `nw-license license create` (`LicenseCreate`, whose license fields are mankit/v1's license payload).
+- `licenser/v1/`: nw-licenser's answers, on envelope/v1: `nw-licenser key list` (`KeyList`) and `nw-licenser license create` (`LicenseCreate`, whose license fields are mankit/v1's license payload).
 - `upgrade.go`: the steps that upgrade an answer from one version to the next (CT-RULE-3), one Go function `Upgrade<Kind>` per step, such as `UpgradeEnvelope` from envelope/v1 to envelope/v2. Each is tested by pairs in `testdata/upgrade/<dir>/<from>-<to>/`. Go only for now, as the readers that mix versions are Go.
 - `apiversion/v1/forms.yaml`: the one table of every apiVersion form. A row names a current form, the old forms it replaces and its kinds. A reader that meets an old form finds the row whose `old` list holds it, and gets the current form and the upgrade command (`hubman product migrate <app> <folder>`).
 
@@ -66,7 +66,7 @@ The tests check that:
 
 ## License
 
-Elastic License 2.0 (ELv2), see [LICENSE.txt](LICENSE.txt).
+Elastic License 2.0 (ELv2), see [LICENSE](LICENSE).
 You may use, copy and change this code. You may not offer it as a hosted or managed service,
 and you may not remove or get around its license keys.
 
