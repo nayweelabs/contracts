@@ -1,7 +1,7 @@
 {
-  "id": "lic-acme-app-v1.2.0-trial",
+  "id": "lic-acme-app-1-trial",
   "kind": "release-trial",
-  "for": "acme-app v1.2.0",
+  "for": "acme-app 1",
   "products": {
     "acme-app": [
       "share"

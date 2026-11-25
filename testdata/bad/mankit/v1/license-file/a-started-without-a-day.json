@@ -2,10 +2,10 @@
   "apiVersion": "elderlygate/mankit/license/v1",
   "kind": "License",
   "metadata": {
-    "id": "lic-acme-app-v1.3.0-trial"
+    "id": "lic-acme-app-1-trial"
   },
   "spec": {
-    "payload": "eyJpZCI6ImxpYy1hY21lLWFwcC12MS4zLjAtdHJpYWwiLCJraW5kIjoicmVsZWFzZS10cmlhbCIsImZvciI6ImFjbWUtYXBwIHYxLjMuMCIsInByb2R1Y3RzIjp7ImFjbWUtYXBwIjpbXX0sImlzc3VlZCI6IjIwMjYtMTItMDEiLCJ1bnRpbCI6IjIwMjctMTItMDEiLCJkYXlzIjoxNCwia2V5SWQiOiJwcm9kLTIwMjYifQ==",
+    "payload": "eyJpZCI6ImxpYy1hY21lLWFwcC0xLXRyaWFsIiwia2luZCI6InJlbGVhc2UtdHJpYWwiLCJmb3IiOiJhY21lLWFwcCAxIiwicHJvZHVjdHMiOnsiYWNtZS1hcHAiOltdfSwiaXNzdWVkIjoiMjAyNi0xMi0wMSIsInVudGlsIjoiMjAyNy0xMi0wMSIsImRheXMiOjE0LCJrZXlJZCI6InByb2QtMjAyNiJ9",
     "signature": "kUwLkVUkHXpSEkG7WJonKV799LNYcMDsI93ONTHLtnO3M4AkH+Zg5zHrX+R3N/FbCLO9XPD0V9c2A5TbEpJ8BA==",
     "started": {
       "binary": "/home/ada/.local/bin/acme-app",
