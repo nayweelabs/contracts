@@ -65,7 +65,7 @@ The tests check that:
 
 ## License
 
-Elastic License 2.0 (ELv2), see [LICENSE.txt](LICENSE.txt).
+Elastic License 2.0 (ELv2), see [LICENSE](LICENSE).
 You may use, copy and change this code. You may not offer it as a hosted or managed service,
 and you may not remove or get around its license keys.
 
