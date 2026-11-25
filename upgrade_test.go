@@ -17,15 +17,10 @@ var steps = map[string]struct {
 	from, to func(kind string) string
 }{
 	"envelope/v1-v2": {contracts.UpgradeEnvelope, fixed("envelope/v1/envelope.schema.json"), fixed("envelope/v2/envelope.schema.json")},
-	"designer/v1-v2": {contracts.UpgradeDesigner, designerSchema("v1"), designerSchema("v2")},
 	"mankit/v1-v2":   {contracts.UpgradeMankit, mankitSchema("v1"), mankitSchema("v2")},
 }
 
 func fixed(schema string) func(string) string { return func(string) string { return schema } }
-
-func designerSchema(version string) func(string) string {
-	return func(kind string) string { return contracts.DesignerSchema(version, kind) }
-}
 
 func mankitSchema(version string) func(string) string {
 	return func(kind string) string { return contracts.MankitSchema(version, kind) }

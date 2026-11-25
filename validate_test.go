@@ -42,7 +42,7 @@ func TestValidateIsSafeFromManyGoroutines(t *testing.T) {
 				if err := contracts.Validate("envelope/v1/envelope.schema.json", doc); err != nil {
 					t.Error(err)
 				}
-				if err := contracts.Validate("designer/v1/version.schema.json", doc); err == nil {
+				if err := contracts.Validate("version/v1/version.schema.json", doc); err == nil {
 					t.Error("a greeting was taken as a version")
 				}
 			}
