@@ -31,7 +31,7 @@ func TestValidateTakesASample(t *testing.T) {
 }
 
 func TestValidateIsSafeFromManyGoroutines(t *testing.T) {
-	doc, err := os.ReadFile("envelope/v1/samples/envelope.json")
+	doc, err := os.ReadFile("envelope/v2/samples/envelope.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,7 +39,7 @@ func TestValidateIsSafeFromManyGoroutines(t *testing.T) {
 		t.Run(fmt.Sprint(i), func(t *testing.T) {
 			t.Parallel()
 			for range 50 {
-				if err := contracts.Validate("envelope/v1/envelope.schema.json", doc); err != nil {
+				if err := contracts.Validate("envelope/v2/envelope.schema.json", doc); err != nil {
 					t.Error(err)
 				}
 				if err := contracts.Validate("version/v1/version.schema.json", doc); err == nil {
@@ -51,20 +51,20 @@ func TestValidateIsSafeFromManyGoroutines(t *testing.T) {
 }
 
 func TestValidateRefusesABrokenDocument(t *testing.T) {
-	doc, err := os.ReadFile("testdata/bad/envelope/v1/envelope/missing-ran.json")
+	doc, err := os.ReadFile("testdata/bad/envelope/v2/envelope/no-source.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := contracts.Validate("envelope/v1/envelope.schema.json", doc); err == nil {
-		t.Fatal("a document without ran was taken")
+	if err := contracts.Validate("envelope/v2/envelope.schema.json", doc); err == nil {
+		t.Fatal("a document without source was taken")
 	}
 }
 
 func TestValidateFollowsAReferenceToAnotherSchema(t *testing.T) {
-	doc := []byte(`{"apiVersion":"elderlygate/example/app/v1","kind":"Greeting","ran":{"name":"example","app":"example","version":"1.0.0","contract":"v1"},"data":null,` +
-		`"errors":[{"apiVersion":"elderlygate/example/app/v1","kind":"Error","code":"unsupported_contract","message":"no v3"}]}`)
-	if err := contracts.Validate("envelope/v1/envelope.schema.json", doc); err == nil {
-		t.Fatal("an unsupported_contract error without its supported versions was taken")
+	doc := []byte(`{"apiVersion":"elderlygate/example/app/v2","kind":"Greeting","source":{"name":"example","app":"example","version":"2.0.0","contract":"v2"},"data":null,` +
+		`"errors":[{"apiVersion":"elderlygate/contracts/problem/v1","kind":"Problem","type":"unsupported_contract"}]}`)
+	if err := contracts.Validate("envelope/v2/envelope.schema.json", doc); err == nil {
+		t.Fatal("a Problem without its detail was taken")
 	}
 }
 
@@ -76,7 +76,7 @@ func TestValidateNamesAMissingSchema(t *testing.T) {
 }
 
 func TestValidateRefusesADocumentThatIsNotJSON(t *testing.T) {
-	if err := contracts.Validate("envelope/v1/envelope.schema.json", []byte("not json")); err == nil {
+	if err := contracts.Validate("envelope/v2/envelope.schema.json", []byte("not json")); err == nil {
 		t.Fatal("a document that is not JSON was taken")
 	}
 }

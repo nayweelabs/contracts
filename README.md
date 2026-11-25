@@ -6,18 +6,16 @@ The rules and the layout of the folders are in `constitution/tech-stack.md`; the
 
 ## What is here
 
-- `envelope/v1/`, `error/v1/`, `event/v1/`: the shapes every answer, error and event shares.
-- `envelope/v2/`: the envelope with `source` for where an answer comes from and each error a Problem (`problem/v1`). An app moves to it with its next contract version; envelope/v1 stays until each app moves, and `version/v1` stays on envelope/v1 for good.
+- `envelope/v2/`, `error/v1/`, `event/v1/`: the shapes every answer, error and event shares. The envelope names where an answer comes from in `source` and gives each error as a Problem (`problem/v1`).
 - `problem/v1/`: the one Problem shape every app reports what went wrong in (ADR-S21), for errors and for problems an answer worked around. `error/v1` stays until each app moves.
 - `version/v1/`: the one version answer every app serves in every contract version (ADR-S03): the contract versions it serves, in `supportedContracts`.
 - `mankit/v2/`: what mankit serve answers for every app: the record a detached `serve` writes, the `servers` answers, the `<product>.stream.gapped` event a client of `GET /api/events` gets when it missed events, the change queue's ticket, backend marker, the `<app> queue` answer and the `<app> config queue` answer (`QueueSettings`), the store's journal (`StoreJournal` and `StoreJournalChange`, JSON lines; how its lines follow each other and how long it lives is in `store-journal.schema.json`) and its unfinished-change mark (`StoreUnfinished`), the `<app> store unfinished list` and `clear` answers (`StoreUnfinishedList`, `StoreUnfinishedCleared`), the `<app> license show` answer (`LicenseShow`: the license state, the build, the licenses taken and refused, and each feature's state and where it is unlocked from), the signed license file (`license-file.schema.json`, its payload in `license-payload.schema.json`), the `<app> help -o json` answer (`Help`: the commands and flags the H-1 layout shows, and the old forms of renamed commands), and in `defs.schema.json` the shapes mankit gives every app's answers, such as a feature switch's state, which each app's own feature list references, a store key (`storeKey`) and a change cut short (`storeUnfinishedChange`). Each app lists that event in its own `events.asyncapi.yaml`. Its answers are on envelope/v2.
 - `<app>/<version>/`: one app's contract, named by its product ID, such as `designer/v2/`.
 - `control-room/v1/`: control-room's answers, on envelope/v2: the snapshot (`Snapshot`), its settings (`SettingList`), the outlaws (`OutlawList`) and the work list (`WorkList`), with the shapes they share in `defs.schema.json`. Its other kinds are in the envelope only for now (forms.yaml).
-- `licenser/v1/`: nw-licenser's answers, on envelope/v1: `nw-licenser key list` (`KeyList`) and `nw-licenser license create` (`LicenseCreate`, whose license fields are mankit/v2's license payload).
-- `upgrade.go`: the steps that upgrade an answer from one version to the next (CT-RULE-3), one Go function `Upgrade<Kind>` per step, such as `UpgradeEnvelope` from envelope/v1 to envelope/v2. Each is tested by pairs in `testdata/upgrade/<dir>/<from>-<to>/`. Go only for now, as the readers that mix versions are Go.
+- `licenser/v1/`: nw-licenser's answers, on envelope/v2: `nw-licenser key list` (`KeyList`) and `nw-licenser license create` (`LicenseCreate`, whose license fields are mankit/v2's license payload).
 - `apiversion/v1/forms.yaml`: the one table of every apiVersion form. A row names a current form, the old forms it replaces and its kinds. A reader that meets an old form finds the row whose `old` list holds it, and gets the current form and the upgrade command (`hubman product migrate <app> <folder>`).
 
-An answer has five fields: `apiVersion`, `kind`, `ran`, `data` and `errors`. `ran` says where it came from: the name, the app, its version and the contract version. A reader asks for a version with `--contract v1` or the `Accept-Contract: v1` header. An app that cannot answer it gives the error `unsupported_contract` and lists the versions it supports. In envelope/v2, `ran` is `source`, and that error is a Problem of type `unsupported_contract`; the app's version answer lists the versions it serves.
+An answer has five fields: `apiVersion`, `kind`, `source`, `data` and `errors`. `source` says where it came from: the name, the app, its version and the contract version. A reader asks for a version with `--contract v1` or the `Accept-Contract: v1` header. An app that cannot answer it gives a Problem of type `unsupported_contract`; the app's version answer lists the versions it serves.
 
 An event is a CloudEvents 1.0 event. An app lists its events in `events.asyncapi.yaml` (AsyncAPI 3.0), and each event has a schema and a sample.
 
@@ -41,7 +39,7 @@ Every app that changes a served thing shares one queue in `<served folder>/<app 
 The package `github.com/ElderlyGate/contracts` embeds every schema, sample and table, so an app's tests check its real answers here, without a copy:
 
 ```go
-err := contracts.Validate("envelope/v1/envelope.schema.json", body)
+err := contracts.Validate("envelope/v2/envelope.schema.json", body)
 ```
 
 `contracts.FS` holds the files themselves.
@@ -60,7 +58,6 @@ The tests check that:
 - every file in `testdata/bad/<dir>/<version>/<kind>/` is refused by its schema;
 - every license file in `testdata/good/` and the sample meets the rules its schema cannot read from the signed payload, and each in `testdata/bad/mankit/v2/license-file/payload/` breaks one of them (the schema's descriptions say which);
 - every file in `testdata/good/` meets its schema: the shapes a schema takes beyond its one sample;
-- every upgrade pair in `testdata/upgrade/` (`<case>.v1.json` and `<case>.v2.json`) is a sample of the older version and the sample of the newer one its upgrade step makes, no file is without its partner, and every `<case>.refused.json` is refused by the step;
 - the apiVersion table lists each form once, and each old form in one row only; a row with old forms has its upgrade command.
 
 ## License
