@@ -52,7 +52,7 @@
       "properties": {
         "id": {
           "description": "The key's id, which a license's keyId names, so an app finds the public key that checks it (ADR-L6). nw-licenser makes it a-z, 0-9 and -, starting with a letter or digit, at most 63 long.",
-          "$ref": "../../mankit/v1/license-payload.schema.json#/properties/keyId",
+          "$ref": "../../mankit/v2/license-payload.schema.json#/properties/keyId",
           "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"
         },
         "publicKey": {

@@ -38,7 +38,7 @@
           ],
           "allOf": [
             {
-              "$ref": "../../mankit/v1/license-payload.schema.json"
+              "$ref": "../../mankit/v2/license-payload.schema.json"
             }
           ],
           "properties": {

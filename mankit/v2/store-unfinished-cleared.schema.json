@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ElderlyGate/contracts/mankit/v2/store-unfinished-cleared.schema.json",
   "title": "store unfinished cleared",
-  "description": "The StoreUnfinishedCleared answer on envelope/v2, for an app whose contract is on envelope/v2 (an app on envelope/v1 answers by mankit/v1). What it answers, and its data, are mankit/v1's store-unfinished-cleared.schema.json, the one home of both.",
+  "description": "What <app> store unfinished clear <thing> answers with -o json once a person typed the thing's name, and the app's server on DELETE /api/store/unfinished/<thing>?id=… once the person said yes: the marks it removed, only those shown (id) and still there, so changes to the keys they held are made again. Clearing puts nothing back; each journal stays where it is, this user's shown as left by <app> store unfinished list (ADR-S22, G-STACK-13).",
   "allOf": [
     {
       "$ref": "../../envelope/v2/envelope.schema.json"
@@ -10,12 +10,48 @@
     {
       "properties": {
         "kind": {
-          "$ref": "../v1/store-unfinished-cleared.schema.json#/$defs/kind"
+          "$ref": "#/$defs/kind"
         },
         "data": {
-          "$ref": "../v1/store-unfinished-cleared.schema.json#/$defs/data"
+          "$ref": "#/$defs/data"
         }
       }
     }
-  ]
+  ],
+  "$defs": {
+    "kind": {
+      "description": "Always StoreUnfinishedCleared, the kind of this answer, so a reader knows which schema its data meets.",
+      "const": "StoreUnfinishedCleared"
+    },
+    "data": {
+      "description": "The thing asked for and the changes whose marks were removed.",
+      "type": "object",
+      "required": [
+        "thing",
+        "cleared"
+      ],
+      "properties": {
+        "thing": {
+          "description": "The thing whose changes cut short were cleared: a key's first step, as the unfinished_change refusal names it.",
+          "allOf": [
+            {
+              "$ref": "defs.schema.json#/$defs/storeKey"
+            },
+            {
+              "pattern": "^[^/]+$"
+            }
+          ]
+        },
+        "cleared": {
+          "description": "Each change whose marks were removed, as it was before; file names this user's journal, which stays. Never empty: clearing a thing no mark holds is not_found, so nothing is cleared by a typo.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "defs.schema.json#/$defs/storeUnfinishedChange"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
 }

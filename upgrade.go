@@ -4,9 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/fs"
-	"strings"
-	"unicode"
 )
 
 // An upgrade step is Upgrade<Kind>(from []byte) ([]byte, error), one per version step, tested by the pairs in testdata/upgrade/<dir>/<from>-<to>/ (CT-RULE-3).
@@ -120,72 +117,4 @@ func UpgradeEnvelope(v1 []byte) ([]byte, error) {
 func takenFile(file string) bool {
 	doc, err := json.Marshal(problem{APIVersion: problemAPIVersion, Kind: "Problem", Type: "x", Detail: "x", At: []place{{File: file}}})
 	return err == nil && Validate("problem/v1/problem.schema.json", doc) == nil
-}
-
-// UpgradeMankit is the step from mankit/v1 to mankit/v2 for an answer mankit gives every app: the envelope step, as the data is the same in both.
-// The app's own apiVersion and contract are untouched, as with UpgradeEnvelope: the app's own step names its contract.
-func UpgradeMankit(v1 []byte) ([]byte, error) {
-	var head struct {
-		Kind string `json:"kind"`
-	}
-	if err := json.Unmarshal(v1, &head); err != nil {
-		return nil, err
-	}
-	if !mankitAnswer(head.Kind) {
-		return nil, fmt.Errorf("not an answer mankit gives every app: kind %q", head.Kind)
-	}
-	if err := Validate(MankitSchema("v1", head.Kind), v1); err != nil {
-		return nil, fmt.Errorf("not a mankit/v1 %s: %w", head.Kind, err)
-	}
-	enveloped, err := UpgradeEnvelope(v1)
-	if err != nil {
-		return nil, err
-	}
-	var doc any
-	if err := json.Unmarshal(enveloped, &doc); err != nil {
-		return nil, err
-	}
-	return encodeChecked(doc, MankitSchema("v2", head.Kind))
-}
-
-// mankitAnswer is whether kind is an answer mankit gives every app: mankit/v2 holds only the answers, so it alone is the list.
-func mankitAnswer(kind string) bool {
-	return inFS(MankitSchema("v2", kind))
-}
-
-// MankitSchema is the schema of an answer kind mankit gives every app.
-func MankitSchema(version, kind string) string {
-	return "mankit/" + version + "/" + schemaFile(kind)
-}
-
-// schemaFile is a kind's schema file, named in kebab case like the kind.
-func schemaFile(kind string) string {
-	var b strings.Builder
-	for i, r := range kind {
-		if unicode.IsUpper(r) && i > 0 {
-			b.WriteByte('-')
-		}
-		b.WriteRune(unicode.ToLower(r))
-	}
-	return b.String() + schemaSuffix
-}
-
-func inFS(path string) bool {
-	_, err := fs.Stat(FS, path)
-	return err == nil
-}
-
-// encodeChecked writes doc as the steps write every answer, and checks it meets schema, so a step never hands on an answer its version refuses.
-func encodeChecked(doc any, schema string) ([]byte, error) {
-	var buf bytes.Buffer
-	enc := json.NewEncoder(&buf)
-	enc.SetEscapeHTML(false)
-	enc.SetIndent("", "  ")
-	if err := enc.Encode(doc); err != nil {
-		return nil, err
-	}
-	if err := Validate(schema, buf.Bytes()); err != nil {
-		return nil, fmt.Errorf("the step does not give a %s answer: %w", schema, err)
-	}
-	return buf.Bytes(), nil
 }
