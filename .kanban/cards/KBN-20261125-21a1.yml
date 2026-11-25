@@ -22,6 +22,7 @@ spec:
 
     - `warn` cites "(ADR-L3)" instead of the owner's license-badge decision of 25 Nov.
     - `state`'s none entry, "nothing warns", cites ADR-L3 for it.
+    - `warn`'s trial in its last days and `state`'s ending name ADR-L3's built-in threshold license-expiring, instead of the license check's count.
 
     Descriptions only, no shape change, so a fix (CT-RULE-1).
 
