@@ -1576,9 +1576,12 @@
                   "const": "*"
                 },
                 {
-                  "description": "One value, as the design writes it.",
+                  "description": "One value, as the design writes it; \"*\" is every value, the branch before.",
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "not": {
+                    "const": "*"
+                  }
                 },
                 {
                   "description": "Any of these values.",
@@ -1600,9 +1603,12 @@
                   "const": "*"
                 },
                 {
-                  "description": "One value, as the design writes it.",
+                  "description": "One value, as the design writes it; \"*\" is every value, the branch before.",
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "not": {
+                    "const": "*"
+                  }
                 },
                 {
                   "description": "Any of these values.",
@@ -1624,9 +1630,12 @@
                   "const": "*"
                 },
                 {
-                  "description": "One value, as the design writes it.",
+                  "description": "One value, as the design writes it; \"*\" is every value, the branch before.",
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "not": {
+                    "const": "*"
+                  }
                 },
                 {
                   "description": "Any of these values.",
@@ -1664,9 +1673,12 @@
                   "const": "*"
                 },
                 {
-                  "description": "One value, as the design writes it.",
+                  "description": "One value, as the design writes it; \"*\" is every value, the branch before.",
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "not": {
+                    "const": "*"
+                  }
                 },
                 {
                   "description": "Any of these values.",
@@ -1688,9 +1700,12 @@
                   "const": "*"
                 },
                 {
-                  "description": "One value, as the design writes it.",
+                  "description": "One value, as the design writes it; \"*\" is every value, the branch before.",
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "not": {
+                    "const": "*"
+                  }
                 },
                 {
                   "description": "Any of these values.",
@@ -1712,9 +1727,12 @@
                   "const": "*"
                 },
                 {
-                  "description": "One value, as the design writes it.",
+                  "description": "One value, as the design writes it; \"*\" is every value, the branch before.",
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "not": {
+                    "const": "*"
+                  }
                 },
                 {
                   "description": "Any of these values.",
@@ -1736,9 +1754,12 @@
                   "const": "*"
                 },
                 {
-                  "description": "One value, as the design writes it.",
+                  "description": "One value, as the design writes it; \"*\" is every value, the branch before.",
                   "type": "string",
-                  "minLength": 1
+                  "minLength": 1,
+                  "not": {
+                    "const": "*"
+                  }
                 },
                 {
                   "description": "Any of these values.",
