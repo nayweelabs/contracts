@@ -165,7 +165,7 @@
           "$ref": "license-payload.schema.json#/properties/for"
         },
         "until": {
-          "description": "The license's last day, as its signed payload says; for a release-trial with a started record, the last day of the trial it started (its start day, the license file's spec.started.day, plus days, less one), not the key's own until; for a release-trial with no started record, the key's own until, the last day it may start a trial. For a release-trial, a reader shows trialEnds and offerEnds, never until.",
+          "description": "The license's last day, as its signed payload says; for a release-trial with a started record, the last day of the trial it started (its start day, the license file's spec.started.day, plus days, less one), not the key's own until; for a release-trial with no started record, the key's own until, the day its trial offer ends. For a release-trial, a reader shows trialEnds and offerEnds, never until.",
           "$ref": "license-payload.schema.json#/properties/until"
         },
         "trialEnds": {
