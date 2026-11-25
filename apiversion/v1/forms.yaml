@@ -19,10 +19,18 @@ forms:
     app: designer
     kinds: [DesignList, BlockList, Block, ProjectList, Config, ConfigConfirm, ConfigPaths, RawFile, DesignContents, Views, Resource, Board, Revision, FeatureList, Changes, Apply, FocusSet, FocusClear, TidyLayout, TidyLines, ArrangeLayout, ProjectMigrate]
     note: Answers and events of designer, contract v2, on envelope/v2 with Problems, for design/v3; designer/app/v1 is still answered by converting down (ADR-S16), and the version answer is contracts version/v1
+  - new: elderlygate/designer/agent/v1
+    app: designer
+    kinds: [AgentInstructions]
+    note: The rules designer gives an AI agent, one document per level (built-in, machine, project), merged by rule id; its schema is designer/v2's agent-instructions
   - new: elderlygate/control-room/app/v1
     app: control-room
     kinds: [Snapshot, EpicList, Epic, EpicDesign, OutlawList, WorkList, Activity, Usage, RecordReport, SettingList, Product, Card]
     note: Answers of control-room, contract v1, on envelope/v2. Snapshot, SettingList, OutlawList and WorkList have schemas; the other kinds are in the envelope only for now, with no schema of their own yet
+  - new: elderlygate/license/app/v1
+    app: license
+    kinds: [KeyList, LicenseCreate]
+    note: Answers of nw-license, contract v1 (ADR-L7). The license file it writes is mankit's, elderlygate/mankit/license/v1. Answer kinds not listed here (key create) are in the envelope only for now
   - new: elderlygate/kanban/board/v1
     old: [app/kanban/v1]
     app: kanban

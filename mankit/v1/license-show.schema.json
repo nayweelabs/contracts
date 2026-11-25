@@ -26,7 +26,7 @@
           ],
           "properties": {
             "state": {
-              "description": "What the License group says, one word for the license state of the whole app; whether the build is a release is build's alone to say. The first of these decides it: a running paid license, then an ended paid license, then a running trial key, then an ended trial key, then none. none: no license, so use is free and nothing warns; trial: a trial key runs (ADR-L9); trial-ended: the trial key has ended, so use is free again and nothing warns (ADR-L3, L9); licensed: a paid license runs; ending: a paid license the threshold of ADR-L3 warns about; ended: a paid license has ended; ADR-L3's notice stays until it is replaced or removed.",
+              "description": "What the License group says, one word for the license state of the whole app; whether the build is a release is build's alone to say. The first of these decides it: a running paid license, then an ended paid license, then a running trial key, then an ended trial key, then none. A license not begun yet, whose issued day is still to come, counts as none here, though licenses lists it; so does a release-trial with no started record, as it opens nothing. none: no license, so use is free and nothing warns; trial: a trial key runs (ADR-L9); trial-ended: the trial key has ended, so use is free again and nothing warns (ADR-L3, L9); licensed: a paid license runs; ending: a paid license the threshold of ADR-L3 warns about; ended: a paid license has ended; ADR-L3's notice stays until it is replaced or removed.",
               "enum": [
                 "none",
                 "trial",
@@ -35,6 +35,10 @@
                 "ending",
                 "ended"
               ]
+            },
+            "endedOn": {
+              "description": "The last day of the paid license that ended, the one whose end set state to ended: the latest until among the ended paid licenses. So the notice of ADR-L3 names the day, and a page never picks a license. Present exactly when state is ended.",
+              "$ref": "license-payload.schema.json#/properties/until"
             },
             "build": {
               "description": "This build, so a reader knows which keys' licenses it accepts (ADR-L5).",
@@ -105,7 +109,31 @@
               }
             }
           },
-          "additionalProperties": false
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "description": "Only an ended paid license has a day it ended, and it always has one.",
+              "if": {
+                "properties": {
+                  "state": {
+                    "const": "ended"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "endedOn"
+                ]
+              },
+              "else": {
+                "not": {
+                  "required": [
+                    "endedOn"
+                  ]
+                }
+              }
+            }
+          ]
         }
       }
     }
@@ -124,11 +152,12 @@
       ],
       "properties": {
         "kind": {
-          "description": "Which kind of license it is, so a reader knows what it covers. org: features of several or all products, read by every app; product: features of this app alone (ADR-L8); trial: a trial key, which opens every enterprise feature of every product and names none (ADR-L9).",
+          "description": "Which kind of license it is, so a reader knows what it covers. org: features of several or all products, read by every app; product: features of this app alone (ADR-L8); trial: a trial key, which opens every enterprise feature of every product and names none (ADR-L9); release-trial: the trial key built into one release of one app, which starts a trial of that app by itself (ADR-L9).",
           "enum": [
             "org",
             "product",
-            "trial"
+            "trial",
+            "release-trial"
           ]
         },
         "for": {
@@ -136,7 +165,7 @@
           "$ref": "license-payload.schema.json#/properties/for"
         },
         "until": {
-          "description": "The license's last day, as its signed payload says.",
+          "description": "The license's last day, as its signed payload says; for a release-trial with a started record, the last day of the trial it started (its start day, the license file's spec.started.day, plus days, less one), not the key's own until; for a release-trial with no started record, the key's own until, the last day it may start a trial.",
           "$ref": "license-payload.schema.json#/properties/until"
         },
         "daysLeft": {
@@ -145,7 +174,7 @@
           "minimum": 0
         },
         "ended": {
-          "description": "True once the license has ended: its features are locked again, and what they made stays readable (ADR-L3).",
+          "description": "True once the license has ended: its features are locked again, and what they made stays readable (ADR-L3). For a release-trial with no started record, true once the key's own until has passed.",
           "type": "boolean"
         },
         "keyId": {

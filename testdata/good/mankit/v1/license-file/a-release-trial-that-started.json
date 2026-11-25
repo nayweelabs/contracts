@@ -1,0 +1,16 @@
+{
+  "apiVersion": "elderlygate/mankit/license/v1",
+  "kind": "License",
+  "metadata": {
+    "id": "lic-acme-app-v1.3.0-trial"
+  },
+  "spec": {
+    "payload": "eyJpZCI6ImxpYy1hY21lLWFwcC12MS4zLjAtdHJpYWwiLCJraW5kIjoicmVsZWFzZS10cmlhbCIsImZvciI6ImFjbWUtYXBwIHYxLjMuMCIsInByb2R1Y3RzIjp7ImFjbWUtYXBwIjpbXX0sImlzc3VlZCI6IjIwMjYtMTItMDEiLCJ1bnRpbCI6IjIwMjctMTItMDEiLCJkYXlzIjoxNCwia2V5SWQiOiJwcm9kLTIwMjYifQ==",
+    "signature": "kUwLkVUkHXpSEkG7WJonKV799LNYcMDsI93ONTHLtnO3M4AkH+Zg5zHrX+R3N/FbCLO9XPD0V9c2A5TbEpJ8BA==",
+    "started": {
+      "day": "2026-12-03",
+      "binary": "/home/ada/.local/bin/acme-app",
+      "fileTime": "2026-12-03T09:14:05Z"
+    }
+  }
+}

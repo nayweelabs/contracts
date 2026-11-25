@@ -15,11 +15,14 @@ jobs:
   test:
     name: local · linux
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
+      # Actions cache save hangs on our self-hosted runners; Go's module cache stays on the runner.
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+          cache: false
       - run: test -z "$(gofmt -l .)"
       - run: go vet ./...
       - run: go test ./...
