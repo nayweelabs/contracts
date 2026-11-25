@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/fs"
 	"sort"
 	"strings"
 	"unicode"
@@ -120,6 +121,33 @@ func UpgradeEnvelope(v1 []byte) ([]byte, error) {
 func takenFile(file string) bool {
 	doc, err := json.Marshal(problem{APIVersion: problemAPIVersion, Kind: "Problem", Type: "x", Detail: "x", At: []place{{File: file}}})
 	return err == nil && Validate("problem/v1/problem.schema.json", doc) == nil
+}
+
+// UpgradeMankit is the step from mankit/v1 to mankit/v2 for an answer mankit gives every app: the envelope step, as the data is the same in both.
+// The app's own apiVersion and contract are untouched, as with UpgradeEnvelope: the app's own step names its contract.
+func UpgradeMankit(v1 []byte) ([]byte, error) {
+	var head struct {
+		Kind string `json:"kind"`
+	}
+	if err := json.Unmarshal(v1, &head); err != nil {
+		return nil, err
+	}
+	// mankit/v2 holds only the answers, so it alone says which kinds mankit answers for every app.
+	if !inFS(MankitSchema("v2", head.Kind)) {
+		return nil, fmt.Errorf("not an answer mankit gives every app: kind %q", head.Kind)
+	}
+	if err := Validate(MankitSchema("v1", head.Kind), v1); err != nil {
+		return nil, fmt.Errorf("not a mankit/v1 %s: %w", head.Kind, err)
+	}
+	enveloped, err := UpgradeEnvelope(v1)
+	if err != nil {
+		return nil, err
+	}
+	var doc any
+	if err := json.Unmarshal(enveloped, &doc); err != nil {
+		return nil, err
+	}
+	return encodeChecked(doc, MankitSchema("v2", head.Kind))
 }
 
 const (
@@ -250,8 +278,18 @@ func swapForm(v any, from, to string) any {
 	return v
 }
 
-// DesignerSchema is the schema of a designer answer kind, its file named in kebab case like the kind.
+// DesignerSchema is the schema of a designer answer kind.
 func DesignerSchema(version, kind string) string {
+	return "designer/" + version + "/" + schemaFile(kind)
+}
+
+// MankitSchema is the schema of an answer kind mankit gives every app.
+func MankitSchema(version, kind string) string {
+	return "mankit/" + version + "/" + schemaFile(kind)
+}
+
+// schemaFile is a kind's schema file, named in kebab case like the kind.
+func schemaFile(kind string) string {
 	var b strings.Builder
 	for i, r := range kind {
 		if unicode.IsUpper(r) && i > 0 {
@@ -259,7 +297,12 @@ func DesignerSchema(version, kind string) string {
 		}
 		b.WriteRune(unicode.ToLower(r))
 	}
-	return "designer/" + version + "/" + b.String() + ".schema.json"
+	return b.String() + schemaSuffix
+}
+
+func inFS(path string) bool {
+	_, err := fs.Stat(FS, path)
+	return err == nil
 }
 
 // encodeChecked writes doc as the steps write every answer, and checks it meets schema, so a step never hands on an answer its version refuses.

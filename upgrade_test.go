@@ -18,12 +18,17 @@ var steps = map[string]struct {
 }{
 	"envelope/v1-v2": {contracts.UpgradeEnvelope, fixed("envelope/v1/envelope.schema.json"), fixed("envelope/v2/envelope.schema.json")},
 	"designer/v1-v2": {contracts.UpgradeDesigner, designerSchema("v1"), designerSchema("v2")},
+	"mankit/v1-v2":   {contracts.UpgradeMankit, mankitSchema("v1"), mankitSchema("v2")},
 }
 
 func fixed(schema string) func(string) string { return func(string) string { return schema } }
 
 func designerSchema(version string) func(string) string {
 	return func(kind string) string { return contracts.DesignerSchema(version, kind) }
+}
+
+func mankitSchema(version string) func(string) string {
+	return func(kind string) string { return contracts.MankitSchema(version, kind) }
 }
 
 // stepOf is the step of a file in testdata/upgrade/<dir>/<from>-<to>/, or a failure naming the folder with no step.
