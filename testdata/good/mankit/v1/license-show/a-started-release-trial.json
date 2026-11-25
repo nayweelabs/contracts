@@ -9,6 +9,8 @@
   },
   "data": {
     "state": "trial",
+    "sentence": "Trial: 14 days left (ends 2026-12-03)",
+    "warn": false,
     "build": {
       "release": true
     },
