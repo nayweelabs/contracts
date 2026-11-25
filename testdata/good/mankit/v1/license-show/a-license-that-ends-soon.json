@@ -9,6 +9,7 @@
   },
   "data": {
     "state": "ending",
+    "warn": true,
     "build": {
       "release": true
     },

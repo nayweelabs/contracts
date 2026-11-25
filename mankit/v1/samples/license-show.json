@@ -9,6 +9,8 @@
   },
   "data": {
     "state": "licensed",
+    "sentence": "Licensed to Acme Ltd · Designer",
+    "warn": false,
     "build": {
       "release": true
     },
