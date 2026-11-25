@@ -189,7 +189,7 @@
                 ],
                 "properties": {
                   "nothing": {
-                    "description": "Why this step had nothing to do, in words for people: layout.yml is already layout/v2 and no Group file carries a size; present only then, and then nothing else but groups.",
+                    "description": "Why this step had nothing to do, in words for people: layout.yml is already layout/v2 and no Group file carries a size; present only then, and then groups is 0 and placed, steps and tidied are absent.",
                     "type": "string",
                     "minLength": 1
                   },
@@ -258,6 +258,11 @@
                   ]
                 },
                 "then": {
+                  "properties": {
+                    "groups": {
+                      "const": 0
+                    }
+                  },
                   "not": {
                     "anyOf": [
                       {
