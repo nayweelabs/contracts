@@ -1,0 +1,19 @@
+apiVersion: app/kanban/v1
+kind: Bug
+metadata:
+  id: KBN-20261125-d194
+  title: 'Revert: contracts keeps every version again (undo #84)'
+  created_at: 2026-11-25T21:18:28.534Z
+  created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+spec:
+  column: done
+  order: 0.5
+  summary: Owner chose revert on 25 Nov; patch v2.0.2
+  tags: [fix, 'epic:naywee', 'feature:naywee-names', 'product:contracts']
+  work:
+    agent: claude-opus-5-5
+    branch: revert/clean-start/naywee-names
+  description: "# Revert: contracts keeps every version again (undo #84)\n\n#fix #epic:naywee #feature:naywee-names #product:contracts\n\n## Why\n\nOn 25 Nov the owner stopped the \"clean start\" milestone (\"we went too fast\") and chose to revert it, so no further majors (mankit v5, licenser v3, a designer major) are needed. No app pins contracts v2 yet; every app still pins v0.x, so nothing that released reads the files this restores or removes.\n\n## What\n\n- `git revert` of 83bf3e0 (#84): envelope/v1, mankit/v1, designer/v1, the upgrade steps and their testdata come back; licenser/v1, version/v1 and question/v1 go back to how they were before #84.\n- #85 stays: module path go.naywee.com/contracts/v2; README and upgrade_test.go use it.\n- Card 428a (#84) stays as it is.\n- Released as patch v2.0.2 (`revert:`), on the owner's yes for that number.\n\n## Done when\n\n- [x] The diff is the inverse of #84, apart from the #85 module path and card 428a.\n- [x] go vet and go test -count=1 ./... green, CI green.\n- [ ] Owner approves; after merge mankit#91, contracts#86 and ui-kit#40 are closed.\n\n## Open\n\nnone\n"
+  lifecycle:
+    done_at: 2026-11-25T21:18:33.037Z
+    done_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>

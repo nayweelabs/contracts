@@ -5,7 +5,7 @@
   "description": "What nw-licenser license create answers with -o json once it has signed a license and written it to a new file: the file and the license it signed, so the owner sees what was signed and where it went before passing the file on (ADR-L7, L8, L9). Printed only after the file is written; a refusal writes nothing and is an error instead.",
   "allOf": [
     {
-      "$ref": "../../envelope/v2/envelope.schema.json"
+      "$ref": "../../envelope/v1/envelope.schema.json"
     },
     {
       "properties": {
@@ -17,7 +17,7 @@
           "description": "Always LicenseCreate, the kind of this answer, so a reader knows which schema its data meets.",
           "const": "LicenseCreate"
         },
-        "source": {
+        "ran": {
           "description": "Where the answer came from; this contract fixes the app and the contract version, so an answer from anything else fails here.",
           "properties": {
             "app": {
@@ -38,7 +38,7 @@
           ],
           "allOf": [
             {
-              "$ref": "../../mankit/v2/license-payload.schema.json"
+              "$ref": "../../mankit/v1/license-payload.schema.json"
             }
           ],
           "properties": {

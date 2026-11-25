@@ -31,10 +31,10 @@
           }
         },
         "data": {
-          "description": "Every feature, in the order the app lists them; each row is mankit's feature state (mankit/v2 defs).",
+          "description": "Every feature, in the order the app lists them; each row is mankit's feature state (mankit/v1 defs).",
           "type": "array",
           "items": {
-            "$ref": "../../mankit/v2/defs.schema.json#/$defs/featureState"
+            "$ref": "../../mankit/v1/defs.schema.json#/$defs/featureState"
           }
         }
       }

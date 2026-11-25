@@ -26,7 +26,7 @@ var (
 	compileErr  error
 )
 
-// Validate checks doc, a JSON document, against the schema at path in FS, such as envelope/v2/envelope.schema.json; many goroutines may call it at once.
+// Validate checks doc, a JSON document, against the schema at path in FS, such as envelope/v1/envelope.schema.json; many goroutines may call it at once.
 func Validate(schema string, doc []byte) error {
 	all, err := schemas()
 	if err != nil {

@@ -1,7 +1,7 @@
 {
   "apiVersion": "elderlygate/licenser/app/v1",
   "kind": "LicenseShow",
-  "source": {
+  "ran": {
     "name": "licenser",
     "app": "licenser",
     "version": "1.0.0",
