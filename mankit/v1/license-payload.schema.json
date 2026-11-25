@@ -47,7 +47,7 @@
       "format": "date"
     },
     "until": {
-      "description": "The license's last day, an RFC 3339 date in UTC, never before issued; after it its features lock again (ADR-L3). For a release-trial, the last day it may start a trial, not the last day a trial runs: a trial started on that day still runs its days.",
+      "description": "The license's last day, an RFC 3339 date in UTC, never before issued; after it its features lock again (ADR-L3). For a release-trial, the day its trial offer ends, not the last day a trial runs: a trial started on that day still runs its days.",
       "type": "string",
       "format": "date"
     },
