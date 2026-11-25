@@ -29,10 +29,10 @@ forms:
     app: control-room
     kinds: [Snapshot, EpicList, Epic, EpicDesign, OutlawList, WorkList, Activity, Usage, RecordReport, SettingList, Product, Card]
     note: Answers of control-room, contract v1, on envelope/v2. Snapshot, SettingList, OutlawList and WorkList have schemas; the other kinds are in the envelope only for now, with no schema of their own yet
-  - new: elderlygate/license/app/v1
-    app: license
+  - new: elderlygate/licenser/app/v1
+    app: licenser
     kinds: [KeyList, LicenseCreate]
-    note: Answers of nw-license, contract v1 (ADR-L7). The license file it writes is mankit's, elderlygate/mankit/license/v1. Answer kinds not listed here (key create) are in the envelope only for now
+    note: Answers of nw-licenser, contract v1 (ADR-L7). The license file it writes is mankit's, elderlygate/mankit/license/v1. Answer kinds not listed here (key create) are in the envelope only for now
   - new: elderlygate/kanban/board/v1
     old: [app/kanban/v1]
     app: kanban
@@ -60,7 +60,7 @@ forms:
   - new: elderlygate/mankit/license/v1
     app: mankit
     kinds: [License]
-    note: "A signed license file (mankit licenses, ADR-L1, L8): nw-license writes it, every app reads it from the org's or its own place"
+    note: "A signed license file (mankit licenses, ADR-L1, L8): nw-licenser writes it, every app reads it from the org's or its own place"
   - new: elderlygate/contracts/problem/v1
     app: contracts
     kinds: [Problem]
