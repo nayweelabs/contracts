@@ -2,10 +2,10 @@
   "apiVersion": "elderlygate/designer/app/v2",
   "kind": "StoreUnfinishedList",
   "source": {
-    "app": "designer",
-    "contract": "v2",
     "name": "designer",
-    "version": "8.1.0"
+    "app": "designer",
+    "version": "8.1.0",
+    "contract": "v2"
   },
   "data": {
     "changes": [

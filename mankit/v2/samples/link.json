@@ -2,10 +2,10 @@
   "apiVersion": "elderlygate/designer/app/v2",
   "kind": "Link",
   "source": {
-    "app": "designer",
-    "contract": "v2",
     "name": "designer",
-    "version": "5.0.0"
+    "app": "designer",
+    "version": "5.0.0",
+    "contract": "v2"
   },
   "data": {
     "url": "http://127.0.0.1:7480/?token=0f1e2d3c"

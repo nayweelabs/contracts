@@ -2,10 +2,10 @@
   "apiVersion": "elderlygate/designer/app/v2",
   "kind": "QueueList",
   "source": {
-    "app": "designer",
-    "contract": "v2",
     "name": "shop",
-    "version": "5.0.0"
+    "app": "designer",
+    "version": "5.0.0",
+    "contract": "v2"
   },
   "data": {
     "bad": [

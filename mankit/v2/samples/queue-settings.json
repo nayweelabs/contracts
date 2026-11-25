@@ -2,10 +2,10 @@
   "apiVersion": "elderlygate/designer/app/v2",
   "kind": "QueueSettings",
   "source": {
-    "app": "designer",
-    "contract": "v2",
     "name": "designer",
-    "version": "6.10.0"
+    "app": "designer",
+    "version": "6.10.0",
+    "contract": "v2"
   },
   "data": {
     "limit": {
