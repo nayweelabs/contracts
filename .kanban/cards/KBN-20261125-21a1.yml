@@ -1,0 +1,36 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261125-21a1
+  title: license show's warn cites ADR-L3
+  created_at: 2026-11-25T12:27:01.290Z
+  created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+spec:
+  column: done
+  order: 0.9999999999999998
+  summary: warn and state cite ADR-L3
+  tags: ['epic:license', 'feature:app-features', 'product:mankit']
+  work:
+    agent: claude-opus-5-5
+    branch: fix/warn-cites-l3/app-features
+  description: |
+    #feature #epic:license #feature:app-features #product:mankit
+
+    # license show's warn cites ADR-L3
+
+    ADR-L3 now holds the license badge rule. mankit/v1 license show's descriptions point there:
+
+    - `warn` cites "(ADR-L3)" instead of the owner's license-badge decision of 25 Nov.
+    - `state`'s none entry, "nothing warns", cites ADR-L3 for it.
+    - `warn`'s trial in its last days and `state`'s ending name ADR-L3's built-in threshold license-expiring, instead of the license check's count.
+
+    Descriptions only, no shape change, so a fix (CT-RULE-1).
+
+    Waits on: nothing.
+
+    Done when: no description in the repo cites the 25 Nov decision, none says a trial or Free use shows no notice against ADR-L3, and go test passes.
+  lifecycle:
+    active_at: 2026-11-25T12:27:04.922Z
+    active_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+    done_at: 2026-11-25T12:27:29.620Z
+    done_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
