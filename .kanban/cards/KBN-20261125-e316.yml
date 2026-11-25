@@ -6,7 +6,7 @@ metadata:
   created_at: 2026-11-25T19:56:18.835Z
   created_by: elderlygate-ai
 spec:
-  column: in-progress
+  column: done
   order: 0.5
   tags: [feature, 'epic:naywee', 'feature:naywee-names', 'product:contracts']
   description: |
@@ -41,3 +41,5 @@ spec:
   lifecycle:
     active_at: 2026-11-25T19:56:26.336Z
     active_by: elderlygate-ai
+    done_at: 2026-11-25T19:57:01.303Z
+    done_by: elderlygate-ai
