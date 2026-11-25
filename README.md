@@ -36,9 +36,15 @@ Every app that changes a served thing shares one queue in `<served folder>/<app 
 
 ## Use from Go
 
-The package `github.com/ElderlyGate/contracts` embeds every schema, sample and table, so an app's tests check its real answers here, without a copy:
+The package `go.naywee.com/contracts/v2` embeds every schema, sample and table, so an app's tests check its real answers here, without a copy:
+
+```
+go get go.naywee.com/contracts/v2
+```
 
 ```go
+import "go.naywee.com/contracts/v2"
+
 err := contracts.Validate("envelope/v2/envelope.schema.json", body)
 ```
 

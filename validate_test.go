@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ElderlyGate/contracts"
+	"go.naywee.com/contracts/v2"
 )
 
 func TestValidateTakesASample(t *testing.T) {
