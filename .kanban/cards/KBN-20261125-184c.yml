@@ -20,10 +20,12 @@ spec:
 
     mankit/v1 license show gives `data` two optional fields, so every reader (CLI, web badge and panel, TUI) shows the license state as the answer gives it and decides nothing:
 
-    - `sentence`: the one sentence a reader shows for the license state, made by mankit's license check, word for word. Present when the state has one (a running trial, an ended trial, no license with an ended release-trial offer, a running paid license); absent otherwise.
-    - `warn`: true when a reader shows the license state in its warn colour (ending; a trial with 3 or fewer days left; trial-ended; ended). Absent or false otherwise (ADR-L3, L9).
+    - `sentence`: the one sentence a reader shows for the license state, made by mankit's license check, word for word. Present when the state has one (a running trial, an ended trial, no license with an ended release-trial offer, licensed); absent otherwise.
+    - `warn`: true when a reader shows the license state in its warn colour (ending; a trial in its last days, as the license check counts them; trial-ended; ended). Absent or false otherwise. Source: the owner's license-badge decision of 25 Nov. The schema refuses warn true on none and licensed, and warn false on ending, ended and trial-ended.
 
     The trial-ended state description drops "nothing warns". Additive, so a minor (CT-RULE-1).
+
+    Stale design text, awaiting G-CON-1 (no design edits here): two ADR-L3 bullets contradict the 25 Nov decision, "A trial key gives no notice…" and "Free use … shows no license notice".
 
     Waits on: nothing.
 
