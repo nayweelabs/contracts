@@ -1,0 +1,28 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261125-69ad
+  title: Module path go.naywee.com/contracts/v2
+  created_at: 2026-11-25T20:41:13.935Z
+  created_by: elderlygate-ai
+spec:
+  column: in-progress
+  order: 0.5
+  summary: go.mod gets the /v2 path Go needs for v2.0.0 (V-11)
+  tags: [fix, 'epic:naywee', 'feature:naywee-names', 'product:contracts']
+  work:
+    agent: claude-opus-5-5
+    branch: fix/module-path/naywee-names
+  description: |
+    #fix #epic:naywee #feature:naywee-names #product:contracts
+
+    # Module path go.naywee.com/contracts/v2
+
+    v2.0.0 is tagged, but go.mod still names the module without a /v2 suffix, so Go refuses it ("module path must match major version"). The module path becomes `go.naywee.com/contracts/v2` (V-11). The go.mod, the test import and the README's Go lines follow it. The schemas' `$id` URLs stay: they are part of released schemas (CT-RULE-1).
+
+    Waits on: the vanity page for go.naywee.com/contracts/v2.
+
+    Done when: `go test ./...` is green and, with GOPROXY=direct, `go list -m go.naywee.com/contracts/v2@<branch commit>` resolves.
+  lifecycle:
+    active_at: 2026-11-25T20:41:21.326Z
+    active_by: elderlygate-ai
