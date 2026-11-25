@@ -21,7 +21,8 @@ spec:
 
     ## Change
     - forms.yaml: row `elderlygate/designer/layout/v2`, old `layout/v1` (the bare layout.yml, version 2|3), upgrade `hubman product migrate designer <folder>`.
-    - designer/v2: layout-file schema (layout/v2: every drawn box placed); ProjectMigrate, the answer of `nw-designer project migrate [name] [--dry-run]`, one entry per design (its id, the links step, the layout step). No MigrateLayout.
+    - designer/v2: layout-file schema (layout/v2: every drawn box placed); ProjectMigrate, the answer of `nw-designer project migrate [name] [--dry-run]`, one entry per design (its id, the designFiles step design/v2 to design/v3, the links step, the layout step). No MigrateLayout.
+    - designer/v2 rules: `"*"` in a `given` or `when` value matches exactly once, so it validates.
     - forms.yaml's designer/app/v2 note no longer says v1 is answered by converting down (ADR-S16 since constitution#101).
 
     ## Done when
