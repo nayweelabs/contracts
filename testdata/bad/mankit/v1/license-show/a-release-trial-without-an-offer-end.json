@@ -15,7 +15,7 @@
     "licenses": [
       {
         "kind": "release-trial",
-        "for": "designer v9.0.0",
+        "for": "designer 9",
         "until": "2026-12-03",
         "trialEnds": "2026-12-03",
         "daysLeft": 14,
