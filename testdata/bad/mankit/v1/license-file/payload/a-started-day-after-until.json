@@ -5,7 +5,7 @@
     "id": "lic-acme-app-v1.3.0-trial"
   },
   "spec": {
-    "payload": "eyJpZCI6ImxpYy1hY21lLWFwcC12MS4zLjAtdHJpYWwiLCJraW5kIjoicmVsZWFzZS10cmlhbCIsImZvciI6ImFjbWUtYXBwIHYxLjMuMCIsInByb2R1Y3RzIjp7ImFjbWUtYXBwIjpbXX0sImlzc3VlZCI6IjIwMjYtMTItMDEiLCJ1bnRpbCI6IjIwMjctMTItMDEiLCJkYXlzIjoxNCwia2V5SWQiOiJwcm9kLTIwMjYifQ==",
+    "payload": "eyJpZCI6ImxpYy1hY21lLWFwcC12MS4zLjAtdHJpYWwiLCJraW5kIjoicmVsZWFzZS10cmlhbCIsImZvciI6ImFjbWUtYXBwIDEiLCJwcm9kdWN0cyI6eyJhY21lLWFwcCI6W119LCJpc3N1ZWQiOiIyMDI2LTEyLTAxIiwidW50aWwiOiIyMDI3LTEyLTAxIiwiZGF5cyI6MTQsImtleUlkIjoicHJvZC0yMDI2In0=",
     "signature": "kUwLkVUkHXpSEkG7WJonKV799LNYcMDsI93ONTHLtnO3M4AkH+Zg5zHrX+R3N/FbCLO9XPD0V9c2A5TbEpJ8BA==",
     "started": {
       "day": "2027-12-02",

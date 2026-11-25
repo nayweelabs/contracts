@@ -11,7 +11,7 @@
     "file": "acme-app-v1.2.0-trial.license",
     "id": "lic-acme-app-v1.2.0-trial",
     "kind": "release-trial",
-    "for": "acme-app v1.2.0",
+    "for": "acme-app 1",
     "products": {
       "acme-app": []
     },
