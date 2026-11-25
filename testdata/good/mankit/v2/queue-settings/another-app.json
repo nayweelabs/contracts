@@ -1,0 +1,23 @@
+{
+  "apiVersion": "elderlygate/example/app/v2",
+  "kind": "QueueSettings",
+  "source": {
+    "name": "example",
+    "app": "example",
+    "version": "1.0.0",
+    "contract": "v2"
+  },
+  "data": {
+    "limit": {
+      "default": "2m0s",
+      "set": false,
+      "value": "2m0s"
+    },
+    "wait": {
+      "default": "30s",
+      "set": true,
+      "value": "45s"
+    }
+  },
+  "errors": []
+}

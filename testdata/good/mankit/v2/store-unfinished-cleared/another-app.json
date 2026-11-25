@@ -1,0 +1,27 @@
+{
+  "apiVersion": "elderlygate/example/app/v2",
+  "kind": "StoreUnfinishedCleared",
+  "source": {
+    "name": "example",
+    "app": "example",
+    "version": "1.0.0",
+    "contract": "v2"
+  },
+  "data": {
+    "cleared": [
+      {
+        "folder": true,
+        "host": "build-01",
+        "id": "01794398400000000000",
+        "journal": "01794398400000000000",
+        "keys": [
+          "shop/blocks/cart.yml",
+          "shop/blocks/shop.yml"
+        ],
+        "user": "ada"
+      }
+    ],
+    "thing": "shop"
+  },
+  "errors": []
+}
