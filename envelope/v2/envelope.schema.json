@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ElderlyGate/contracts/envelope/v2/envelope.schema.json",
   "title": "envelope",
-  "description": "The outer shape every answer of every app shares: what it is, where it came from, the data and the errors. One shape lets any reader (a person, a script, an AI agent, control-room) read every app's answers the same way, from the CLI or over HTTP (ADR-S02, ADR-S03). It names where an answer comes from in source, and gives each error as a Problem (problem/v1, ADR-S21).",
+  "description": "The outer shape every answer of every app shares: what it is, where it came from, the data and the errors. One shape lets any reader (a person, a script, an AI agent, control-room) read every app's answers the same way, from the CLI or over HTTP (ADR-S02, ADR-S03). Version 2 names where an answer comes from source instead of ran, and gives each error as a Problem (problem/v1, ADR-S21). version/v1, the version answer, stays on envelope/v1 for good.",
   "type": "object",
   "required": [
     "apiVersion",

@@ -350,7 +350,7 @@ func TestApiVersionFormsListEveryFormOnce(t *testing.T) {
 	if err := schema.Validate(doc); err != nil {
 		t.Fatal(err)
 	}
-	envelope := readJSON(t, "envelope/v2/envelope.schema.json").(map[string]any)
+	envelope := readJSON(t, "envelope/v1/envelope.schema.json").(map[string]any)
 	pattern := envelope["properties"].(map[string]any)["apiVersion"].(map[string]any)["pattern"].(string)
 	newForm := regexp.MustCompile(pattern)
 	current := map[string]bool{}

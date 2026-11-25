@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ElderlyGate/contracts/mankit/v2/queue-list.schema.json",
   "title": "queue list",
-  "description": "What <app> queue answers with -o json: the tickets of one served thing in the order they go, and the files moved to .queue/bad/. A person or script sees what waits, whose turn it is, and what was skipped (ADR-S14).",
+  "description": "The QueueList answer on envelope/v2, for an app whose contract is on envelope/v2 (an app on envelope/v1 answers by mankit/v1). What it answers, and its data, are mankit/v1's queue-list.schema.json, the one home of both.",
   "allOf": [
     {
       "$ref": "../../envelope/v2/envelope.schema.json"
@@ -10,76 +10,12 @@
     {
       "properties": {
         "kind": {
-          "$ref": "#/$defs/kind"
+          "$ref": "../v1/queue-list.schema.json#/$defs/kind"
         },
         "data": {
-          "$ref": "#/$defs/data"
+          "$ref": "../v1/queue-list.schema.json#/$defs/data"
         }
       }
     }
-  ],
-  "$defs": {
-    "kind": {
-      "description": "Always QueueList, the kind of this answer, so a reader knows which schema its data meets.",
-      "const": "QueueList"
-    },
-    "data": {
-      "description": "One served thing's queue: its line and its skipped files.",
-      "type": "object",
-      "required": [
-        "tickets",
-        "bad"
-      ],
-      "properties": {
-        "tickets": {
-          "description": "The tickets in the order their changes run, first the one whose turn it is, so a reader sees what goes before its own change.",
-          "type": "array",
-          "items": {
-            "description": "One ticket and its place in the line.",
-            "type": "object",
-            "required": [
-              "ticket",
-              "turn"
-            ],
-            "properties": {
-              "ticket": {
-                "description": "The ticket as it is on disk (queue-ticket.schema.json), so a reader reads the answer and the file by the same schema.",
-                "$ref": "queue-ticket.schema.json"
-              },
-              "turn": {
-                "description": "Its change runs now. Only the first ticket can hold the turn.",
-                "type": "boolean"
-              },
-              "since": {
-                "description": "When the change that runs now took the turn; only on the place whose turn it is. A person sees how long it has run; other processes never judge a holder by it, since each process limits its own change.",
-                "type": "string",
-                "format": "date-time"
-              }
-            },
-            "additionalProperties": false
-          }
-        },
-        "bad": {
-          "description": "Stale or unreadable tickets, skipped so the line keeps moving; a person looks at them and removes them.",
-          "type": "array",
-          "items": {
-            "description": "One file in .queue/bad/.",
-            "type": "object",
-            "required": [
-              "file"
-            ],
-            "properties": {
-              "file": {
-                "description": "The file's name in .queue/bad/, so a person can find it there.",
-                "type": "string",
-                "minLength": 1
-              }
-            },
-            "additionalProperties": false
-          }
-        }
-      },
-      "additionalProperties": false
-    }
-  }
+  ]
 }

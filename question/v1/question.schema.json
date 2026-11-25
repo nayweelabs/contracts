@@ -2,10 +2,17 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ElderlyGate/contracts/question/v1/question.schema.json",
   "title": "question",
-  "description": "A change waiting for a yes, the same answer for every app (ADR-S04, G-STACK-13): with no terminal a command answers it instead of changing anything, HTTP gives it with 428 and the CLI exits 3. A reader decides by its kind, shows detail, and sends the same request again with the id and a yes. Its data is defined once here, in the envelope every answer shares (envelope/v2).",
+  "description": "A change waiting for a yes, the same answer for every app (ADR-S04, G-STACK-13): with no terminal a command answers it instead of changing anything, HTTP gives it with 428 and the CLI exits 3. A reader decides by its kind, shows detail, and sends the same request again with the id and a yes. Its data is defined once here; its wrapper follows the contract version the reader asked for, ran on envelope/v1 and source on envelope/v2.",
   "allOf": [
     {
-      "$ref": "../../envelope/v2/envelope.schema.json"
+      "oneOf": [
+        {
+          "$ref": "../../envelope/v1/envelope.schema.json"
+        },
+        {
+          "$ref": "../../envelope/v2/envelope.schema.json"
+        }
+      ]
     },
     {
       "properties": {
