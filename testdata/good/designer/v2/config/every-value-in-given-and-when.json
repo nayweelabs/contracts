@@ -432,6 +432,21 @@
           "styles": "quiet"
         },
         "source": "design"
+      },
+      {
+        "id": "any-event-lights-up",
+        "description": "Anything any live event names is lit up for a moment.",
+        "given": "*",
+        "when": {
+          "event": "*"
+        },
+        "then": {
+          "styles": {
+            "border-color": "accent"
+          },
+          "for": "3s"
+        },
+        "source": "design"
       }
     ],
     "styles": {
