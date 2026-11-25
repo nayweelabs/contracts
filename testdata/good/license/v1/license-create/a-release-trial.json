@@ -8,8 +8,8 @@
     "contract": "v1"
   },
   "data": {
-    "file": "acme-app-v1.2.0-trial.license",
-    "id": "lic-acme-app-v1.2.0-trial",
+    "file": "acme-app-1-trial.license",
+    "id": "lic-acme-app-1-trial",
     "kind": "release-trial",
     "for": "acme-app 1",
     "products": {
