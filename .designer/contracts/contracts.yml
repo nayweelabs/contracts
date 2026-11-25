@@ -1,5 +1,5 @@
 --- # design.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Design
 metadata:
   id: contracts
@@ -13,7 +13,7 @@ spec:
 
     Drawn from the repository on main: `README.md`, `constitution/`, the schema folders, `contracts_test.go` and `.github/workflows/`. The org's own design draws how the products connect.
 --- # group/GRP-REPO.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Group
 metadata:
   id: GRP-REPO
@@ -25,7 +25,7 @@ spec:
   description: |
     Folders of schemas and samples, and the one Go test package that walks them.
 --- # block/CMP-CONTRACTS.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-CONTRACTS
@@ -40,7 +40,7 @@ spec:
   description: |
     A public repository. For each app and version it keeps the shape of every answer and a sample of it. There is no program to run: the files are the product.
 --- # block/CMP-X-APP-AUTHOR.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-X-APP-AUTHOR
@@ -53,7 +53,7 @@ spec:
     - "writes the schemas and samples"
     - "for the app's answers"
 --- # block/CMP-X-APP.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-X-APP
@@ -66,7 +66,7 @@ spec:
     - "its own tests check its real"
     - "answer against each sample"
 --- # block/CMP-X-READER.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-X-READER
@@ -79,7 +79,7 @@ spec:
     - "control-room, other apps, scripts,"
     - "AI agents: read answers by the schemas"
 --- # block/CMP-X-CONSTITUTION.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-X-CONSTITUTION
@@ -92,7 +92,7 @@ spec:
     - "the shared rules"
     - "this repository follows"
 --- # block/CMP-ENVELOPE.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-ENVELOPE
@@ -107,7 +107,7 @@ spec:
   code:
     implements: envelope/v1/envelope.schema.json
 --- # block/CMP-ERROR.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-ERROR
@@ -123,7 +123,7 @@ spec:
   code:
     implements: error/v1/error.schema.json
 --- # block/CMP-EVENT.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-EVENT
@@ -139,7 +139,7 @@ spec:
   code:
     implements: event/v1/event.schema.json
 --- # block/CMP-APIVERSION.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-APIVERSION
@@ -155,7 +155,7 @@ spec:
   code:
     implements: apiversion/v1/forms.yaml
 --- # block/CMP-DESIGNER-V1.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-DESIGNER-V1
@@ -173,7 +173,7 @@ spec:
     implements: designer/v1
   description: "The documents a design answer holds carry the design form, elderlygate/designer/design/v2. A design whose design.yml cannot be read is still a row of the design list, saying why in `unreadable` and naming no purpose."
 --- # block/CMP-TESTS.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-TESTS
@@ -189,7 +189,7 @@ spec:
   code:
     implements: contracts_test.go
 --- # block/CMP-D-REPO.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-D-REPO
@@ -202,7 +202,7 @@ spec:
     - "main holds the schemas;"
     - "a pull request reaches it"
 --- # block/CMP-D-RUNNER.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-D-RUNNER
@@ -217,7 +217,7 @@ spec:
   description: |
     On a merge to main it also runs the org's shared release workflow, which tags the next version (V-7), so a Go app pins a tag of contracts.
 --- # link/CMP-X-APP-AUTHOR--uses--CMP-CONTRACTS.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-X-APP-AUTHOR--uses--CMP-CONTRACTS
@@ -226,7 +226,7 @@ spec:
   to: CMP-CONTRACTS
   label: writes
 --- # link/CMP-X-APP--reads--CMP-CONTRACTS.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-X-APP--reads--CMP-CONTRACTS
@@ -235,7 +235,7 @@ spec:
   to: CMP-CONTRACTS
   label: reads
 --- # link/CMP-X-READER--reads--CMP-CONTRACTS.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-X-READER--reads--CMP-CONTRACTS
@@ -244,7 +244,7 @@ spec:
   to: CMP-CONTRACTS
   label: reads
 --- # link/CMP-CONTRACTS--follows--CMP-X-CONSTITUTION.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-CONTRACTS--follows--CMP-X-CONSTITUTION
@@ -253,7 +253,7 @@ spec:
   to: CMP-X-CONSTITUTION
   label: follows
 --- # link/CMP-TESTS--reads--CMP-ENVELOPE.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-ENVELOPE
@@ -262,7 +262,7 @@ spec:
   to: CMP-ENVELOPE
   label: reads
 --- # link/CMP-TESTS--reads--CMP-ERROR.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-ERROR
@@ -271,7 +271,7 @@ spec:
   to: CMP-ERROR
   label: reads
 --- # link/CMP-TESTS--reads--CMP-DESIGNER-V1.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-DESIGNER-V1
@@ -280,7 +280,7 @@ spec:
   to: CMP-DESIGNER-V1
   label: reads
 --- # link/CMP-DESIGNER-V1--uses--CMP-ENVELOPE.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-DESIGNER-V1--uses--CMP-ENVELOPE
@@ -289,7 +289,7 @@ spec:
   to: CMP-ENVELOPE
   label: uses
 --- # link/CMP-ENVELOPE--uses--CMP-ERROR.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-ENVELOPE--uses--CMP-ERROR
@@ -298,7 +298,7 @@ spec:
   to: CMP-ERROR
   label: uses
 --- # link/CMP-D-RUNNER--reads--CMP-D-REPO.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-D-RUNNER--reads--CMP-D-REPO
@@ -307,7 +307,7 @@ spec:
   to: CMP-D-REPO
   label: reads
 --- # link/CMP-DESIGNER-V1--uses--CMP-EVENT.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-DESIGNER-V1--uses--CMP-EVENT
@@ -316,7 +316,7 @@ spec:
   to: CMP-EVENT
   label: uses
 --- # link/CMP-TESTS--reads--CMP-EVENT.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-EVENT
@@ -325,7 +325,7 @@ spec:
   to: CMP-EVENT
   label: reads
 --- # link/CMP-TESTS--reads--CMP-APIVERSION.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-APIVERSION
@@ -334,7 +334,7 @@ spec:
   to: CMP-APIVERSION
   label: reads
 --- # flow/check-a-sample.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Flow
 metadata:
   id: check-a-sample
@@ -369,7 +369,7 @@ spec:
       phase: return
       label: "Every sample meets its schema; a schema with no sample fails"
 --- # block/CMP-GO-PACKAGE.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-GO-PACKAGE
@@ -385,7 +385,7 @@ spec:
   code:
     implements: contracts.go
 --- # block/CMP-MANKIT-V1.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-MANKIT-V1
@@ -404,7 +404,7 @@ spec:
   code:
     implements: mankit/v1
 --- # block/CMP-PROBLEM.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-PROBLEM
@@ -420,7 +420,7 @@ spec:
   code:
     implements: problem/v1/problem.schema.json
 --- # block/CMP-VERSION.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-VERSION
@@ -436,7 +436,7 @@ spec:
   code:
     implements: version/v1/version.schema.json
 --- # block/CMP-ENVELOPE-V2.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Block
 metadata:
   id: CMP-ENVELOPE-V2
@@ -452,7 +452,7 @@ spec:
   code:
     implements: envelope/v2/envelope.schema.json
 --- # link/CMP-GO-PACKAGE--reads--CMP-ENVELOPE.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-GO-PACKAGE--reads--CMP-ENVELOPE
@@ -461,7 +461,7 @@ spec:
   to: CMP-ENVELOPE
   label: reads
 --- # link/CMP-GO-PACKAGE--reads--CMP-MANKIT-V1.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-GO-PACKAGE--reads--CMP-MANKIT-V1
@@ -470,7 +470,7 @@ spec:
   to: CMP-MANKIT-V1
   label: reads
 --- # link/CMP-TESTS--reads--CMP-MANKIT-V1.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-MANKIT-V1
@@ -479,7 +479,7 @@ spec:
   to: CMP-MANKIT-V1
   label: reads
 --- # link/CMP-TESTS--reads--CMP-PROBLEM.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-PROBLEM
@@ -488,7 +488,7 @@ spec:
   to: CMP-PROBLEM
   label: reads
 --- # link/CMP-TESTS--reads--CMP-VERSION.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-VERSION
@@ -497,7 +497,7 @@ spec:
   to: CMP-VERSION
   label: reads
 --- # link/CMP-VERSION--uses--CMP-ENVELOPE.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-VERSION--uses--CMP-ENVELOPE
@@ -506,7 +506,7 @@ spec:
   to: CMP-ENVELOPE
   label: uses
 --- # link/CMP-ENVELOPE-V2--uses--CMP-PROBLEM.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-ENVELOPE-V2--uses--CMP-PROBLEM
@@ -515,7 +515,7 @@ spec:
   to: CMP-PROBLEM
   label: uses
 --- # link/CMP-TESTS--reads--CMP-ENVELOPE-V2.yml
-apiVersion: elderlygate/designer/design/v2
+apiVersion: elderlygate/designer/design/v3
 kind: Link
 metadata:
   id: CMP-TESTS--reads--CMP-ENVELOPE-V2
