@@ -10,6 +10,7 @@
   "data": {
     "state": "ended",
     "endedOn": "2026-11-01",
+    "warn": true,
     "build": {
       "release": true
     },

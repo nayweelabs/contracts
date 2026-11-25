@@ -9,6 +9,8 @@
   },
   "data": {
     "state": "trial-ended",
+    "sentence": "Your trial has ended. Buy a license to keep the paid features.",
+    "warn": true,
     "build": {
       "release": true
     },
