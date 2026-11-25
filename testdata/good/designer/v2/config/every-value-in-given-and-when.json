@@ -415,16 +415,16 @@
     "rules": [
       {
         "id": "any-kind-any-status",
-        "description": "Anything of any kind in any group, at any status, is drawn quietly.",
+        "description": "Anything of any kind, in any group and view, at any status, label, severity and release, is drawn quietly.",
         "given": {
           "kind": "*",
           "group": "*",
-          "view": [
-            "structure"
-          ]
+          "view": "*"
         },
         "when": {
           "status": "*",
+          "label": "*",
+          "severity": "*",
           "release": "*",
           "action": "*"
         },
