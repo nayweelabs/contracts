@@ -22,7 +22,7 @@ spec:
     - `mankit/v1/license-payload.schema.json`, the `allOf` rule description (line 67): "A trial key names no products (ADR-L9)."
 
     ## What
-    - Find which ADR of the org's license ADRs (ADR-L1..L9), if any, holds the plain trial key now.
+    - Find which ADR of the org's license ADRs (ADR-L1..L10), if any, holds the plain trial key now.
     - Cite that ADR in the three descriptions above, in place of ADR-L9 for the `trial` kind; the release-trial parts keep ADR-L9.
     - If no ADR holds the plain trial key, change nothing and write it under Open for the owner.
     - Descriptions only: no field, enum, type, required list or rule changes.
