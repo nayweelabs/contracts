@@ -165,7 +165,15 @@
           "$ref": "license-payload.schema.json#/properties/for"
         },
         "until": {
-          "description": "The license's last day, as its signed payload says; for a release-trial with a started record, the last day of the trial it started (its start day, the license file's spec.started.day, plus days, less one), not the key's own until; for a release-trial with no started record, the key's own until, the last day it may start a trial.",
+          "description": "The license's last day, as its signed payload says. For a release-trial it is the same day as trialEnds once a trial has started, and the same day as offerEnds before. A reader shows offerEnds, and trialEnds once started, never until.",
+          "$ref": "license-payload.schema.json#/properties/until"
+        },
+        "trialEnds": {
+          "description": "The last day of the trial a release-trial started: the license file's spec.started.day plus days, less one, so a reader shows when the running trial ends. Present exactly on a release-trial with a started record; this schema cannot see the started record, so mankit's license check keeps that rule, and the schema refuses it on every other kind.",
+          "$ref": "license-payload.schema.json#/properties/until"
+        },
+        "offerEnds": {
+          "description": "The day a release-trial's trial offer ends, the key's own signed until, so a reader shows it apart from the trial's end. Present exactly on a release-trial, started or not.",
           "$ref": "license-payload.schema.json#/properties/until"
         },
         "daysLeft": {
@@ -174,7 +182,7 @@
           "minimum": 0
         },
         "ended": {
-          "description": "True once the license has ended: its features are locked again, and what they made stays readable (ADR-L3). For a release-trial with no started record, true once the key's own until has passed.",
+          "description": "True once the license has ended: its features are locked again, and what they made stays readable (ADR-L3). For a release-trial with no started record, true once offerEnds has passed.",
           "type": "boolean"
         },
         "keyId": {
@@ -213,6 +221,43 @@
               "daysLeft": {
                 "const": 0
               }
+            }
+          }
+        },
+        {
+          "description": "Only a release-trial has a trial's end.",
+          "if": {
+            "required": [
+              "trialEnds"
+            ]
+          },
+          "then": {
+            "properties": {
+              "kind": {
+                "const": "release-trial"
+              }
+            }
+          }
+        },
+        {
+          "description": "A release-trial always has its offer's end, and no other kind has one.",
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "release-trial"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "offerEnds"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "offerEnds"
+              ]
             }
           }
         }
