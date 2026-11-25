@@ -1,0 +1,18 @@
+{
+  "apiVersion": "elderlygate/designer/app/v2",
+  "kind": "ProjectList",
+  "source": {
+    "name": "designer",
+    "app": "designer",
+    "version": "6.1.0",
+    "contract": "v2"
+  },
+  "data": [
+    {
+      "name": "My Shop",
+      "path": "/home/ada/src/my-shop",
+      "designs": ["default"]
+    }
+  ],
+  "errors": []
+}
