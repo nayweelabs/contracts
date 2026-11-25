@@ -9,7 +9,7 @@ spec:
   column: done
   order: 0.5
   tags: [feature, 'epic:naywee', 'feature:naywee-names', 'product:contracts']
-  description: |
+  description: |+
     # contracts keeps only the latest version
 
     #feature #epic:naywee #feature:naywee-names #product:contracts
@@ -27,14 +27,23 @@ spec:
 
     ## Done when
 
-    - [x] No file refers to envelope/v1, mankit/v1 or designer/v1.
+    - [x] No file refers to envelope/v1, mankit/v1 or designer/v1, except the contracts design (.designer), which is stale and changes only on the owner's word.
     - [x] No upgrade step or upgrade testdata is left.
     - [x] Every test case of a deleted mankit/v1 answer that v2 lacks is kept, on envelope/v2.
-    - [ ] go test ./... green and CI green.
+    - [x] go test ./... green and CI green.
 
     ## Open
 
     none
+      work:
+    agent: claude-opus-5-5
+    branch: feat/only-latest/naywee-names
+      lifecycle:
+    active_at: 2026-11-25T20:18:18.096Z
+    active_by: elderlygate-ai
+    done_at: 2026-11-25T20:24:25.635Z
+    done_by: elderlygate-ai
+
   work:
     agent: claude-opus-5-5
     branch: feat/only-latest/naywee-names
