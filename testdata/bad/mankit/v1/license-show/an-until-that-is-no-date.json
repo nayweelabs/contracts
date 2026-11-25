@@ -19,7 +19,7 @@
         "until": "2027-11-06T00:00:00Z",
         "daysLeft": 352,
         "ended": false,
-        "keyId": "prod-2026"
+        "keyId": "test-2026"
       },
       {
         "kind": "product",
@@ -27,7 +27,7 @@
         "until": "2027-03-01",
         "daysLeft": 102,
         "ended": false,
-        "keyId": "prod-2026"
+        "keyId": "test-2026"
       }
     ],
     "refused": [],

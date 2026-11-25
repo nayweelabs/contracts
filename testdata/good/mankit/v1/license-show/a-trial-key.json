@@ -21,7 +21,7 @@
         "until": "2026-12-03",
         "daysLeft": 14,
         "ended": false,
-        "keyId": "prod-2026",
+        "keyId": "test-2026",
         "window": {
           "of": 14
         }
