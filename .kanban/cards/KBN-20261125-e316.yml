@@ -1,0 +1,43 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261125-e316
+  title: 'licenser contract: license/ becomes licenser/'
+  created_at: 2026-11-25T19:56:18.835Z
+  created_by: elderlygate-ai
+spec:
+  column: in-progress
+  order: 0.5
+  tags: [feature, 'epic:naywee', 'feature:naywee-names', 'product:contracts']
+  description: |
+    # licenser contract: license/ becomes licenser/
+
+    #feature #epic:naywee #feature:naywee-names #product:contracts
+
+    ## Why
+
+    The signing tool's product ID is now `licenser` and its command `nw-licenser`; its contract follows the new name.
+
+    ## What
+
+    - `license/v1/` moves to `licenser/v1/`, its testdata to `testdata/{good,bad}/licenser/v1/`; the two schema `$id`s follow.
+    - Its answers carry `elderlygate/licenser/app/v1`, name and app `licenser`; the forms.yaml row and README follow.
+    - mankit/v1's license file and payload descriptions name `nw-licenser`; two testdata files are renamed to match. mankit's own license names stay.
+    - `LICENSE.txt` becomes `LICENSE`; README links to it.
+    - Breaking for readers of `elderlygate/license/app/v1`: release v1.0.0.
+
+    ## Done when
+
+    - [x] `go test ./...` is green.
+    - [x] No `nw-license` or `elderlygate/license/app/v1` is left outside mankit's own names.
+    - [x] A fresh checkout on a case-insensitive disk has `LICENSE` and no clash.
+
+    ## Open
+
+    none
+  work:
+    agent: claude-opus-5-5
+    branch: feat/licenser-name/naywee-names
+  lifecycle:
+    active_at: 2026-11-25T19:56:26.336Z
+    active_by: elderlygate-ai
