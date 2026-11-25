@@ -1,0 +1,40 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261125-6161
+  title: Trial key per product line, not per release
+  created_at: 2026-11-25T09:52:44.020Z
+  created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+spec:
+  column: in-progress
+  order: 0.5
+  summary: 'mankit/v1: a release-trial belongs to a product line, not one release'
+  tags: [feature, 'epic:license', 'feature:license-check', 'product:mankit']
+  work:
+    agent: claude-opus-5-5
+    branch: fix/trial-key-line/license-check
+  description: |
+    #feature #epic:license #feature:license-check #product:mankit
+
+    # Trial key per product line, not per release
+
+    ## Why
+    ADR-L9: every release of an app carries one signed trial key for its product line (for example "acme-app 1"), signed once and committed to the app's repo; its trial offer does not end, and it is re-signed only when the prod key changes. The mankit/v1 descriptions still say a release-trial belongs to one release.
+
+    ## Changes (descriptions only, CT-RULE-5)
+    - license-payload `for`: for a release-trial, the product line it belongs to, for example "acme-app 1".
+    - license-payload `days`: every install of the product line's releases gets a trial of the same length.
+    - license-show `kind`: release-trial is the trial key of one app's product line, built into each of its releases.
+    - license-file `spec.started`: the key is signed once per product line, not once per release.
+    - Testdata: a release-trial's `for` names a line ("acme-app 1", "designer 9"), invented data.
+    - `until` is left alone.
+
+    Waits on: nothing.
+
+    ## Done when
+    - [x] The descriptions say the above, testdata stays valid, and `go test ./...` passes.
+
+    Size XS.
+  lifecycle:
+    active_at: 2026-11-25T09:52:50.550Z
+    active_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
