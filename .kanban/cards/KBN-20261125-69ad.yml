@@ -6,7 +6,7 @@ metadata:
   created_at: 2026-11-25T20:41:13.935Z
   created_by: elderlygate-ai
 spec:
-  column: in-progress
+  column: done
   order: 0.5
   summary: go.mod gets the /v2 path Go needs for v2.0.0 (V-11)
   tags: [fix, 'epic:naywee', 'feature:naywee-names', 'product:contracts']
@@ -26,3 +26,5 @@ spec:
   lifecycle:
     active_at: 2026-11-25T20:41:21.326Z
     active_by: elderlygate-ai
+    done_at: 2026-11-25T20:43:25.792Z
+    done_by: elderlygate-ai
