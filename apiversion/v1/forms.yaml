@@ -11,7 +11,7 @@ forms:
     old: [elderlygate/designer/layout/v1]
     app: designer
     kinds: [Layout]
-    note: "A design's layout.yml as a Resource holding every drawn box's place (designer/v2 layout-file.schema.json). layout/v1 is the bare layout.yml before it, with no apiVersion line (version: 2|3), which may leave boxes without a place"
+    note: "A design's layout.yml as a Resource holding every drawn box's place (designer/v2 layout-file.schema.json). layout/v1 is the bare layout.yml before it, with no apiVersion line (its shape: the layout/v1 branch of designer/v2 design-contents.schema.json)"
     upgrade: hubman product migrate designer <folder>
   - new: elderlygate/designer/app/v1
     app: designer

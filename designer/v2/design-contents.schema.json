@@ -71,7 +71,7 @@
                           "$ref": "layout-file.schema.json"
                         },
                         {
-                          "description": "layout.yml as read in the form layout/v1, the bare file before layout/v2: where the boxes and lines of each view sit, which may leave boxes without a place. Its version, 2 or 3, says its form; a file with no version key is older still and refused by the board, which says to run hubman product migrate designer <folder>, and nw-designer project migrate brings layout/v1 to layout/v2.",
+                          "description": "layout.yml as read in the form layout/v1 (apiversion/v1/forms.yaml names it and its upgrade): where the boxes and lines of each view sit, which may leave boxes without a place.",
                           "type": "object",
                           "properties": {
                             "version": {
