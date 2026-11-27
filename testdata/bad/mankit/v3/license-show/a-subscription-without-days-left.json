@@ -17,6 +17,7 @@
         "id": "lic-20261201-acme",
         "place": "org",
         "for": "Acme Ltd",
+        "issued": "2026-01-01",
         "until": "2027-12-01",
         "ended": false,
         "keyId": "test-2026",

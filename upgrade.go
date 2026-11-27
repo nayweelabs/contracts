@@ -156,8 +156,8 @@ var (
 )
 
 // UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes. A v2 license has no id or place, which v3 gives every license, so an answer that lists one (an org, product or person's trial key) is refused rather than guessed.
-// A release-trial is not a license in v3 (ADR-L9): a started one becomes data.trial, its trialEnds the trial's until; one not started is dropped, as v3's trial always has a start, and when its offer had ended v2's sentence for it is dropped too, as v3 never says a trial offer ended. Two started trials are refused.
-// Each word becomes v3's (licenseStateV3, licenseFromV3); warn, endedOn and the rest mean the same in both, so they stay. A word v3 has none for, and a feature id v3 refuses (G-STACK-17), are refused.
+// A release-trial is not a license in v3 (ADR-L9): a started one becomes data.trial, its trialEnds the trial's until; one not started is dropped, as v3's trial always has a start, and when its offer had ended v2's sentence is dropped too, as v3 never says a trial offer ended, unless a started trial is in data.trial, as the sentence is then about that trial. Two started trials are refused.
+// Each word becomes v3's (licenseStateV3, licenseFromV3); warn and the rest mean the same in both, so they stay; endedOn cannot occur, as a v2 answer with an ended license is refused and v3 gives endedOn only beside one. A word v3 has none for, and a feature id v3 refuses (G-STACK-17), are refused.
 // The app's own apiVersion and contract are untouched, as with UpgradeMankit: the app's own step names its contract.
 func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 	if err := Validate(MankitSchema("v2", "LicenseShow"), v2); err != nil {
@@ -168,6 +168,7 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 		return nil, err
 	}
 	data := doc["data"].(map[string]any)
+	endedOffer := false
 	for _, l := range data["licenses"].([]any) {
 		license := l.(map[string]any)
 		if license["kind"] != "release-trial" {
@@ -176,7 +177,7 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 		ends, started := license["trialEnds"]
 		if !started {
 			if license["ended"] == true {
-				delete(data, "sentence")
+				endedOffer = true
 			}
 			continue
 		}
@@ -188,6 +189,9 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 			trial["window"] = window
 		}
 		data["trial"] = trial
+	}
+	if _, ok := data["trial"]; !ok && endedOffer {
+		delete(data, "sentence")
 	}
 	data["licenses"] = []any{}
 	state, ok := licenseStateV3[data["state"].(string)]

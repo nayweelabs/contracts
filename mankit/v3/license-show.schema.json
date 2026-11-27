@@ -78,7 +78,11 @@
           "$ref": "#/$defs/trial"
         },
         "refused": {
-          "$ref": "../v1/license-show.schema.json#/$defs/data/properties/refused"
+          "description": "Every license file the app read but did not take, so a refused file never shows as a license and a person sees why (ADR-L1, L5, L6, L8, L9). Its reason is one of signature, untrusted_key, other_build, unreadable, wrong_place, id_mismatch and retired_kind, each meaning what problem/v1's reason says. Empty when none was refused.",
+          "type": "array",
+          "items": {
+            "$ref": "../v1/license-show.schema.json#/$defs/refusedFile"
+          }
         },
         "counts": {
           "$ref": "../v1/license-show.schema.json#/$defs/data/properties/counts"
@@ -164,6 +168,64 @@
               }
             }
           }
+        },
+        {
+          "description": "A running trial means the state is trial, never free.",
+          "if": {
+            "required": [
+              "trial"
+            ],
+            "properties": {
+              "trial": {
+                "required": [
+                  "ended"
+                ],
+                "properties": {
+                  "ended": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "state": {
+                "not": {
+                  "const": "free"
+                }
+              }
+            }
+          }
+        },
+        {
+          "description": "A day a license ended names a license that is active and has ended.",
+          "if": {
+            "required": [
+              "endedOn"
+            ]
+          },
+          "then": {
+            "properties": {
+              "licenses": {
+                "contains": {
+                  "required": [
+                    "active",
+                    "ended"
+                  ],
+                  "properties": {
+                    "active": {
+                      "const": true
+                    },
+                    "ended": {
+                      "const": true
+                    }
+                  }
+                },
+                "minContains": 1
+              }
+            }
+          }
         }
       ]
     },
@@ -174,6 +236,7 @@
         "id",
         "place",
         "for",
+        "issued",
         "ended",
         "keyId",
         "active"
@@ -199,7 +262,7 @@
           "$ref": "license-payload.schema.json#/properties/lines"
         },
         "issued": {
-          "description": "The license's first day, as its signed payload says, so a reader shows a license not begun yet. Absent when the app does not give it.",
+          "description": "The license's first day, as its signed payload says, so a reader shows a license not begun yet.",
           "$ref": "license-payload.schema.json#/properties/issued"
         },
         "until": {
