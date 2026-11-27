@@ -32,6 +32,7 @@
         "reason": "signature"
       },
       {
+        "id": "old-app",
         "file": "/home/ada/.config/acme/license",
         "type": "refused",
         "reason": "retired_kind"

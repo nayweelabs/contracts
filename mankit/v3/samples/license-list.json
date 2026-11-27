@@ -41,6 +41,12 @@
         "file": "/home/ada/.config/acme/licenses/lic-20260101-old.license",
         "type": "refused",
         "reason": "retired_kind"
+      },
+      {
+        "id": "old-org",
+        "file": "/home/ada/.config/acme/license",
+        "type": "refused",
+        "reason": "retired_kind"
       }
     ]
   },
