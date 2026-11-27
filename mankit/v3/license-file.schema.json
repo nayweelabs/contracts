@@ -53,7 +53,7 @@
           ],
           "properties": {
             "day": {
-              "description": "The day the trial started, an RFC 3339 date in UTC. The trial runs the payload's days from it, so license-show.schema.json's licenses[].trialEnds for this file is reckoned from it.",
+              "description": "The day the trial started, an RFC 3339 date in UTC.",
               "type": "string",
               "format": "date"
             },

@@ -167,7 +167,7 @@
           }
         },
         {
-          "description": "A license meets its payload's rule on until and lines (license-payload.schema.json) and has no trial's end; a trial has no until (ADR-L9).",
+          "description": "A license meets its payload's rule on until and lines (license-payload.schema.json) and has no trial's end; a trial meets its payload's rule too.",
           "if": {
             "properties": {
               "kind": {

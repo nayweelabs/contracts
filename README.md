@@ -67,6 +67,7 @@ The tests check that:
 - every event in an `events.asyncapi.yaml` is a valid event, with its schema and sample;
 - every file in `testdata/bad/<dir>/<version>/<kind>/` is refused by its schema;
 - every license file in `testdata/good/` and the sample meets the rules its schema cannot read from the signed payload, and each in `testdata/bad/mankit/<version>/license-file/payload/` breaks one of them (the schema's descriptions say which);
+- the `signature` of every license file in `testdata/` and the samples is a placeholder: it names key id `test-2026` but no key signed it, and nothing here checks it (mankit's tests sign with a throwaway key made per run), so reuse a file's shape, never its signature;
 - every file in `testdata/good/` meets its schema: the shapes a schema takes beyond its one sample;
 - every upgrade pair in `testdata/upgrade/<dir>/<from>-<to>/` (`<case>.<from>.json` and `<case>.<to>.json`) is a sample of the older version and the sample of the newer one its upgrade step makes, no file is without its partner, and every `<case>.refused.json` is refused by the step;
 - the apiVersion table lists each form once, and each old form in one row only; a row with old forms has its upgrade command.
