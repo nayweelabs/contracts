@@ -25,7 +25,7 @@
         "keyId": "test-2026"
       },
       {
-        "kind": "trial-key",
+        "kind": "trial",
         "for": "Ada",
         "until": "2026-12-14",
         "daysLeft": 3,

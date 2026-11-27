@@ -2,13 +2,12 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ElderlyGate/contracts/mankit/v3/license-payload.schema.json",
   "title": "license payload",
-  "description": "What a license file of elderlygate/mankit/license/v2 signs (license-file.schema.json's spec.payload, once decoded): its kind, whom it is for, the products and enterprise feature ids it names, the product lines it opens or the day it ends, and the key that signed it (ADR-L1, L2, L4, L6, L8, L9, L10). nw-licenser writes it and mankit's licenses package reads it. It has two kinds where mankit/v1's payload had four: a v1 file is never upgraded, as its signature covers its bytes, and mankit still reads v1's org, product and release-trial for one release (ADR-L8). Open: a newer nw-licenser may add fields here, and an older app accepts them (CT-RULE-4), as several app versions read a license at once (ADR-S15). A field that narrows what a license opens needs a new apiVersion (CT-RULE-1); an added field never narrows it. The signature still covers the payload's bytes exactly, a field the app does not know included. Three rules no schema can say: until is never before issued, id is the file's metadata.id, and lines names exactly the products that products names.",
+  "description": "What a license file of elderlygate/mankit/license/v2 signs (license-file.schema.json's spec.payload, once decoded). nw-licenser writes it and mankit's licenses package reads it. Open (CT-RULE-4, ADR-S15).",
   "type": "object",
   "required": [
     "id",
     "kind",
     "for",
-    "products",
     "issued",
     "keyId"
   ],
@@ -17,7 +16,7 @@
       "$ref": "../v1/license-payload.schema.json#/properties/id"
     },
     "kind": {
-      "description": "Which kind of license it is, so an app knows what it opens (ADR-L8, L9). license: the owner signs it with nw-licenser for a person or an org; it opens the enterprise features it names of the products it names, either until a day or, never ending, in the product lines it names (ADR-L10); one license file per user, read by every app. trial: the trial each product line carries built in, signed once for its line; it opens every enterprise feature of its one app for days from the day its app starts it (ADR-L9).",
+      "description": "Which kind of license it is, so an app knows what it opens (ADR-L8). license: what the owner signs with nw-licenser for a person or an org; it opens the enterprise features it names (ADR-L2, L10). trial: the trial a product line carries built in; it opens every enterprise feature of its one app (ADR-L9).",
       "enum": [
         "license",
         "trial"
@@ -29,13 +28,13 @@
       "pattern": "\\S"
     },
     "products": {
-      "description": "The enterprise feature ids the license names, per product id, so an app opens a feature only when its own product id names it (ADR-L2). A license names one or more products, each with one or more feature ids; a trial names exactly one, its app, with no feature ids, as it opens every enterprise feature of that app (ADR-L9).",
+      "description": "The enterprise feature ids the license names, per product id, so an app opens a feature only when its own product id names it (ADR-L2).",
       "type": "object",
       "propertyNames": {
         "$ref": "#/$defs/productId"
       },
       "additionalProperties": {
-        "description": "The product's enterprise feature ids, each once, as its feature list names them; never empty, but for a trial's, which is always empty.",
+        "description": "The product's enterprise feature ids, each once, as its feature list names them.",
         "type": "array",
         "uniqueItems": true,
         "items": {
@@ -44,7 +43,7 @@
       }
     },
     "lines": {
-      "description": "The product lines the license opens, per product id, each by its number as the constitution's product-lines.yaml names it, so 1 is Designer 1 (V-10). An app opens what the license names only while its own build's line is among them, and a later line needs a new license (ADR-L10). A license that never ends has it, and one with an until never does, as it opens every line while it runs (ADR-L10); a trial always has it, naming its one product's one line, the line it was signed for (ADR-L9).",
+      "description": "The product lines it opens, per product id, each by its number as the constitution's product-lines.yaml names it, so 1 is Designer 1 (V-10). An app opens what it names only while its own build's line is among them, and a later line needs a new license (ADR-L10).",
       "type": "object",
       "minProperties": 1,
       "propertyNames": {
@@ -67,12 +66,12 @@
       "format": "date"
     },
     "until": {
-      "description": "The license's last day, an RFC 3339 date in UTC, never before issued; after it its features lock again (ADR-L3). A license has it or lines, never both (ADR-L10). For a trial, the day its trial offer ends, not the last day a trial runs: a trial started on that day still runs its days; a trial without it has an offer that never ends (ADR-L9).",
+      "description": "The license's last day, an RFC 3339 date in UTC, never before issued; after it its features lock again (ADR-L3).",
       "type": "string",
       "format": "date"
     },
     "days": {
-      "description": "How long each trial a trial license starts runs, in whole days, its first day counted, so every install of the product line's releases gets a trial of the same length (ADR-L9). Only a trial has it, and it always has it. The signing tool writes 14 unless told another length; any length of 1 or more is valid.",
+      "description": "How long each trial it starts runs, in whole days, its first day counted, so every install of the product line's releases gets a trial of the same length (ADR-L9).",
       "type": "integer",
       "minimum": 1
     },
@@ -82,7 +81,7 @@
   },
   "allOf": [
     {
-      "description": "A license names one or more products, each with one or more feature ids, has no days, and either runs until a day or names the lines it opens, never both (ADR-L2, L10).",
+      "description": "A license names one or more products, each with one or more feature ids, and has no days. It either runs until a day or names the lines it opens, never both (ADR-L10). When it names lines, they name exactly the products products names; no schema can say that, so mankit's license check keeps it (ADR-L2, L10).",
       "if": {
         "properties": {
           "kind": {
@@ -91,6 +90,9 @@
         }
       },
       "then": {
+        "required": [
+          "products"
+        ],
         "not": {
           "required": [
             "days"
@@ -119,7 +121,7 @@
       }
     },
     {
-      "description": "A trial names exactly one product, its app, with no feature ids, the one line it was signed for, and how long its trials run (ADR-L9).",
+      "description": "A trial names no products and has no until: its trial offer does not end (ADR-L2, L9). Its lines name its one product and the one line it was signed for, and days how long its trials run (ADR-L9).",
       "if": {
         "properties": {
           "kind": {
@@ -132,14 +134,21 @@
           "days",
           "lines"
         ],
-        "properties": {
-          "products": {
-            "minProperties": 1,
-            "maxProperties": 1,
-            "additionalProperties": {
-              "maxItems": 0
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "products"
+              ]
+            },
+            {
+              "required": [
+                "until"
+              ]
             }
-          },
+          ]
+        },
+        "properties": {
           "lines": {
             "maxProperties": 1,
             "additionalProperties": {

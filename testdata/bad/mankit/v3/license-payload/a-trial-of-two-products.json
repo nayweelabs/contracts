@@ -2,12 +2,11 @@
   "id": "lic-acme-app-1-trial",
   "kind": "trial",
   "for": "Acme 1",
-  "products": {
-    "acme-app": [],
-    "acme-board": []
-  },
   "lines": {
     "acme-app": [
+      1
+    ],
+    "acme-board": [
       1
     ]
   },

@@ -156,8 +156,8 @@ var (
 	licenseFromV3  = map[string]string{"org": "license", "product": "license", "both": "license", "trial": "trial", "none": "none"}
 )
 
-// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes: each word becomes v3's (licenseStateV3, licenseKindV3, licenseFromV3), and a trial loses until, as v3 shows its days as trialEnds and offerEnds only.
-// warn, endedOn and the rest mean the same in both, so they stay. A person's trial key has no v3 kind, so an answer that took one is refused, as is a feature id v3 refuses (G-STACK-17).
+// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes: each word becomes v3's (licenseStateV3, licenseKindV3, licenseFromV3), and a trial loses until and offerEnds, as its offer does not end (ADR-L9), so a trial not started also loses its daysLeft and has not ended.
+// The licenses come first, then the trial, as v3 orders them. warn, endedOn and the rest mean the same in both, so they stay. A person's trial key has no v3 kind, so an answer that took one is refused, as is any word v3 has none for and a feature id v3 refuses (G-STACK-17).
 // The app's own apiVersion and contract are untouched, as with UpgradeMankit: the app's own step names its contract.
 func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 	if err := Validate(MankitSchema("v2", "LicenseShow"), v2); err != nil {
@@ -168,8 +168,13 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 		return nil, err
 	}
 	data := doc["data"].(map[string]any)
-	data["state"] = licenseStateV3[data["state"].(string)]
-	for _, l := range data["licenses"].([]any) {
+	state, ok := licenseStateV3[data["state"].(string)]
+	if !ok {
+		return nil, fmt.Errorf("a %s state has no mankit/v3 word", data["state"])
+	}
+	data["state"] = state
+	licenses := data["licenses"].([]any)
+	for _, l := range licenses {
 		license := l.(map[string]any)
 		kind, ok := licenseKindV3[license["kind"].(string)]
 		if !ok {
@@ -178,11 +183,23 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 		license["kind"] = kind
 		if kind == "trial" {
 			delete(license, "until")
+			delete(license, "offerEnds")
+			if _, started := license["trialEnds"]; !started {
+				delete(license, "daysLeft")
+				license["ended"] = false
+			}
 		}
 	}
+	sort.SliceStable(licenses, func(i, j int) bool {
+		return licenses[i].(map[string]any)["kind"] == "license" && licenses[j].(map[string]any)["kind"] == "trial"
+	})
 	for _, f := range data["features"].([]any) {
 		feature := f.(map[string]any)
-		feature["from"] = licenseFromV3[feature["from"].(string)]
+		from, ok := licenseFromV3[feature["from"].(string)]
+		if !ok {
+			return nil, fmt.Errorf("a feature from %s has no mankit/v3 word", feature["from"])
+		}
+		feature["from"] = from
 	}
 	return encodeChecked(doc, MankitSchema("v3", "LicenseShow"))
 }

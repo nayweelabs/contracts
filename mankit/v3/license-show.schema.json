@@ -41,10 +41,10 @@
         },
         "endedOn": {
           "description": "The last day of the license that ended, when state is free and a license has ended: the latest until among the ended licenses, so ADR-L3's notice names the day and a page never picks a license. Absent otherwise.",
-          "$ref": "license-payload.schema.json#/properties/until"
+          "$ref": "#/$defs/day"
         },
         "sentence": {
-          "description": "The one sentence a reader shows for the app's license state, made by mankit's license check and shown word for word: readers never build or change it, so the CLI, the web badge and panel and the TUI say the same. Present when the state has one: a running trial, with its days left and last day; an ended trial; free while a trial's offer has ended; and licensed, naming whom the running license is for. Absent otherwise. Its words are the license check's to choose.",
+          "description": "The one sentence a reader shows for the app's license state, made by mankit's license check and shown word for word: readers never build or change it, so the CLI, the web badge and panel and the TUI say the same. Present when the state has one: a running trial, with its days left and last day; an ended trial; and licensed, naming whom the running license is for. Absent otherwise. Its words are the license check's to choose.",
           "type": "string",
           "minLength": 1
         },
@@ -124,19 +124,15 @@
           "$ref": "license-payload.schema.json#/properties/lines"
         },
         "until": {
-          "description": "A license's last day, as its signed payload says; absent on a license that never ends. Never on a trial, whose days are trialEnds and offerEnds.",
+          "description": "The license's last day, as its signed payload says.",
           "$ref": "license-payload.schema.json#/properties/until"
         },
         "trialEnds": {
           "description": "The last day of the trial a trial started: the license file's spec.started.day plus days, less one, so a reader shows when the running trial ends. Present exactly on a trial with a started record; this schema cannot see the started record, so mankit's license check keeps that rule, and the schema refuses it on a license.",
-          "$ref": "license-payload.schema.json#/properties/until"
-        },
-        "offerEnds": {
-          "description": "The day a trial's offer ends, the trial's own signed until, so a reader shows it apart from the trial's end. Present exactly on a trial whose payload has an until, started or not; a trial without it has an offer that never ends (ADR-L9).",
-          "$ref": "license-payload.schema.json#/properties/until"
+          "$ref": "#/$defs/day"
         },
         "daysLeft": {
-          "description": "The days left until the license's last day, 0 once it has ended: until for a license, trialEnds for a started trial, offerEnds for one not started. Absent when there is no such day: a license that never ends, or a trial not started whose offer never ends. license check gives only this; when to warn is the threshold's to say (ADR-L3).",
+          "description": "The days left until the license's last day, 0 once it has ended: until for a license, trialEnds for a started trial. Absent when there is no such day: a license that never ends, or a trial not started. license check gives only this; when to warn is the threshold's to say (ADR-L3).",
           "type": "integer",
           "minimum": 0
         },
@@ -171,7 +167,7 @@
           }
         },
         {
-          "description": "A license runs until a day or names its lines, never both, as its payload does (ADR-L10), and has no trial's days; a trial has no until of its own.",
+          "description": "A license meets its payload's rule on until and lines (license-payload.schema.json) and has no trial's end; a trial has no until (ADR-L9).",
           "if": {
             "properties": {
               "kind": {
@@ -181,17 +177,8 @@
           },
           "then": {
             "not": {
-              "anyOf": [
-                {
-                  "required": [
-                    "trialEnds"
-                  ]
-                },
-                {
-                  "required": [
-                    "offerEnds"
-                  ]
-                }
+              "required": [
+                "trialEnds"
               ]
             },
             "oneOf": [
@@ -227,11 +214,6 @@
               {
                 "required": [
                   "trialEnds"
-                ]
-              },
-              {
-                "required": [
-                  "offerEnds"
                 ]
               }
             ]
@@ -305,8 +287,7 @@
         },
         "until": {
           "description": "The last day the feature stays open, an RFC 3339 date: the latest last day of what unlocks it, a license's until or a trial's trialEnds. Absent when from is none, and when a license that never ends opens it.",
-          "type": "string",
-          "format": "date"
+          "$ref": "#/$defs/day"
         }
       },
       "additionalProperties": false,
@@ -368,6 +349,11 @@
           }
         }
       ]
+    },
+    "day": {
+      "description": "A day, an RFC 3339 date in UTC: the one form every day in this answer takes.",
+      "type": "string",
+      "format": "date"
     }
   }
 }

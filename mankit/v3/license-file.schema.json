@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ElderlyGate/contracts/mankit/v3/license-file.schema.json",
   "title": "license file",
-  "description": "A license file of elderlygate/mankit/license/v2 on disk, as nw-licenser writes it and mankit's licenses package reads it: a Resource (ADR-S15) whose spec holds the payload's bytes exactly as signed and the Ed25519 signature over them, so an app checks the file offline against the keys its build trusts (ADR-L1, L5, L6). The signature covers the payload alone. One license file per user, in the org's config folder, read by every app; a trial's file, with its started record, in its app's own folder (ADR-L8); the mankit README gives both paths. Several app versions read it at once: apiVersion, kind and metadata never change; spec may grow (ADR-S15). A file that is not this shape is refused as unreadable.",
+  "description": "A license file of elderlygate/mankit/license/v2 on disk, as nw-licenser writes it and mankit's licenses package reads it: a Resource (ADR-S15) whose spec holds the payload's bytes exactly as signed and the Ed25519 signature over them, so an app checks the file offline against the keys its build trusts (ADR-L1, L5, L6). The signature covers the payload alone. Where it lives: ADR-L8. Several app versions read it at once: apiVersion, kind and metadata never change; spec may grow (ADR-S15). A file that is not this shape is refused as unreadable.",
   "type": "object",
   "required": [
     "apiVersion",
@@ -44,7 +44,7 @@
           "$ref": "../v1/license-file.schema.json#/properties/spec/properties/signature"
         },
         "started": {
-          "description": "The trial this file started, written by the app beside the signed payload (ADR-L9). The signing tool writes the file without it; the app adds it when it writes its built-in trial as its trial file on a start with no license, and writes it anew when the app is reinstalled or updated. Unsigned, as the trial is signed once per product line but starts once per install: the signature covers the payload alone, so this record never breaks it. Editing or deleting it, or touching the binary, gives a fresh trial, as a reinstall does; this is accepted (ADR-L1, L9), and it never opens more than the signed payload names. A rule no schema can say, as the kind sits inside the signed payload: only a trial's file has it. Open: a newer app may add fields here, and an older app accepts them (CT-RULE-4).",
+          "description": "The record of the trial this file started, which the app writes beside the signed payload; nw-licenser writes the file without it. Unsigned: the signature covers the payload alone, so this record never breaks it. When the app writes it and what editing it gives: ADR-L9. A rule no schema can say, as the kind sits inside the signed payload: only a trial's file has it. Open: a newer app may add fields here, and an older app accepts them (CT-RULE-4).",
           "type": "object",
           "required": [
             "day",
@@ -53,7 +53,7 @@
           ],
           "properties": {
             "day": {
-              "description": "The day the trial started, an RFC 3339 date in UTC, never after the payload's until when it has one. The trial runs the payload's days from it, so license-show.schema.json's licenses[].trialEnds for this file is reckoned from it.",
+              "description": "The day the trial started, an RFC 3339 date in UTC. The trial runs the payload's days from it, so license-show.schema.json's licenses[].trialEnds for this file is reckoned from it.",
               "type": "string",
               "format": "date"
             },

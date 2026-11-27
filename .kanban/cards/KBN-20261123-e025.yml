@@ -20,6 +20,8 @@ spec:
 
     The contracts home of the lean license model (owner decision 1, 27 Nov 2026). The code home is mankit card 20261127-5e0e.
 
+    It covers the kinds, `lines` and the feature-id pattern.
+
     ## Kinds and file
     - Two kinds: `license` (names its products and features; covers org and product) and `trial` (the built-in release trial). The person `trial` kind is dropped.
     - One license file.
@@ -31,8 +33,6 @@ spec:
     ## Lines and feature ids
     - The `lines` field comes with this version.
     - Org rule G-STACK-17 (owner, 2026-11-23) gives a feature id one form: lowercase words joined by a hyphen, starting with a letter, at most 32 characters, never a tier or price word. v2 carries the pattern (`^[a-z][a-z0-9]*(-[a-z0-9]+)*$`, `maxLength` 32) for feature ids, with its meaning in the description (CT-RULE-5). The pattern narrows what a license may name, so it is a new apiVersion, not a change to v1 (CT-RULE-1).
-
-    Backlog; not started.
   lifecycle:
     active_at: 2026-11-27T15:40:00.965Z
     active_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>

@@ -145,7 +145,7 @@ func TestATicketTakesNewSpecFieldsButNoNewHeader(t *testing.T) {
 // trialKind is the kind of a trial whose file may hold spec.started, by the mankit folder of the license file schema.
 var trialKind = map[string]string{"v1": "release-trial", "v3": "trial"}
 
-// licenseFileProblem checks what the license file schema of mankit/<version> cannot say, as the payload sits inside the signed base64: the payload meets its schema and names the file's id, only a trial's file has spec.started, its day is never after the payload's until, and lines names exactly the products that products names.
+// licenseFileProblem checks what the license file schema of mankit/<version> cannot say, as the payload sits inside the signed base64: the payload meets its schema and names the file's id, and only a trial's file has spec.started. In v1 the started day is never after the payload's until; in v3 until is never before issued, and a license's lines name exactly the products that products names.
 func licenseFileProblem(version string, raw []byte) error {
 	var file struct {
 		Metadata struct {
@@ -167,6 +167,7 @@ func licenseFileProblem(version string, raw []byte) error {
 	var payload struct {
 		ID       string              `json:"id"`
 		Kind     string              `json:"kind"`
+		Issued   string              `json:"issued"`
 		Until    string              `json:"until"`
 		Products map[string][]string `json:"products"`
 		Lines    map[string][]int    `json:"lines"`
@@ -177,7 +178,10 @@ func licenseFileProblem(version string, raw []byte) error {
 	if payload.ID != file.Metadata.ID {
 		return fmt.Errorf("metadata.id %q is not the payload's id %q", file.Metadata.ID, payload.ID)
 	}
-	if payload.Lines != nil {
+	if version == "v3" && payload.Until != "" && payload.Until < payload.Issued {
+		return fmt.Errorf("until %s is before issued %s", payload.Until, payload.Issued)
+	}
+	if payload.Kind == "license" && payload.Lines != nil {
 		for product := range payload.Lines {
 			if _, ok := payload.Products[product]; !ok {
 				return fmt.Errorf("lines names %s, which products does not name", product)
@@ -195,7 +199,7 @@ func licenseFileProblem(version string, raw []byte) error {
 	if payload.Kind != trialKind[version] {
 		return fmt.Errorf("spec.started in a file of kind %s, not %s", payload.Kind, trialKind[version])
 	}
-	if payload.Until == "" {
+	if version != "v1" {
 		return nil
 	}
 	day, err := time.Parse(time.DateOnly, file.Spec.Started.Day)
