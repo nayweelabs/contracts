@@ -65,6 +65,10 @@ forms:
     app: mankit
     kinds: [License]
     note: "A signed license file (mankit/v3 license-file, ADR-L1, L8, L10): nw-licenser writes it. A license/v1 file is never upgraded, as its signature covers its bytes; mankit still reads it for one release"
+  - new: elderlygate/mankit/trial/v1
+    app: mankit
+    kinds: [TrialStarted]
+    note: "The plain, unsigned note in an app's own folder saying when and on which install its trial started (mankit/v4 trial-started, ADR-L9); the trial is a rule in mankit, not a license"
   - new: elderlygate/contracts/problem/v1
     app: contracts
     kinds: [Problem]
