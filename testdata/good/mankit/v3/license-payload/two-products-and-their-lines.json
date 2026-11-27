@@ -1,0 +1,23 @@
+{
+  "id": "lic-20261201-cy",
+  "kind": "license",
+  "for": "Cy Example",
+  "products": {
+    "acme-app": [
+      "events"
+    ],
+    "acme-board": [
+      "sync"
+    ]
+  },
+  "lines": {
+    "acme-app": [
+      1
+    ],
+    "acme-board": [
+      3
+    ]
+  },
+  "issued": "2026-12-01",
+  "keyId": "test-2026"
+}

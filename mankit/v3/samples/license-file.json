@@ -1,0 +1,11 @@
+{
+  "apiVersion": "elderlygate/mankit/license/v2",
+  "kind": "License",
+  "metadata": {
+    "id": "lic-20261201-ada"
+  },
+  "spec": {
+    "payload": "eyJpZCI6ImxpYy0yMDI2MTIwMS1hZGEiLCJraW5kIjoibGljZW5zZSIsImZvciI6ImFkYUBhY21lLmV4YW1wbGUiLCJwcm9kdWN0cyI6eyJhY21lLWFwcCI6WyJldmVudHMiLCJzaGFyZSIsInN5bmMiXX0sImxpbmVzIjp7ImFjbWUtYXBwIjpbMV19LCJpc3N1ZWQiOiIyMDI2LTEyLTAxIiwia2V5SWQiOiJ0ZXN0LTIwMjYifQ==",
+    "signature": "WYdSDQBjuCb4otmT/guuBtCYjSovc+YoO+CorbwnwhXp6v4KhvF3tE1RTOC5fI3at87XrIufJBYkHST05sHzBw=="
+  }
+}

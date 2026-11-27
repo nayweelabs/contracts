@@ -149,6 +149,70 @@ func UpgradeMankit(v1 []byte) ([]byte, error) {
 	return encodeChecked(doc, MankitSchema("v2", head.Kind))
 }
 
+// The words mankit/v3's LicenseShow gives for v2's, by field: a state, a license's kind and where a feature is unlocked from.
+var (
+	licenseStateV3 = map[string]string{"none": "free", "trial": "trial", "trial-ended": "free", "licensed": "licensed", "ending": "licensed", "ended": "free"}
+	licenseKindV3  = map[string]string{"org": "license", "product": "license", "release-trial": "trial"}
+	licenseFromV3  = map[string]string{"org": "license", "product": "license", "both": "license", "trial": "trial", "none": "none"}
+)
+
+// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes: each word becomes v3's (licenseStateV3, licenseKindV3, licenseFromV3), and a trial loses until and offerEnds, as its offer does not end (ADR-L9), so a trial not started also loses its daysLeft and has not ended, and, when no license names the answer, v2's sentence for an ended offer is dropped, as v3 never says a trial offer ended.
+// The licenses come first, then the trial, as v3 orders them. warn, endedOn and the rest mean the same in both, so they stay. A person's trial key has no v3 kind, so an answer that took one is refused, as is any word v3 has none for and a feature id v3 refuses (G-STACK-17).
+// The app's own apiVersion and contract are untouched, as with UpgradeMankit: the app's own step names its contract.
+func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
+	if err := Validate(MankitSchema("v2", "LicenseShow"), v2); err != nil {
+		return nil, fmt.Errorf("not a mankit/v2 LicenseShow: %w", err)
+	}
+	var doc map[string]any
+	if err := json.Unmarshal(v2, &doc); err != nil {
+		return nil, err
+	}
+	data := doc["data"].(map[string]any)
+	state, ok := licenseStateV3[data["state"].(string)]
+	if !ok {
+		return nil, fmt.Errorf("a %s state has no mankit/v3 word", data["state"])
+	}
+	data["state"] = state
+	licenses := data["licenses"].([]any)
+	licensed := false
+	for _, l := range licenses {
+		if k := licenseKindV3[l.(map[string]any)["kind"].(string)]; k == "license" {
+			licensed = true
+		}
+	}
+	for _, l := range licenses {
+		license := l.(map[string]any)
+		kind, ok := licenseKindV3[license["kind"].(string)]
+		if !ok {
+			return nil, fmt.Errorf("a %s license has no mankit/v3 kind", license["kind"])
+		}
+		license["kind"] = kind
+		if kind == "trial" {
+			delete(license, "until")
+			delete(license, "offerEnds")
+			if _, started := license["trialEnds"]; !started {
+				if license["ended"] == true && !licensed {
+					delete(data, "sentence")
+				}
+				delete(license, "daysLeft")
+				license["ended"] = false
+			}
+		}
+	}
+	sort.SliceStable(licenses, func(i, j int) bool {
+		return licenses[i].(map[string]any)["kind"] == "license" && licenses[j].(map[string]any)["kind"] == "trial"
+	})
+	for _, f := range data["features"].([]any) {
+		feature := f.(map[string]any)
+		from, ok := licenseFromV3[feature["from"].(string)]
+		if !ok {
+			return nil, fmt.Errorf("a feature from %s has no mankit/v3 word", feature["from"])
+		}
+		feature["from"] = from
+	}
+	return encodeChecked(doc, MankitSchema("v3", "LicenseShow"))
+}
+
 const (
 	designerV1   = "elderlygate/designer/app/v1"
 	designerV2   = "elderlygate/designer/app/v2"

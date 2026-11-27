@@ -1,0 +1,20 @@
+{
+  "id": "lic-20261201-bo",
+  "kind": "license",
+  "for": "Bo Example",
+  "products": {
+    "acme-app": [
+      "events",
+      "share",
+      "sync"
+    ]
+  },
+  "lines": {
+    "acme-app": [
+      1,
+      2
+    ]
+  },
+  "issued": "2026-12-01",
+  "keyId": "test-2026"
+}

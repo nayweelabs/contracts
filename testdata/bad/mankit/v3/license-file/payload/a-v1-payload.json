@@ -1,0 +1,11 @@
+{
+  "apiVersion": "elderlygate/mankit/license/v2",
+  "kind": "License",
+  "metadata": {
+    "id": "lic-old"
+  },
+  "spec": {
+    "payload": "eyJpZCI6ImxpYy1vbGQiLCJraW5kIjoib3JnIiwiZm9yIjoiQWNtZSBMdGQiLCJwcm9kdWN0cyI6eyJhY21lLWFwcCI6WyJldmVudHMiXX0sImlzc3VlZCI6IjIwMjYtMTEtMDYiLCJ1bnRpbCI6IjIwMjctMTEtMDYiLCJrZXlJZCI6InRlc3QtMjAyNiJ9",
+    "signature": "Ovi6AExPU4iKLZlO/mstAzdsRkALKVzMDwxui9HdnNgVsUZbwqOV4U/D0SMTovdVe53FzFop76zp7jd46S4x2w=="
+  }
+}

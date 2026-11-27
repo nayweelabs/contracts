@@ -19,6 +19,7 @@ var steps = map[string]struct {
 	"envelope/v1-v2": {contracts.UpgradeEnvelope, fixed("envelope/v1/envelope.schema.json"), fixed("envelope/v2/envelope.schema.json")},
 	"designer/v1-v2": {contracts.UpgradeDesigner, designerSchema("v1"), designerSchema("v2")},
 	"mankit/v1-v2":   {contracts.UpgradeMankit, mankitSchema("v1"), mankitSchema("v2")},
+	"mankit/v2-v3":   {contracts.UpgradeLicenseShow, mankitSchema("v2"), mankitSchema("v3")},
 }
 
 func fixed(schema string) func(string) string { return func(string) string { return schema } }
@@ -60,16 +61,29 @@ func decode(t *testing.T, b []byte) any {
 	return v
 }
 
-// Each pair in testdata/upgrade/<dir>/<from>-<to>/ is an answer of the older version and the answer its step makes of it, each meeting its own version (CT-RULE-3).
+// versionsOf is the two versions of a file in testdata/upgrade/<dir>/<from>-<to>/, by its folder's name.
+func versionsOf(path string) (from, to string) {
+	from, to, _ = strings.Cut(filepath.Base(filepath.Dir(path)), "-")
+	return from, to
+}
+
+// Each pair in testdata/upgrade/<dir>/<from>-<to>/ is an answer of the older version, <case>.<from>.json, and the answer its step makes of it, <case>.<to>.json, each meeting its own version (CT-RULE-3).
 func TestUpgradeStepsMatchTheirSamples(t *testing.T) {
-	pairs, err := filepath.Glob("testdata/upgrade/*/*/*.v1.json")
-	if err != nil || len(pairs) == 0 {
-		t.Fatalf("no upgrade pairs found: %v", err)
+	files, _ := filepath.Glob("testdata/upgrade/*/*/*.json")
+	var pairs []string
+	for _, path := range files {
+		if from, _ := versionsOf(path); strings.HasSuffix(path, "."+from+".json") {
+			pairs = append(pairs, path)
+		}
 	}
-	for _, v1 := range pairs {
-		t.Run(v1, func(t *testing.T) {
-			step, fromSchema, toSchema := stepOf(t, v1)
-			older, want := readFile(t, v1), readFile(t, strings.TrimSuffix(v1, ".v1.json")+".v2.json")
+	if len(pairs) == 0 {
+		t.Fatal("no upgrade pairs found")
+	}
+	for _, path := range pairs {
+		t.Run(path, func(t *testing.T) {
+			step, fromSchema, toSchema := stepOf(t, path)
+			from, to := versionsOf(path)
+			older, want := readFile(t, path), readFile(t, strings.TrimSuffix(path, "."+from+".json")+"."+to+".json")
 			kind := kindOf(t, older)
 			if err := contracts.Validate(fromSchema(kind), older); err != nil {
 				t.Fatalf("the sample read does not meet %s: %v", fromSchema(kind), err)
@@ -103,15 +117,28 @@ func kindOf(t *testing.T, b []byte) string {
 	return head.Kind
 }
 
-// A newer sample with no older partner is a pair cut in half, so every file in testdata/upgrade is part of one.
+// Every file in testdata/upgrade is part of one pair, or refused: a sample with no partner is a pair cut in half.
 func TestEveryUpgradeSampleHasItsPartner(t *testing.T) {
-	tos, err := filepath.Glob("testdata/upgrade/*/*/*.v2.json")
+	files, err := filepath.Glob("testdata/upgrade/*/*/*.json")
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, to := range tos {
-		if _, err := os.Stat(strings.TrimSuffix(to, ".v2.json") + ".v1.json"); err != nil {
-			t.Errorf("%s has no .v1.json partner", to)
+	for _, path := range files {
+		from, to := versionsOf(path)
+		var partner string
+		switch {
+		case strings.HasSuffix(path, ".refused.json"):
+			continue
+		case strings.HasSuffix(path, "."+from+".json"):
+			partner = strings.TrimSuffix(path, "."+from+".json") + "." + to + ".json"
+		case strings.HasSuffix(path, "."+to+".json"):
+			partner = strings.TrimSuffix(path, "."+to+".json") + "." + from + ".json"
+		default:
+			t.Errorf("%s is neither a .%s.json, a .%s.json nor a .refused.json", path, from, to)
+			continue
+		}
+		if _, err := os.Stat(partner); err != nil {
+			t.Errorf("%s has no partner %s", path, partner)
 		}
 	}
 }
@@ -129,5 +156,43 @@ func TestUpgradeStepsRefuseWhatIsNotTheirs(t *testing.T) {
 				t.Fatalf("the step took it and gave\n%s", out)
 			}
 		})
+	}
+}
+
+// mankit/v3's LicenseShow lists the licenses first, then the trial, so the step puts a trial v2 listed first after the licenses.
+func TestUpgradeLicenseShowListsLicensesBeforeTheTrial(t *testing.T) {
+	var doc, trial map[string]any
+	if err := json.Unmarshal(readFile(t, "testdata/upgrade/mankit/v2-v3/license-show.v2.json"), &doc); err != nil {
+		t.Fatal(err)
+	}
+	if err := json.Unmarshal(readFile(t, "testdata/upgrade/mankit/v2-v3/a-started-release-trial.v2.json"), &trial); err != nil {
+		t.Fatal(err)
+	}
+	data := doc["data"].(map[string]any)
+	data["licenses"] = append(trial["data"].(map[string]any)["licenses"].([]any), data["licenses"].([]any)...)
+	v2, err := json.Marshal(doc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	v3, err := contracts.UpgradeLicenseShow(v2)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got struct {
+		Data struct {
+			Licenses []struct {
+				Kind string `json:"kind"`
+			} `json:"licenses"`
+		} `json:"data"`
+	}
+	if err := json.Unmarshal(v3, &got); err != nil {
+		t.Fatal(err)
+	}
+	var kinds []string
+	for _, l := range got.Data.Licenses {
+		kinds = append(kinds, l.Kind)
+	}
+	if want := []string{"license", "license", "trial"}; !reflect.DeepEqual(kinds, want) {
+		t.Fatalf("got kinds %v, want %v", kinds, want)
 	}
 }

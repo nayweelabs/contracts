@@ -1,0 +1,13 @@
+{
+  "id": "lic-acme-app-1-trial",
+  "kind": "trial",
+  "for": "Acme 1",
+  "lines": {
+    "acme-app": [
+      1
+    ]
+  },
+  "issued": "2026-12-01",
+  "days": 0,
+  "keyId": "test-2026"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "lic-20261201-ada",
+  "kind": "license",
+  "for": "ada@acme.example",
+  "products": {
+    "acme-app": [
+      "events",
+      "share",
+      "sync"
+    ]
+  },
+  "issued": "2026-12-01",
+  "keyId": "test-2026"
+}

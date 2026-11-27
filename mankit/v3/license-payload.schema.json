@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElderlyGate/contracts/mankit/v3/license-payload.schema.json",
+  "title": "license payload",
+  "description": "What a license file of elderlygate/mankit/license/v2 signs (license-file.schema.json's spec.payload, once decoded). nw-licenser writes it and mankit's licenses package reads it. Open (CT-RULE-4, ADR-S15).",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "for",
+    "issued",
+    "keyId"
+  ],
+  "properties": {
+    "id": {
+      "$ref": "../v1/license-payload.schema.json#/properties/id"
+    },
+    "kind": {
+      "description": "Which kind of license it is, so an app knows what it opens (ADR-L8). license: what the owner signs with nw-licenser for a person or an org; it opens the enterprise features it names (ADR-L2, L10). trial: the trial a product line carries built in; it opens every enterprise feature of its one app (ADR-L9).",
+      "enum": [
+        "license",
+        "trial"
+      ]
+    },
+    "for": {
+      "description": "The person or org the license names, never a machine, so whoever has the file sees whose it was (ADR-L4); for a trial, which names no one, its product line in words, for example \"Acme 1\"; never only spaces.",
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "products": {
+      "description": "The enterprise feature ids the license names, per product id, so an app opens a feature only when its own product id names it (ADR-L2).",
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/productId"
+      },
+      "additionalProperties": {
+        "description": "The product's enterprise feature ids, each once, as its feature list names them.",
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "$ref": "#/$defs/featureId"
+        }
+      }
+    },
+    "lines": {
+      "description": "The product lines it opens, per product id, each by its number as the constitution's product-lines.yaml names it, so 1 is Designer 1 (V-10). An app opens what it names only while its own build's line is among them, and a later line needs a new license (ADR-L10).",
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/productId"
+      },
+      "additionalProperties": {
+        "description": "The product's line numbers, each once.",
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "issued": {
+      "description": "The license's first day, an RFC 3339 date in UTC; it opens nothing before it.",
+      "type": "string",
+      "format": "date"
+    },
+    "until": {
+      "description": "The license's last day, an RFC 3339 date in UTC, never before issued; after it its features lock again (ADR-L3).",
+      "type": "string",
+      "format": "date"
+    },
+    "days": {
+      "description": "How long each trial it starts runs, in whole days, its first day counted, so every install of the product line's releases gets a trial of the same length (ADR-L9).",
+      "type": "integer",
+      "minimum": 1
+    },
+    "keyId": {
+      "$ref": "../v1/license-payload.schema.json#/properties/keyId"
+    }
+  },
+  "allOf": [
+    {
+      "description": "A license names one or more products, each with one or more feature ids, and has no days. It either runs until a day or names the lines it opens, never both (ADR-L10). When it names lines, they name exactly the products products names; no schema can say that, so mankit's license check keeps it (ADR-L2, L10).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "license"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "products"
+        ],
+        "not": {
+          "required": [
+            "days"
+          ]
+        },
+        "properties": {
+          "products": {
+            "minProperties": 1,
+            "additionalProperties": {
+              "minItems": 1
+            }
+          }
+        },
+        "oneOf": [
+          {
+            "required": [
+              "until"
+            ]
+          },
+          {
+            "required": [
+              "lines"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "description": "A trial names no products and has no until: its trial offer does not end (ADR-L2, L9). Its lines name its one product and the one line it was signed for, and days how long its trials run (ADR-L9).",
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "trial"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "days",
+          "lines"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "products"
+              ]
+            },
+            {
+              "required": [
+                "until"
+              ]
+            }
+          ]
+        },
+        "properties": {
+          "lines": {
+            "maxProperties": 1,
+            "additionalProperties": {
+              "maxItems": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "productId": {
+      "description": "A product id, the name the hubman catalog and every answer's source.app give the product (G-PLAN-12).",
+      "$ref": "../../envelope/v2/envelope.schema.json#/properties/source/properties/app"
+    },
+    "featureId": {
+      "description": "A product feature id, as the product's feature list names it, which is the one home of its ids (G-STACK-17): lowercase words joined by a hyphen, starting with a letter, at most 32 characters, like events, live-tracing or pdf-export. A license and a switch name a feature by it, so one form holds everywhere. A noun for what the feature is, never a tier or price word such as pro or premium; unique within its product; once released it never changes its meaning and is never reused. Only the form is this schema's to check.",
+      "type": "string",
+      "maxLength": 32,
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
+    }
+  }
+}
