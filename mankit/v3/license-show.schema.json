@@ -53,8 +53,8 @@
         "build": {
           "$ref": "../v1/license-show.schema.json#/$defs/data/properties/build"
         },
-        "active": {
-          "description": "The app's active license, the one its features and state rest on (ADR-L8), as license list's row gives it. Present while one is active, even when it has ended or does not name this build's line, as the app never switches to another license by itself. Absent when none is active: there is no license, or the chosen file was refused, and sentence then says why.",
+        "license": {
+          "description": "The active license, as license list's row gives it; absent when none is active, and sentence then says why.",
           "allOf": [
             {
               "$ref": "license-list.schema.json#/$defs/license"
@@ -116,10 +116,10 @@
           },
           "then": {
             "required": [
-              "active"
+              "license"
             ],
             "properties": {
-              "active": {
+              "license": {
                 "properties": {
                   "ended": {
                     "const": false
@@ -191,10 +191,10 @@
           },
           "then": {
             "required": [
-              "active"
+              "license"
             ],
             "properties": {
-              "active": {
+              "license": {
                 "properties": {
                   "ended": {
                     "const": true
@@ -229,6 +229,7 @@
           "type": "boolean"
         },
         "window": {
+          "description": "The trial's countdown; its shape is license list's window, which is its one home (license-list.schema.json).",
           "$ref": "license-list.schema.json#/$defs/window"
         }
       },

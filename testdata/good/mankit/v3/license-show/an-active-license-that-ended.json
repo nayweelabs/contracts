@@ -12,7 +12,7 @@
     "build": {
       "release": true
     },
-    "active": {
+    "license": {
       "id": "lic-20251201-acme-labs",
       "place": "org",
       "for": "Acme Labs",

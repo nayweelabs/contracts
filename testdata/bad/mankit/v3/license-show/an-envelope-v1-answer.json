@@ -6,7 +6,7 @@
     "build": {
       "release": true
     },
-    "active": {
+    "license": {
       "id": "lic-20261201-ada",
       "place": "app",
       "for": "ada@acme.example",
