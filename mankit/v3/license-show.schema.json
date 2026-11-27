@@ -1,0 +1,373 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElderlyGate/contracts/mankit/v3/license-show.schema.json",
+  "title": "license show",
+  "description": "What <app> license show answers with -o json, on envelope/v2, for licenses of elderlygate/mankit/license/v2 (license-payload.schema.json): the app's license state and whether it warns, whether this build is a release, the licenses it took and the files it refused, and every feature in its feature state with where it is unlocked from, so the CLI, its JSON, the top bar's badge and the License group on the app's Settings page show the same answer and none of them works anything out (ADR-L3, L8). mankit's license check makes it for every app, so every app answers it alike. mankit/v2's LicenseShow is the answer before it.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v2/envelope.schema.json"
+    },
+    {
+      "properties": {
+        "kind": {
+          "$ref": "../v1/license-show.schema.json#/$defs/kind"
+        },
+        "data": {
+          "$ref": "#/$defs/data"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "data": {
+      "description": "The app's license state and warn, its build, the licenses it took and refused, the counts and its features.",
+      "type": "object",
+      "required": [
+        "state",
+        "build",
+        "licenses",
+        "refused",
+        "counts",
+        "features"
+      ],
+      "properties": {
+        "state": {
+          "description": "What the badge and the License group say, one word for the license state of the whole app (ADR-L3), worked out here once; whether the build is a release is build's alone to say. The first of these that holds decides it. licensed: a license runs, that is one begun and not ended and, when it names lines, naming this build's line (ADR-L10, V-10). trial: a trial runs, that is one with a started record whose trialEnds has not passed (ADR-L9). free: anything else, so use is free (ADR-L3): no license, or only a license not begun yet, ended, or not naming this build's line, and no trial, or one not started or ended. licenses lists each of these all the same.",
+          "enum": [
+            "free",
+            "trial",
+            "licensed"
+          ]
+        },
+        "endedOn": {
+          "description": "The last day of the license that ended, when state is free and a license has ended: the latest until among the ended licenses, so ADR-L3's notice names the day and a page never picks a license. Absent otherwise.",
+          "$ref": "license-payload.schema.json#/properties/until"
+        },
+        "sentence": {
+          "description": "The one sentence a reader shows for the app's license state, made by mankit's license check and shown word for word: readers never build or change it, so the CLI, the web badge and panel and the TUI say the same. Present when the state has one: a running trial, with its days left and last day; an ended trial; free while a trial's offer has ended; and licensed, naming whom the running license is for. Absent otherwise. Its words are the license check's to choose.",
+          "type": "string",
+          "minLength": 1
+        },
+        "warn": {
+          "description": "True when a reader shows the license state in its warn colour; the answer decides and readers never do (ADR-L3). True when state is licensed and the running license that ends last is in the warning ADR-L3's built-in threshold license-expiring sets; when state is trial and the trial is in its last days, as that threshold counts them; and when state is free and a trial or a license has ended, until it is replaced or removed (ADR-L3). Absent or false otherwise, so a license that never ends never warns.",
+          "type": "boolean"
+        },
+        "build": {
+          "$ref": "../v1/license-show.schema.json#/$defs/data/properties/build"
+        },
+        "licenses": {
+          "description": "Every license file the app read and took: the licenses first, then the trial. While mankit still reads mankit/v1's files, an org or product file shows as a license and a release-trial as a trial (ADR-L8). A file it refused is in refused instead, never here. Empty when there is none, so a reader tells no license from a failure.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/license"
+          }
+        },
+        "refused": {
+          "$ref": "../v1/license-show.schema.json#/$defs/data/properties/refused"
+        },
+        "counts": {
+          "$ref": "../v1/license-show.schema.json#/$defs/data/properties/counts"
+        },
+        "features": {
+          "description": "Every feature of the app, in the order its feature list gives them: its feature state and where it is unlocked from, so the License group draws this answer alone (ADR-L2, L8).",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/feature"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "description": "A day a license ended is named only while use is free, and it always warns.",
+          "if": {
+            "required": [
+              "endedOn"
+            ]
+          },
+          "then": {
+            "required": [
+              "warn"
+            ],
+            "properties": {
+              "state": {
+                "const": "free"
+              },
+              "warn": {
+                "const": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "license": {
+      "description": "One license file the app read: its kind, whom it names, what it opens or until when, and the key that signed it.",
+      "type": "object",
+      "required": [
+        "kind",
+        "for",
+        "ended",
+        "keyId"
+      ],
+      "properties": {
+        "kind": {
+          "description": "Which kind of license it is, so a reader knows what it covers; license-payload.schema.json's kind says what each means.",
+          "$ref": "license-payload.schema.json#/properties/kind"
+        },
+        "for": {
+          "description": "Whom the license names, as its signed payload says.",
+          "$ref": "license-payload.schema.json#/properties/for"
+        },
+        "lines": {
+          "description": "The product lines it opens, as its signed payload says, so a reader shows a license that never ends by what it opens. Absent when the payload names none.",
+          "$ref": "license-payload.schema.json#/properties/lines"
+        },
+        "until": {
+          "description": "A license's last day, as its signed payload says; absent on a license that never ends. Never on a trial, whose days are trialEnds and offerEnds.",
+          "$ref": "license-payload.schema.json#/properties/until"
+        },
+        "trialEnds": {
+          "description": "The last day of the trial a trial started: the license file's spec.started.day plus days, less one, so a reader shows when the running trial ends. Present exactly on a trial with a started record; this schema cannot see the started record, so mankit's license check keeps that rule, and the schema refuses it on a license.",
+          "$ref": "license-payload.schema.json#/properties/until"
+        },
+        "offerEnds": {
+          "description": "The day a trial's offer ends, the trial's own signed until, so a reader shows it apart from the trial's end. Present exactly on a trial whose payload has an until, started or not; a trial without it has an offer that never ends (ADR-L9).",
+          "$ref": "license-payload.schema.json#/properties/until"
+        },
+        "daysLeft": {
+          "description": "The days left until the license's last day, 0 once it has ended: until for a license, trialEnds for a started trial, offerEnds for one not started. Absent when there is no such day: a license that never ends, or a trial not started whose offer never ends. license check gives only this; when to warn is the threshold's to say (ADR-L3).",
+          "type": "integer",
+          "minimum": 0
+        },
+        "ended": {
+          "description": "True once the day daysLeft counts to has passed: its features are locked again, and what they made stays readable (ADR-L3). Always false when there is no such day.",
+          "type": "boolean"
+        },
+        "keyId": {
+          "$ref": "../v1/license-show.schema.json#/$defs/license/properties/keyId"
+        },
+        "window": {
+          "$ref": "../v1/license-show.schema.json#/$defs/license/properties/window"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "description": "An ended license has no days left.",
+          "if": {
+            "properties": {
+              "ended": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "daysLeft": {
+                "const": 0
+              }
+            }
+          }
+        },
+        {
+          "description": "A license runs until a day or names its lines, never both, as its payload does (ADR-L10), and has no trial's days; a trial has no until of its own.",
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "license"
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "trialEnds"
+                  ]
+                },
+                {
+                  "required": [
+                    "offerEnds"
+                  ]
+                }
+              ]
+            },
+            "oneOf": [
+              {
+                "required": [
+                  "until"
+                ]
+              },
+              {
+                "required": [
+                  "lines"
+                ]
+              }
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "until"
+              ]
+            }
+          }
+        },
+        {
+          "description": "A license or trial with a last day counts its days left to it.",
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "until"
+                ]
+              },
+              {
+                "required": [
+                  "trialEnds"
+                ]
+              },
+              {
+                "required": [
+                  "offerEnds"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "required": [
+              "daysLeft"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "daysLeft"
+              ]
+            },
+            "properties": {
+              "ended": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "feature": {
+      "description": "One feature of the app: its feature state, each field as mankit/v1 defs' featureState says, and where it is unlocked from, a row of the License group's features table (ADR-L8).",
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "covers",
+        "tier",
+        "on",
+        "from"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "license-payload.schema.json#/$defs/featureId"
+        },
+        "title": {
+          "$ref": "../v1/defs.schema.json#/$defs/featureState/properties/title"
+        },
+        "covers": {
+          "$ref": "../v1/defs.schema.json#/$defs/featureState/properties/covers"
+        },
+        "needs": {
+          "$ref": "../v1/defs.schema.json#/$defs/featureState/properties/needs"
+        },
+        "startsOff": {
+          "$ref": "../v1/defs.schema.json#/$defs/featureState/properties/startsOff"
+        },
+        "tier": {
+          "$ref": "../v1/license-show.schema.json#/$defs/feature/properties/tier"
+        },
+        "on": {
+          "$ref": "../v1/defs.schema.json#/$defs/featureState/properties/on"
+        },
+        "by": {
+          "$ref": "../v1/defs.schema.json#/$defs/featureState/properties/by"
+        },
+        "missing": {
+          "$ref": "../v1/defs.schema.json#/$defs/featureState/properties/missing"
+        },
+        "from": {
+          "description": "Where the feature is unlocked from, worked out with state (ADR-L8, L9). license: a running license names it; trial: no running license names it and a running trial opens it; none: nothing opens it, as a free feature needs nothing and an enterprise feature with none is locked.",
+          "enum": [
+            "license",
+            "trial",
+            "none"
+          ]
+        },
+        "until": {
+          "description": "The last day the feature stays open, an RFC 3339 date: the latest last day of what unlocks it, a license's until or a trial's trialEnds. Absent when from is none, and when a license that never ends opens it.",
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "description": "featureState's own rules hold here too.",
+          "$ref": "../v1/defs.schema.json#/$defs/featureState/allOf/0"
+        },
+        {
+          "description": "A feature nothing opens has no last day.",
+          "if": {
+            "properties": {
+              "from": {
+                "const": "none"
+              }
+            }
+          },
+          "then": {
+            "not": {
+              "required": [
+                "until"
+              ]
+            }
+          }
+        },
+        {
+          "description": "A feature a trial opens stays open until the trial ends.",
+          "if": {
+            "properties": {
+              "from": {
+                "const": "trial"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "until"
+            ]
+          }
+        },
+        {
+          "description": "A license names enterprise features only, and a trial opens only those, so a free feature is never unlocked from one (ADR-L2, L9).",
+          "if": {
+            "required": [
+              "tier"
+            ],
+            "properties": {
+              "tier": {
+                "const": "free"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "from": {
+                "const": "none"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

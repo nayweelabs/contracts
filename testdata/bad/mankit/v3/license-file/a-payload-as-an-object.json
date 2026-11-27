@@ -1,0 +1,27 @@
+{
+  "apiVersion": "elderlygate/mankit/license/v2",
+  "kind": "License",
+  "metadata": {
+    "id": "lic-20261201-acme"
+  },
+  "spec": {
+    "payload": {
+      "id": "lic-20261201-acme",
+      "kind": "license",
+      "for": "Acme Ltd",
+      "products": {
+        "acme-app": [
+          "events",
+          "share"
+        ],
+        "acme-board": [
+          "sync"
+        ]
+      },
+      "issued": "2026-12-01",
+      "until": "2027-12-01",
+      "keyId": "test-2026"
+    },
+    "signature": "pKvURIxJVi2CgRXROh/M6pJ/UrTVRZKX+LQ+QtqJI4vBNibkPcs43bCCSIkn7JBPtCBXRDmD6IWFF51QVRr+Yg=="
+  }
+}

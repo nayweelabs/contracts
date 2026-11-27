@@ -1,0 +1,85 @@
+{
+  "apiVersion": "elderlygate/designer/app/v1",
+  "data": {
+    "build": {
+      "release": true
+    },
+    "counts": {
+      "enterprise": 4,
+      "free": 1,
+      "locked": 4,
+      "on": 1
+    },
+    "features": [
+      {
+        "covers": "apply, edit, connect, delete, focus, the design's files and its word lists",
+        "from": "none",
+        "id": "edit",
+        "on": true,
+        "tier": "free",
+        "title": "Change a design"
+      },
+      {
+        "by": "license",
+        "covers": "the /api/events stream",
+        "from": "none",
+        "id": "events",
+        "on": false,
+        "startsOff": true,
+        "tier": "enterprise",
+        "title": "Live events"
+      },
+      {
+        "by": "license",
+        "covers": "more than one design in a folder",
+        "from": "none",
+        "id": "multi-design",
+        "on": false,
+        "startsOff": true,
+        "tier": "enterprise",
+        "title": "Many designs"
+      },
+      {
+        "by": "license",
+        "covers": "sharing a design with others",
+        "from": "none",
+        "id": "share",
+        "on": false,
+        "startsOff": true,
+        "tier": "enterprise",
+        "title": "Share a design"
+      },
+      {
+        "by": "license",
+        "covers": "keeping designs the same on several machines",
+        "from": "none",
+        "id": "sync",
+        "on": false,
+        "startsOff": true,
+        "tier": "enterprise",
+        "title": "Sync designs"
+      }
+    ],
+    "licenses": [
+      {
+        "daysLeft": 362,
+        "ended": false,
+        "for": "designer 9",
+        "keyId": "test-2026",
+        "kind": "release-trial",
+        "offerEnds": "2027-11-20",
+        "until": "2027-11-20"
+      }
+    ],
+    "refused": [],
+    "state": "none"
+  },
+  "errors": [],
+  "kind": "LicenseShow",
+  "source": {
+    "app": "designer",
+    "contract": "v1",
+    "name": "designer",
+    "version": "9.0.0"
+  }
+}

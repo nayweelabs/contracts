@@ -1,0 +1,11 @@
+{
+  "id": "lic-20261201-acme",
+  "kind": "license",
+  "for": "Acme Ltd",
+  "products": {
+    "acme-app": []
+  },
+  "issued": "2026-12-01",
+  "until": "2027-12-01",
+  "keyId": "test-2026"
+}
