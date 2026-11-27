@@ -213,6 +213,59 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 	return encodeChecked(doc, MankitSchema("v3", "LicenseShow"))
 }
 
+// UpgradeLicenseShowV4 is the step from mankit/v3 to mankit/v4 for LicenseShow: the trial leaves licenses for trial, as it is a rule and not a license (ADR-L9), and each license loses its kind, as only licenses are left, and gains active (ADR-L8).
+// A started trial becomes trial, its trialEnds its until; a trial not started is dropped, as a v4 trial always has a start. v3 never names an active license, so the one its state rests on is marked: when licensed, the one license not ended; when free with endedOn, the one ended license whose until is endedOn; otherwise none. An answer where that is more than one license, or with two started trials, is refused rather than guessed.
+// state, warn, sentence and the features mean the same in both, so they stay. The app's own apiVersion and contract are untouched, as with UpgradeLicenseShow.
+func UpgradeLicenseShowV4(v3 []byte) ([]byte, error) {
+	if err := Validate(MankitSchema("v3", "LicenseShow"), v3); err != nil {
+		return nil, fmt.Errorf("not a mankit/v3 LicenseShow: %w", err)
+	}
+	var doc map[string]any
+	if err := json.Unmarshal(v3, &doc); err != nil {
+		return nil, err
+	}
+	data := doc["data"].(map[string]any)
+	licenses := []any{}
+	for _, l := range data["licenses"].([]any) {
+		license := l.(map[string]any)
+		if license["kind"] == "license" {
+			delete(license, "kind")
+			license["active"] = false
+			licenses = append(licenses, license)
+			continue
+		}
+		ends, started := license["trialEnds"]
+		if !started {
+			continue
+		}
+		if _, two := data["trial"]; two {
+			return nil, fmt.Errorf("two started trials have no mankit/v4 form")
+		}
+		trial := map[string]any{"until": ends, "daysLeft": license["daysLeft"], "ended": license["ended"]}
+		if window, ok := license["window"]; ok {
+			trial["window"] = window
+		}
+		data["trial"] = trial
+	}
+	var active []map[string]any
+	for _, l := range licenses {
+		license := l.(map[string]any)
+		switch {
+		case data["state"] == "licensed" && license["ended"] == false,
+			data["endedOn"] != nil && license["ended"] == true && license["until"] == data["endedOn"]:
+			active = append(active, license)
+		}
+	}
+	if len(active) > 1 {
+		return nil, fmt.Errorf("%d licenses could be the active one, and mankit/v3 does not say which", len(active))
+	}
+	if len(active) == 1 {
+		active[0]["active"] = true
+	}
+	data["licenses"] = licenses
+	return encodeChecked(doc, MankitSchema("v4", "LicenseShow"))
+}
+
 const (
 	designerV1   = "elderlygate/designer/app/v1"
 	designerV2   = "elderlygate/designer/app/v2"

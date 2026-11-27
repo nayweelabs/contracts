@@ -20,6 +20,7 @@ var steps = map[string]struct {
 	"designer/v1-v2": {contracts.UpgradeDesigner, designerSchema("v1"), designerSchema("v2")},
 	"mankit/v1-v2":   {contracts.UpgradeMankit, mankitSchema("v1"), mankitSchema("v2")},
 	"mankit/v2-v3":   {contracts.UpgradeLicenseShow, mankitSchema("v2"), mankitSchema("v3")},
+	"mankit/v3-v4":   {contracts.UpgradeLicenseShowV4, mankitSchema("v3"), mankitSchema("v4")},
 }
 
 func fixed(schema string) func(string) string { return func(string) string { return schema } }
