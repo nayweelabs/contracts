@@ -68,7 +68,7 @@ forms:
   - new: elderlygate/mankit/trial/v1
     app: mankit
     kinds: [TrialStarted]
-    note: "The plain, unsigned note in an app's own folder saying when and on which install its trial started (mankit/v4 trial-started, ADR-L9); the trial is a rule in mankit, not a license"
+    note: "The plain, unsigned note in an app's own folder saying when and on which install its trial started (mankit/v3 trial-started, ADR-L9); the trial is a rule in mankit, not a license"
   - new: elderlygate/contracts/problem/v1
     app: contracts
     kinds: [Problem]

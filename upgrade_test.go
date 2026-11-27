@@ -20,7 +20,6 @@ var steps = map[string]struct {
 	"designer/v1-v2": {contracts.UpgradeDesigner, designerSchema("v1"), designerSchema("v2")},
 	"mankit/v1-v2":   {contracts.UpgradeMankit, mankitSchema("v1"), mankitSchema("v2")},
 	"mankit/v2-v3":   {contracts.UpgradeLicenseShow, mankitSchema("v2"), mankitSchema("v3")},
-	"mankit/v3-v4":   {contracts.UpgradeLicenseShowV4, mankitSchema("v3"), mankitSchema("v4")},
 }
 
 func fixed(schema string) func(string) string { return func(string) string { return schema } }
@@ -157,43 +156,5 @@ func TestUpgradeStepsRefuseWhatIsNotTheirs(t *testing.T) {
 				t.Fatalf("the step took it and gave\n%s", out)
 			}
 		})
-	}
-}
-
-// mankit/v3's LicenseShow lists the licenses first, then the trial, so the step puts a trial v2 listed first after the licenses.
-func TestUpgradeLicenseShowListsLicensesBeforeTheTrial(t *testing.T) {
-	var doc, trial map[string]any
-	if err := json.Unmarshal(readFile(t, "testdata/upgrade/mankit/v2-v3/license-show.v2.json"), &doc); err != nil {
-		t.Fatal(err)
-	}
-	if err := json.Unmarshal(readFile(t, "testdata/upgrade/mankit/v2-v3/a-started-release-trial.v2.json"), &trial); err != nil {
-		t.Fatal(err)
-	}
-	data := doc["data"].(map[string]any)
-	data["licenses"] = append(trial["data"].(map[string]any)["licenses"].([]any), data["licenses"].([]any)...)
-	v2, err := json.Marshal(doc)
-	if err != nil {
-		t.Fatal(err)
-	}
-	v3, err := contracts.UpgradeLicenseShow(v2)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var got struct {
-		Data struct {
-			Licenses []struct {
-				Kind string `json:"kind"`
-			} `json:"licenses"`
-		} `json:"data"`
-	}
-	if err := json.Unmarshal(v3, &got); err != nil {
-		t.Fatal(err)
-	}
-	var kinds []string
-	for _, l := range got.Data.Licenses {
-		kinds = append(kinds, l.Kind)
-	}
-	if want := []string{"license", "license", "trial"}; !reflect.DeepEqual(kinds, want) {
-		t.Fatalf("got kinds %v, want %v", kinds, want)
 	}
 }

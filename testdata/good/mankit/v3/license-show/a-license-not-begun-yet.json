@@ -14,12 +14,15 @@
     },
     "licenses": [
       {
-        "kind": "license",
+        "id": "lic-20261201-acme",
+        "place": "org",
         "for": "Acme Ltd",
+        "issued": "2026-12-01",
         "until": "2027-12-01",
         "daysLeft": 400,
         "ended": false,
-        "keyId": "test-2026"
+        "keyId": "test-2026",
+        "active": true
       }
     ],
     "refused": [],

@@ -1,12 +1,5 @@
 {
-  "apiVersion": "elderlygate/designer/app/v2",
-  "kind": "LicenseShow",
-  "source": {
-    "name": "designer",
-    "app": "designer",
-    "version": "9.0.0",
-    "contract": "v2"
-  },
+  "apiVersion": "elderlygate/designer/app/v1",
   "data": {
     "build": {
       "release": true
@@ -14,8 +7,8 @@
     "counts": {
       "enterprise": 4,
       "free": 1,
-      "locked": 1,
-      "on": 4
+      "locked": 0,
+      "on": 5
     },
     "features": [
       {
@@ -28,67 +21,71 @@
       },
       {
         "covers": "the /api/events stream",
-        "from": "org",
+        "from": "trial",
         "id": "live_events",
         "on": true,
         "startsOff": true,
         "tier": "enterprise",
         "title": "Live events",
-        "until": "2027-11-06"
+        "until": "2026-12-03"
       },
       {
         "covers": "more than one design in a folder",
-        "from": "product",
+        "from": "trial",
         "id": "multi-design",
         "on": true,
         "startsOff": true,
         "tier": "enterprise",
         "title": "Many designs",
-        "until": "2027-03-01"
+        "until": "2026-12-03"
       },
       {
         "covers": "sharing a design with others",
-        "from": "both",
+        "from": "trial",
         "id": "share",
         "on": true,
         "startsOff": true,
         "tier": "enterprise",
         "title": "Share a design",
-        "until": "2027-11-06"
+        "until": "2026-12-03"
       },
       {
-        "by": "license",
         "covers": "keeping designs the same on several machines",
-        "from": "none",
+        "from": "trial",
         "id": "sync",
-        "on": false,
+        "on": true,
         "startsOff": true,
         "tier": "enterprise",
-        "title": "Sync designs"
+        "title": "Sync designs",
+        "until": "2026-12-03"
       }
     ],
     "licenses": [
       {
-        "daysLeft": 352,
+        "daysLeft": 14,
         "ended": false,
-        "for": "Acme Ltd",
+        "for": "designer 9",
         "keyId": "test-2026",
-        "kind": "org",
-        "until": "2027-11-06"
-      },
-      {
-        "daysLeft": 102,
-        "ended": false,
-        "for": "ada@acme.example",
-        "keyId": "test-2026",
-        "kind": "product",
-        "until": "2027-03-01"
+        "kind": "release-trial",
+        "offerEnds": "2027-11-20",
+        "trialEnds": "2026-12-03",
+        "until": "2026-12-03",
+        "window": {
+          "of": 14
+        }
       }
     ],
     "refused": [],
-    "sentence": "Licensed to Acme Ltd \u00b7 Designer",
-    "state": "licensed",
+    "sentence": "Trial: 14 days left (ends 2026-12-03)",
+    "state": "trial",
     "warn": false
   },
-  "errors": []
+  "errors": [],
+  "kind": "LicenseShow",
+  "source": {
+    "app": "designer",
+    "contract": "v1",
+    "name": "designer",
+    "version": "9.0.0"
+  }
 }

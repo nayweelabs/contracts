@@ -8,23 +8,16 @@
     "contract": "v3"
   },
   "data": {
-    "state": "licensed",
+    "state": "trial",
     "build": {
       "release": true
     },
-    "licenses": [
-      {
-        "kind": "license",
-        "for": "ada@acme.example",
-        "lines": {
-          "acme-app": [
-            1
-          ]
-        },
-        "ended": false,
-        "keyId": "test-2026"
-      }
-    ],
+    "licenses": [],
+    "trial": {
+      "until": "2026-12-14",
+      "daysLeft": 10,
+      "ended": false
+    },
     "refused": [],
     "counts": {
       "free": 1,
@@ -57,7 +50,8 @@
         "tier": "enterprise",
         "startsOff": true,
         "on": true,
-        "from": "license"
+        "from": "trial",
+        "until": "2026-12-14"
       },
       {
         "id": "sync",
@@ -66,10 +60,12 @@
         "tier": "enterprise",
         "startsOff": true,
         "on": true,
-        "from": "license"
+        "from": "trial",
+        "until": "2026-12-14"
       }
     ],
-    "warn": false
+    "warn": false,
+    "sentence": "Trial: 10 days left, until 2026-12-14"
   },
   "errors": []
 }

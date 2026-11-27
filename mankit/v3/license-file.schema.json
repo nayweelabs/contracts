@@ -22,7 +22,7 @@
       "$ref": "../v1/license-file.schema.json#/properties/metadata"
     },
     "spec": {
-      "description": "The signed license: the payload's bytes and the signature over them, and for a trial the unsigned record of the trial it started. Open: a newer nw-licenser or app may add fields here, and an older app accepts them (CT-RULE-4).",
+      "description": "The signed license: the payload's bytes and the signature over them. Open: a newer nw-licenser or app may add fields here, and an older app accepts them (CT-RULE-4).",
       "type": "object",
       "required": [
         "payload",
@@ -42,28 +42,6 @@
         },
         "signature": {
           "$ref": "../v1/license-file.schema.json#/properties/spec/properties/signature"
-        },
-        "started": {
-          "description": "The record of the trial this file started, which the app writes beside the signed payload; nw-licenser writes the file without it. Unsigned: the signature covers the payload alone, so this record never breaks it. When the app writes it and what editing it gives: ADR-L9. A rule no schema can say, as the kind sits inside the signed payload: only a trial's file has it. Open: a newer app may add fields here, and an older app accepts them (CT-RULE-4).",
-          "type": "object",
-          "required": [
-            "day",
-            "binary",
-            "fileTime"
-          ],
-          "properties": {
-            "day": {
-              "description": "The day the trial started, an RFC 3339 date in UTC.",
-              "type": "string",
-              "format": "date"
-            },
-            "binary": {
-              "$ref": "../v1/license-file.schema.json#/properties/spec/properties/started/properties/binary"
-            },
-            "fileTime": {
-              "$ref": "../v1/license-file.schema.json#/properties/spec/properties/started/properties/fileTime"
-            }
-          }
         }
       }
     }

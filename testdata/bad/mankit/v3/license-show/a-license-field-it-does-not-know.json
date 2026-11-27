@@ -14,7 +14,8 @@
     },
     "licenses": [
       {
-        "kind": "license",
+        "id": "lic-20261201-ada",
+        "place": "app",
         "for": "ada@acme.example",
         "lines": {
           "acme-app": [
@@ -23,7 +24,8 @@
         },
         "ended": false,
         "keyId": "test-2026",
-        "seats": 3
+        "seats": 3,
+        "active": true
       }
     ],
     "refused": [],
