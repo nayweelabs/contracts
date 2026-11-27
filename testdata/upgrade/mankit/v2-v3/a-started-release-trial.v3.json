@@ -60,22 +60,18 @@
         "until": "2026-12-03"
       }
     ],
-    "licenses": [
-      {
-        "daysLeft": 14,
-        "ended": false,
-        "for": "designer 9",
-        "keyId": "test-2026",
-        "kind": "trial",
-        "trialEnds": "2026-12-03",
-        "window": {
-          "of": 14
-        }
-      }
-    ],
+    "licenses": [],
     "refused": [],
     "sentence": "Trial: 14 days left (ends 2026-12-03)",
     "state": "trial",
+    "trial": {
+      "daysLeft": 14,
+      "ended": false,
+      "until": "2026-12-03",
+      "window": {
+        "of": 14
+      }
+    },
     "warn": false
   },
   "errors": [],

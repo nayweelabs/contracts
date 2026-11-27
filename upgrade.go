@@ -149,15 +149,15 @@ func UpgradeMankit(v1 []byte) ([]byte, error) {
 	return encodeChecked(doc, MankitSchema("v2", head.Kind))
 }
 
-// The words mankit/v3's LicenseShow gives for v2's, by field: a state, a license's kind and where a feature is unlocked from.
+// The words mankit/v3's LicenseShow gives for v2's, by field: a state and where a feature is unlocked from. Only the words of an answer that lists no license are here, as the step refuses the others.
 var (
-	licenseStateV3 = map[string]string{"none": "free", "trial": "trial", "trial-ended": "free", "licensed": "licensed", "ending": "licensed", "ended": "free"}
-	licenseKindV3  = map[string]string{"org": "license", "product": "license", "release-trial": "trial"}
-	licenseFromV3  = map[string]string{"org": "license", "product": "license", "both": "license", "trial": "trial", "none": "none"}
+	licenseStateV3 = map[string]string{"none": "free", "trial": "trial", "trial-ended": "free"}
+	licenseFromV3  = map[string]string{"trial": "trial", "none": "none"}
 )
 
-// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes: each word becomes v3's (licenseStateV3, licenseKindV3, licenseFromV3), and a trial loses until and offerEnds, as its offer does not end (ADR-L9), so a trial not started also loses its daysLeft and has not ended, and, when no license names the answer, v2's sentence for an ended offer is dropped, as v3 never says a trial offer ended.
-// The licenses come first, then the trial, as v3 orders them. warn, endedOn and the rest mean the same in both, so they stay. A person's trial key has no v3 kind, so an answer that took one is refused, as is any word v3 has none for and a feature id v3 refuses (G-STACK-17).
+// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes. A v2 license has no id or place, which v3 gives every license, so an answer that lists one (an org, product or person's trial key) is refused rather than guessed.
+// A release-trial is not a license in v3 (ADR-L9): a started one becomes data.trial, its trialEnds the trial's until; one not started is dropped, as v3's trial always has a start, and when its offer had ended v2's sentence is dropped too, as v3 never says a trial offer ended, unless a started trial is in data.trial, as the sentence is then about that trial. Two started trials are refused.
+// Each word becomes v3's (licenseStateV3, licenseFromV3); warn and the rest mean the same in both, so they stay; endedOn cannot occur, as a v2 answer with an ended license is refused and v3 gives endedOn only beside one. A word v3 has none for, and a feature id v3 refuses (G-STACK-17), are refused.
 // The app's own apiVersion and contract are untouched, as with UpgradeMankit: the app's own step names its contract.
 func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 	if err := Validate(MankitSchema("v2", "LicenseShow"), v2); err != nil {
@@ -168,40 +168,37 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 		return nil, err
 	}
 	data := doc["data"].(map[string]any)
+	endedOffer := false
+	for _, l := range data["licenses"].([]any) {
+		license := l.(map[string]any)
+		if license["kind"] != "release-trial" {
+			return nil, fmt.Errorf("mankit/v2 gives the %s license no id or place, which mankit/v3 needs", license["kind"])
+		}
+		ends, started := license["trialEnds"]
+		if !started {
+			if license["ended"] == true {
+				endedOffer = true
+			}
+			continue
+		}
+		if _, two := data["trial"]; two {
+			return nil, fmt.Errorf("two started trials have no mankit/v3 form")
+		}
+		trial := map[string]any{"until": ends, "daysLeft": license["daysLeft"], "ended": license["ended"]}
+		if window, ok := license["window"]; ok {
+			trial["window"] = window
+		}
+		data["trial"] = trial
+	}
+	if _, ok := data["trial"]; !ok && endedOffer {
+		delete(data, "sentence")
+	}
+	data["licenses"] = []any{}
 	state, ok := licenseStateV3[data["state"].(string)]
 	if !ok {
 		return nil, fmt.Errorf("a %s state has no mankit/v3 word", data["state"])
 	}
 	data["state"] = state
-	licenses := data["licenses"].([]any)
-	licensed := false
-	for _, l := range licenses {
-		if k := licenseKindV3[l.(map[string]any)["kind"].(string)]; k == "license" {
-			licensed = true
-		}
-	}
-	for _, l := range licenses {
-		license := l.(map[string]any)
-		kind, ok := licenseKindV3[license["kind"].(string)]
-		if !ok {
-			return nil, fmt.Errorf("a %s license has no mankit/v3 kind", license["kind"])
-		}
-		license["kind"] = kind
-		if kind == "trial" {
-			delete(license, "until")
-			delete(license, "offerEnds")
-			if _, started := license["trialEnds"]; !started {
-				if license["ended"] == true && !licensed {
-					delete(data, "sentence")
-				}
-				delete(license, "daysLeft")
-				license["ended"] = false
-			}
-		}
-	}
-	sort.SliceStable(licenses, func(i, j int) bool {
-		return licenses[i].(map[string]any)["kind"] == "license" && licenses[j].(map[string]any)["kind"] == "trial"
-	})
 	for _, f := range data["features"].([]any) {
 		feature := f.(map[string]any)
 		from, ok := licenseFromV3[feature["from"].(string)]

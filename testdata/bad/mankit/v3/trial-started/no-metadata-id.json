@@ -1,0 +1,10 @@
+{
+  "apiVersion": "elderlygate/mankit/trial/v1",
+  "kind": "TrialStarted",
+  "metadata": {},
+  "spec": {
+    "day": "2026-12-01",
+    "binary": "/opt/acme/bin/acme-app",
+    "fileTime": "2026-11-30T09:15:00Z"
+  }
+}

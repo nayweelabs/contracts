@@ -1,0 +1,12 @@
+{
+  "apiVersion": "elderlygate/mankit/trial/v1",
+  "kind": "TrialStarted",
+  "metadata": {
+    "id": "acme-tool"
+  },
+  "spec": {
+    "day": "2026-12-14",
+    "binary": "C:/Users/ada/AppData/Local/acme/acme-tool.exe",
+    "fileTime": "2026-12-14T08:00:00+01:00"
+  }
+}

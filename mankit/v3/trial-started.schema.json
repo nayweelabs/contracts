@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElderlyGate/contracts/mankit/v3/trial-started.schema.json",
+  "title": "trial started",
+  "description": "The note an app writes in its own folder on its first start with no license, so its trial, a rule in mankit and not a license, knows when it started and on which install (ADR-L9): a Resource (ADR-S15), plain and unsigned. mankit's license check writes and reads it for every app. A rule no schema can say, as it needs today's date and the binary on disk: a missing, broken or future-dated note counts as none, as does one whose binary or fileTime differs from the running binary, so the app starts a fresh trial and writes a new note (ADR-L9). Several app versions read it at once: apiVersion, kind and metadata never change; spec may grow (ADR-S15).",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "apiVersion": {
+      "description": "The form the note is in, so a reader knows which schema it meets (ADR-S15, apiversion/v1/forms.yaml).",
+      "const": "elderlygate/mankit/trial/v1"
+    },
+    "kind": {
+      "description": "Always TrialStarted, the kind of this note.",
+      "const": "TrialStarted"
+    },
+    "metadata": {
+      "description": "Which app's trial this is. It never changes in trial/v1 (ADR-S15).",
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "description": "The product id of the app whose trial this is, so a note copied into another app's folder is not taken as that app's.",
+          "$ref": "license-payload.schema.json#/$defs/productId"
+        }
+      },
+      "additionalProperties": false
+    },
+    "spec": {
+      "description": "When and on which install the trial started. Open: a newer app may add fields here, and an older app accepts them (CT-RULE-4).",
+      "type": "object",
+      "required": [
+        "day",
+        "binary",
+        "fileTime"
+      ],
+      "properties": {
+        "day": {
+          "description": "The day the trial started, an RFC 3339 date in UTC: the trial runs ADR-L9's trial length from it, its first day counted, so license-show.schema.json's trial.until is reckoned from it.",
+          "type": "string",
+          "format": "date"
+        },
+        "binary": {
+          "description": "The path of the app binary that started the trial, so the app tells the install that started it from a new one.",
+          "type": "string",
+          "minLength": 1
+        },
+        "fileTime": {
+          "description": "That binary's file time (its last modification) when the trial started, RFC 3339. Installs write binaries fresh, so a reinstall or an update gives a new time, by which the app tells a new install from the one that started the trial.",
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

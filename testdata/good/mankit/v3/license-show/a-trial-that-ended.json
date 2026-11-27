@@ -12,24 +12,12 @@
     "build": {
       "release": true
     },
-    "licenses": [
-      {
-        "kind": "trial",
-        "for": "Acme 1",
-        "lines": {
-          "acme-app": [
-            1
-          ]
-        },
-        "trialEnds": "2026-12-16",
-        "daysLeft": 0,
-        "ended": true,
-        "keyId": "test-2026",
-        "window": {
-          "of": 14
-        }
-      }
-    ],
+    "licenses": [],
+    "trial": {
+      "until": "2026-12-14",
+      "daysLeft": 0,
+      "ended": true
+    },
     "refused": [],
     "counts": {
       "free": 1,
@@ -53,8 +41,8 @@
         "tier": "enterprise",
         "startsOff": true,
         "on": false,
-        "by": "license",
-        "from": "none"
+        "from": "none",
+        "by": "license"
       },
       {
         "id": "share",
@@ -63,8 +51,8 @@
         "tier": "enterprise",
         "startsOff": true,
         "on": false,
-        "by": "license",
-        "from": "none"
+        "from": "none",
+        "by": "license"
       },
       {
         "id": "sync",
@@ -73,12 +61,12 @@
         "tier": "enterprise",
         "startsOff": true,
         "on": false,
-        "by": "license",
-        "from": "none"
+        "from": "none",
+        "by": "license"
       }
     ],
     "warn": true,
-    "sentence": "Your trial has ended"
+    "sentence": "The trial ended on 2026-12-14"
   },
   "errors": []
 }

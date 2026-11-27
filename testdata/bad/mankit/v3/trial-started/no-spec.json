@@ -1,0 +1,7 @@
+{
+  "apiVersion": "elderlygate/mankit/trial/v1",
+  "kind": "TrialStarted",
+  "metadata": {
+    "id": "acme-app"
+  }
+}

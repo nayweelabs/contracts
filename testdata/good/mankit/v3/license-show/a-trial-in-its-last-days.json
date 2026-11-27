@@ -12,24 +12,15 @@
     "build": {
       "release": true
     },
-    "licenses": [
-      {
-        "kind": "trial",
-        "for": "Acme 1",
-        "lines": {
-          "acme-app": [
-            1
-          ]
-        },
-        "trialEnds": "2026-12-16",
-        "daysLeft": 2,
-        "ended": false,
-        "keyId": "test-2026",
-        "window": {
-          "of": 14
-        }
+    "licenses": [],
+    "trial": {
+      "until": "2026-12-14",
+      "daysLeft": 2,
+      "ended": false,
+      "window": {
+        "of": 14
       }
-    ],
+    },
     "refused": [],
     "counts": {
       "free": 1,
@@ -54,7 +45,7 @@
         "startsOff": true,
         "on": true,
         "from": "trial",
-        "until": "2026-12-16"
+        "until": "2026-12-14"
       },
       {
         "id": "share",
@@ -64,7 +55,7 @@
         "startsOff": true,
         "on": true,
         "from": "trial",
-        "until": "2026-12-16"
+        "until": "2026-12-14"
       },
       {
         "id": "sync",
@@ -74,11 +65,11 @@
         "startsOff": true,
         "on": true,
         "from": "trial",
-        "until": "2026-12-16"
+        "until": "2026-12-14"
       }
     ],
     "warn": true,
-    "sentence": "Trial: 2 days left, until 2026-12-16"
+    "sentence": "Trial: 2 days left, until 2026-12-14"
   },
   "errors": []
 }

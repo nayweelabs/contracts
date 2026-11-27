@@ -8,6 +8,7 @@
     "id",
     "kind",
     "for",
+    "products",
     "issued",
     "keyId"
   ],
@@ -16,14 +17,11 @@
       "$ref": "../v1/license-payload.schema.json#/properties/id"
     },
     "kind": {
-      "description": "Which kind of license it is, so an app knows what it opens (ADR-L8). license: what the owner signs with nw-licenser for a person or an org; it opens the enterprise features it names (ADR-L2, L10). trial: the trial a product line carries built in; it opens every enterprise feature of its one app (ADR-L9).",
-      "enum": [
-        "license",
-        "trial"
-      ]
+      "description": "The one kind of license, license: what the owner signs with nw-licenser for a person or an org; it opens the enterprise features it names (ADR-L2, L8, L10). An org license is one that names several products (ADR-L8). The trial is not a license, so no kind names it (ADR-L9).",
+      "const": "license"
     },
     "for": {
-      "description": "The person or org the license names, never a machine, so whoever has the file sees whose it was (ADR-L4); for a trial, which names no one, its product line in words, for example \"Acme 1\"; never only spaces.",
+      "description": "The person or org the license names, never a machine, so whoever has the file sees whose it was (ADR-L4); never only spaces.",
       "type": "string",
       "pattern": "\\S"
     },
@@ -39,8 +37,10 @@
         "uniqueItems": true,
         "items": {
           "$ref": "#/$defs/featureId"
-        }
-      }
+        },
+        "minItems": 1
+      },
+      "minProperties": 1
     },
     "lines": {
       "description": "The product lines it opens, per product id, each by its number as the constitution's product-lines.yaml names it, so 1 is Designer 1 (V-10). An app opens what it names only while its own build's line is among them, and a later line needs a new license (ADR-L10).",
@@ -70,93 +70,25 @@
       "type": "string",
       "format": "date"
     },
-    "days": {
-      "description": "How long each trial it starts runs, in whole days, its first day counted, so every install of the product line's releases gets a trial of the same length (ADR-L9).",
-      "type": "integer",
-      "minimum": 1
-    },
     "keyId": {
       "$ref": "../v1/license-payload.schema.json#/properties/keyId"
     }
   },
   "allOf": [
     {
-      "description": "A license names one or more products, each with one or more feature ids, and has no days. It either runs until a day or names the lines it opens, never both (ADR-L10). When it names lines, they name exactly the products products names; no schema can say that, so mankit's license check keeps it (ADR-L2, L10).",
-      "if": {
-        "properties": {
-          "kind": {
-            "const": "license"
-          }
-        }
-      },
-      "then": {
-        "required": [
-          "products"
-        ],
-        "not": {
+      "description": "A license either runs until a day or names the lines it opens, never both (ADR-L10). When it names lines, they name exactly the products products names; no schema can say that, so mankit's license check keeps it (ADR-L2, L10).",
+      "oneOf": [
+        {
           "required": [
-            "days"
+            "until"
           ]
         },
-        "properties": {
-          "products": {
-            "minProperties": 1,
-            "additionalProperties": {
-              "minItems": 1
-            }
-          }
-        },
-        "oneOf": [
-          {
-            "required": [
-              "until"
-            ]
-          },
-          {
-            "required": [
-              "lines"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "description": "A trial names no products and has no until: its trial offer does not end (ADR-L2, L9). Its lines name its one product and the one line it was signed for, and days how long its trials run (ADR-L9).",
-      "if": {
-        "properties": {
-          "kind": {
-            "const": "trial"
-          }
-        }
-      },
-      "then": {
-        "required": [
-          "days",
-          "lines"
-        ],
-        "not": {
-          "anyOf": [
-            {
-              "required": [
-                "products"
-              ]
-            },
-            {
-              "required": [
-                "until"
-              ]
-            }
+        {
+          "required": [
+            "lines"
           ]
-        },
-        "properties": {
-          "lines": {
-            "maxProperties": 1,
-            "additionalProperties": {
-              "maxItems": 1
-            }
-          }
         }
-      }
+      ]
     }
   ],
   "$defs": {

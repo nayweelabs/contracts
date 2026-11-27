@@ -142,10 +142,10 @@ func TestATicketTakesNewSpecFieldsButNoNewHeader(t *testing.T) {
 	}
 }
 
-// trialKind is the kind of a trial whose file may hold spec.started, by the mankit folder of the license file schema.
-var trialKind = map[string]string{"v1": "release-trial", "v3": "trial"}
+// licenseFileVersions is every mankit folder with a license file schema.
+var licenseFileVersions = []string{"v1", "v3"}
 
-// licenseFileProblem checks what the license file schema of mankit/<version> cannot say, as the payload sits inside the signed base64: the payload meets its schema and names the file's id, and only a trial's file has spec.started. In v1 the started day is never after the payload's until; in v3 until is never before issued, and a license's lines name exactly the products that products names.
+// licenseFileProblem checks what the license file schema of mankit/<version> cannot say, as the payload sits inside the signed base64: the payload meets its schema and names the file's id. In v1 only a release-trial's file has spec.started, its day never after the payload's until; in v3 until is never before issued, and a license's lines name exactly the products that products names.
 func licenseFileProblem(version string, raw []byte) error {
 	var file struct {
 		Metadata struct {
@@ -193,14 +193,11 @@ func licenseFileProblem(version string, raw []byte) error {
 			}
 		}
 	}
-	if file.Spec.Started == nil {
+	if version != "v1" || file.Spec.Started == nil {
 		return nil
 	}
-	if payload.Kind != trialKind[version] {
-		return fmt.Errorf("spec.started in a file of kind %s, not %s", payload.Kind, trialKind[version])
-	}
-	if version != "v1" {
-		return nil
+	if payload.Kind != "release-trial" {
+		return fmt.Errorf("spec.started in a file of kind %s, not release-trial", payload.Kind)
 	}
 	day, err := time.Parse(time.DateOnly, file.Spec.Started.Day)
 	if err != nil {
@@ -217,7 +214,7 @@ func licenseFileProblem(version string, raw []byte) error {
 }
 
 func TestLicenseFilePayloads(t *testing.T) {
-	for version := range trialKind {
+	for _, version := range licenseFileVersions {
 		files, _ := filepath.Glob("testdata/good/mankit/" + version + "/license-file/*.json")
 		files = append(files, "mankit/"+version+"/samples/license-file.json")
 		for _, path := range files {
@@ -234,7 +231,7 @@ func TestLicenseFilePayloads(t *testing.T) {
 
 // Each file in testdata/bad/mankit/<version>/license-file/payload/ meets the file schema but breaks one rule only its payload decides.
 func TestLicenseFilePayloadRulesAreCaught(t *testing.T) {
-	for version := range trialKind {
+	for _, version := range licenseFileVersions {
 		files, _ := filepath.Glob("testdata/bad/mankit/" + version + "/license-file/payload/*.json")
 		if len(files) == 0 {
 			t.Fatalf("no broken %s license files found", version)

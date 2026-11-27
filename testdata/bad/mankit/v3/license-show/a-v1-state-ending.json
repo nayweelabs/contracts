@@ -14,15 +14,18 @@
     },
     "licenses": [
       {
-        "kind": "license",
+        "id": "lic-20261201-ada",
+        "place": "app",
         "for": "ada@acme.example",
         "lines": {
           "acme-app": [
             1
           ]
         },
+        "issued": "2026-01-01",
         "ended": false,
-        "keyId": "test-2026"
+        "keyId": "test-2026",
+        "active": false
       }
     ],
     "refused": [],
