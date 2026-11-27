@@ -188,7 +188,7 @@
       ],
       "properties": {
         "id": {
-          "description": "The name license remove <id> takes for the file: for a file in a licenses folder, its file name less .license, as <id>.license names it (ADR-L8), never the file's own metadata.id, which is not signed and which a junk file could fake. For an old single license file it is that metadata.id, as the file has no name to give one. Absent for a file that gives none, such as an old single file too broken to read an id from, which license remove cannot name.",
+          "description": "The name license show <id> and license remove <id> take for the file, always present. For a file in a licenses folder, it is the file name less .license, as <id>.license names it (ADR-L8), never the file's own metadata.id, which is not signed and which a junk file could fake. For an old single license file it is that metadata.id. If that cannot be read, as in an old single file too broken to give an id, it is old-org for the org's old file or old-app for the app's old file, by its place.",
           "type": "string",
           "minLength": 1
         },
