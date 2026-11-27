@@ -9,7 +9,7 @@ spec:
   column: backlog
   order: 0.9999961853027344
   summary: the released description names mankit build.Released (ADR-L5)
-  tags: ['epic:license', 'feature:modes', 'product:designer']
+  tags: ['feature:modes', 'product:designer']
   work:
     agent: claude-opus-5-5
     branch: feat/released-text/modes
