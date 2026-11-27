@@ -182,7 +182,6 @@
       "description": "One license file the app read but did not take, and why, in the words of the Problem shape (ADR-S21), so a person sees why and license remove <id> can name it.",
       "type": "object",
       "required": [
-        "id",
         "file",
         "type",
         "reason"
