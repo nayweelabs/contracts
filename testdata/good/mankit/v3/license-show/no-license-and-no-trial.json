@@ -12,8 +12,6 @@
     "build": {
       "release": true
     },
-    "licenses": [],
-    "refused": [],
     "counts": {
       "free": 1,
       "enterprise": 3,

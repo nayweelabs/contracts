@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/ElderlyGate/contracts/mankit/v3/license-show.schema.json",
   "title": "license show",
-  "description": "What <app> license show answers with -o json, on envelope/v2, for licenses of elderlygate/mankit/license/v2 (license-payload.schema.json): the app's license state and whether it warns, whether this build is a release, every license it took with the one active for this app marked, its trial, the files it refused, and every feature in its feature state with where it is unlocked from, so the CLI, its JSON, the top bar's badge and the License group on the app's Settings page show the same answer and none of them works anything out (ADR-L3, L8, L9). mankit's license check makes it for every app, so every app answers it alike. mankit/v2's LicenseShow is the answer before it.",
+  "description": "What <app> license show answers with -o json, on envelope/v2, for licenses of elderlygate/mankit/license/v2 (license-payload.schema.json): the app's license state and whether it warns, whether this build is a release, its active license, its trial, and every feature in its feature state with where it is unlocked from, so the CLI, its JSON, the top bar's badge and the License group on the app's Settings page show the same answer and none of them works anything out (ADR-L3, L8, L9). Every license the app can see, and the files it refused, are license list's (license-list.schema.json); one license by its id is license show <id>'s (license.schema.json). mankit's license check makes it for every app, so every app answers it alike. mankit/v2's LicenseShow is the answer before it.",
   "allOf": [
     {
       "$ref": "../../envelope/v2/envelope.schema.json"
@@ -20,13 +20,11 @@
   ],
   "$defs": {
     "data": {
-      "description": "The app's license state and warn, its build, the licenses it took, its trial, the files it refused, the counts and its features.",
+      "description": "The app's license state and warn, its build, its active license, its trial, the counts and its features.",
       "type": "object",
       "required": [
         "state",
         "build",
-        "licenses",
-        "refused",
         "counts",
         "features"
       ],
@@ -55,34 +53,23 @@
         "build": {
           "$ref": "../v1/license-show.schema.json#/$defs/data/properties/build"
         },
-        "licenses": {
-          "description": "Every license file the app read and took: the org licenses that name it and its own (ADR-L8), at most one of them active. The trial is not a license and is in trial instead (ADR-L9). While mankit still reads mankit/v1's files, an org or product file shows as a license here (ADR-L8). A file it refused is in refused instead, never here. Empty when there is none, so a reader tells no license from a failure.",
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/license"
-          },
-          "contains": {
-            "properties": {
-              "active": {
-                "const": true
-              }
+        "active": {
+          "description": "The app's active license, the one its features and state rest on (ADR-L8), as license list's row gives it. Present while one is active, even when it has ended or does not name this build's line, as the app never switches to another license by itself. Absent when none is active: there is no license, or the chosen file was refused, and sentence then says why.",
+          "allOf": [
+            {
+              "$ref": "license-list.schema.json#/$defs/license"
             },
-            "required": [
-              "active"
-            ]
-          },
-          "minContains": 0,
-          "maxContains": 1
+            {
+              "properties": {
+                "active": {
+                  "const": true
+                }
+              }
+            }
+          ]
         },
         "trial": {
           "$ref": "#/$defs/trial"
-        },
-        "refused": {
-          "description": "Every license file the app read but did not take, so a refused file never shows as a license and a person sees why (ADR-L1, L5, L6, L8, L9). Its reason is one of signature, untrusted_key, other_build, unreadable, wrong_place, id_mismatch and retired_kind, each meaning what problem/v1's reason says. Empty when none was refused.",
-          "type": "array",
-          "items": {
-            "$ref": "../v1/license-show.schema.json#/$defs/refusedFile"
-          }
         },
         "counts": {
           "$ref": "../v1/license-show.schema.json#/$defs/data/properties/counts"
@@ -119,7 +106,7 @@
           }
         },
         {
-          "description": "Licensed means the active license is listed and has not ended.",
+          "description": "Licensed means an active license is given and has not ended.",
           "if": {
             "properties": {
               "state": {
@@ -128,19 +115,16 @@
             }
           },
           "then": {
+            "required": [
+              "active"
+            ],
             "properties": {
-              "licenses": {
-                "contains": {
-                  "properties": {
-                    "active": {
-                      "const": true
-                    },
-                    "ended": {
-                      "const": false
-                    }
+              "active": {
+                "properties": {
+                  "ended": {
+                    "const": false
                   }
-                },
-                "minContains": 1
+                }
               }
             }
           }
@@ -199,151 +183,23 @@
           }
         },
         {
-          "description": "A day a license ended names a license that is active and has ended.",
+          "description": "A day a license ended names the active license, which has ended.",
           "if": {
             "required": [
               "endedOn"
             ]
           },
           "then": {
+            "required": [
+              "active"
+            ],
             "properties": {
-              "licenses": {
-                "contains": {
-                  "required": [
-                    "active",
-                    "ended"
-                  ],
-                  "properties": {
-                    "active": {
-                      "const": true
-                    },
-                    "ended": {
-                      "const": true
-                    }
+              "active": {
+                "properties": {
+                  "ended": {
+                    "const": true
                   }
-                },
-                "minContains": 1
-              }
-            }
-          }
-        }
-      ]
-    },
-    "license": {
-      "description": "One license file the app read: its id and place, whom it names, what it opens or until when, the key that signed it, and whether it is the app's active one. Every one is of the payload's one kind, license (license-payload.schema.json), so it names no kind.",
-      "type": "object",
-      "required": [
-        "id",
-        "place",
-        "for",
-        "issued",
-        "ended",
-        "keyId",
-        "active"
-      ],
-      "properties": {
-        "id": {
-          "description": "The license's id, as its signed payload says: the one a user names in license use <id> and license remove <id> (ADR-L8).",
-          "$ref": "license-payload.schema.json#/properties/id"
-        },
-        "place": {
-          "description": "Where the license file sits (ADR-L8; the paths: the mankit README). org: the org's licenses folder, shared by every app; app: this app's own licenses folder. So a reader shows whose a license is, and license remove knows which file it removes.",
-          "enum": [
-            "org",
-            "app"
-          ]
-        },
-        "for": {
-          "description": "Whom the license names, as its signed payload says.",
-          "$ref": "license-payload.schema.json#/properties/for"
-        },
-        "lines": {
-          "description": "The product lines it opens, as its signed payload says, so a reader shows a license that never ends by what it opens. Absent when the payload names none.",
-          "$ref": "license-payload.schema.json#/properties/lines"
-        },
-        "issued": {
-          "description": "The license's first day, as its signed payload says, so a reader shows a license not begun yet.",
-          "$ref": "license-payload.schema.json#/properties/issued"
-        },
-        "until": {
-          "description": "The license's last day, as its signed payload says.",
-          "$ref": "license-payload.schema.json#/properties/until"
-        },
-        "daysLeft": {
-          "description": "The days left until the license's last day, until, 0 once it has ended. Absent when the license never ends. license check gives only this; when to warn is the threshold's to say (ADR-L3).",
-          "type": "integer",
-          "minimum": 0
-        },
-        "ended": {
-          "description": "True once the license's last day, until, has passed: its features are locked again, and what they made stays readable (ADR-L3). Always false for a license that never ends.",
-          "type": "boolean"
-        },
-        "keyId": {
-          "$ref": "../v1/license-show.schema.json#/$defs/license/properties/keyId"
-        },
-        "window": {
-          "$ref": "#/$defs/window"
-        },
-        "active": {
-          "description": "True on the app's active license, the one its features and state rest on, and on at most one license (ADR-L8). It is the one license use or license add chose in this app; with no choice made, it is the newest license that names the app (ADR-L8); other apps keep their own choice. Still true when it has ended or does not name this build's line, as the app never switches to another license by itself. When the chosen file is refused, none here is true and sentence says why.",
-          "type": "boolean"
-        }
-      },
-      "additionalProperties": false,
-      "allOf": [
-        {
-          "description": "An ended license has no days left.",
-          "if": {
-            "properties": {
-              "ended": {
-                "const": true
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "daysLeft": {
-                "const": 0
-              }
-            }
-          }
-        },
-        {
-          "description": "A license meets its payload's rule: it either runs until a day or names the lines it opens, never both (license-payload.schema.json).",
-          "oneOf": [
-            {
-              "required": [
-                "until"
-              ]
-            },
-            {
-              "required": [
-                "lines"
-              ]
-            }
-          ]
-        },
-        {
-          "description": "A license with a last day counts its days left to it; one that never ends has none and never ends.",
-          "if": {
-            "required": [
-              "until"
-            ]
-          },
-          "then": {
-            "required": [
-              "daysLeft"
-            ]
-          },
-          "else": {
-            "not": {
-              "required": [
-                "daysLeft"
-              ]
-            },
-            "properties": {
-              "ended": {
-                "const": false
+                }
               }
             }
           }
@@ -373,7 +229,7 @@
           "type": "boolean"
         },
         "window": {
-          "$ref": "#/$defs/window"
+          "$ref": "license-list.schema.json#/$defs/window"
         }
       },
       "additionalProperties": false,
@@ -396,21 +252,6 @@
           }
         }
       ]
-    },
-    "window": {
-      "description": "The countdown the License group's bar shows, present only while one shows: a running trial (ADR-L9), or a license in the warning the threshold of ADR-L3 sets. Its days left are daysLeft beside it.",
-      "type": "object",
-      "required": [
-        "of"
-      ],
-      "properties": {
-        "of": {
-          "description": "The countdown's whole length in days: ADR-L9's trial length, or the warning window mankit reads from the threshold (ADR-L3), so the bar shows daysLeft out of it.",
-          "type": "integer",
-          "minimum": 1
-        }
-      },
-      "additionalProperties": false
     },
     "feature": {
       "description": "One feature of the app: its feature state, each field as mankit/v1 defs' featureState says, and where it is unlocked from, a row of the License group's features table (ADR-L8).",

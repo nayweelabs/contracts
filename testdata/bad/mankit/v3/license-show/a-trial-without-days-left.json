@@ -12,12 +12,10 @@
     "build": {
       "release": true
     },
-    "licenses": [],
     "trial": {
       "until": "2026-12-14",
       "ended": false
     },
-    "refused": [],
     "counts": {
       "free": 1,
       "enterprise": 3,

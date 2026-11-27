@@ -12,25 +12,22 @@
     "build": {
       "release": true
     },
-    "licenses": [
-      {
-        "id": "lic-20251201-acme-labs",
-        "place": "org",
-        "for": "Acme Labs",
-        "issued": "2026-01-01",
-        "until": "2026-11-30",
-        "daysLeft": 0,
-        "ended": true,
-        "keyId": "test-2026",
-        "active": true
-      }
-    ],
+    "active": {
+      "id": "lic-20251201-acme-labs",
+      "place": "org",
+      "for": "Acme Labs",
+      "issued": "2026-01-01",
+      "until": "2026-11-30",
+      "daysLeft": 0,
+      "ended": true,
+      "keyId": "test-2026",
+      "active": true
+    },
     "trial": {
       "until": "2026-12-14",
       "daysLeft": 5,
       "ended": false
     },
-    "refused": [],
     "counts": {
       "free": 1,
       "enterprise": 3,

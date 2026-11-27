@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ElderlyGate/contracts/mankit/v3/license.schema.json",
+  "title": "license show <id>",
+  "description": "What <app> license show <id> answers with -o json, on envelope/v2: the one license the app took with that id, as license list's row gives it (license-list.schema.json), the one home of a license's fields. A refused file is license list's alone. The app's state, its trial and its features are license show's (license-show.schema.json). mankit's license check makes it for every app, so every app answers it alike.",
+  "allOf": [
+    {
+      "$ref": "../../envelope/v2/envelope.schema.json"
+    },
+    {
+      "properties": {
+        "kind": {
+          "description": "Always License, the kind of this answer, so a reader knows which schema its data meets. A license file is of its own form, elderlygate/mankit/license/v2, so the two never meet.",
+          "const": "License"
+        },
+        "data": {
+          "description": "The license the id names.",
+          "$ref": "license-list.schema.json#/$defs/license"
+        }
+      }
+    }
+  ]
+}
