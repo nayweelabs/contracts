@@ -156,7 +156,7 @@ var (
 	licenseFromV3  = map[string]string{"org": "license", "product": "license", "both": "license", "trial": "trial", "none": "none"}
 )
 
-// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes: each word becomes v3's (licenseStateV3, licenseKindV3, licenseFromV3), and a trial loses until and offerEnds, as its offer does not end (ADR-L9), so a trial not started also loses its daysLeft and has not ended, and v2's sentence for an ended offer is dropped, as v3 never says a trial offer ended.
+// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes: each word becomes v3's (licenseStateV3, licenseKindV3, licenseFromV3), and a trial loses until and offerEnds, as its offer does not end (ADR-L9), so a trial not started also loses its daysLeft and has not ended, and, when no license names the answer, v2's sentence for an ended offer is dropped, as v3 never says a trial offer ended.
 // The licenses come first, then the trial, as v3 orders them. warn, endedOn and the rest mean the same in both, so they stay. A person's trial key has no v3 kind, so an answer that took one is refused, as is any word v3 has none for and a feature id v3 refuses (G-STACK-17).
 // The app's own apiVersion and contract are untouched, as with UpgradeMankit: the app's own step names its contract.
 func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
@@ -174,6 +174,12 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 	}
 	data["state"] = state
 	licenses := data["licenses"].([]any)
+	licensed := false
+	for _, l := range licenses {
+		if k := licenseKindV3[l.(map[string]any)["kind"].(string)]; k == "license" {
+			licensed = true
+		}
+	}
 	for _, l := range licenses {
 		license := l.(map[string]any)
 		kind, ok := licenseKindV3[license["kind"].(string)]
@@ -185,7 +191,7 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 			delete(license, "until")
 			delete(license, "offerEnds")
 			if _, started := license["trialEnds"]; !started {
-				if license["ended"] == true {
+				if license["ended"] == true && !licensed {
 					delete(data, "sentence")
 				}
 				delete(license, "daysLeft")
