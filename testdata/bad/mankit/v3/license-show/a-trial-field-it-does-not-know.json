@@ -12,14 +12,12 @@
     "build": {
       "release": true
     },
-    "licenses": [],
     "trial": {
       "until": "2026-12-14",
       "daysLeft": 10,
       "ended": false,
       "keyId": "test-2026"
     },
-    "refused": [],
     "counts": {
       "free": 1,
       "enterprise": 3,

@@ -1,0 +1,18 @@
+apiVersion: app/kanban/v1
+kind: Card
+metadata:
+  id: KBN-20261127-f8e4
+  title: License list apart from license show
+  created_at: 2026-11-27T19:10:20.052Z
+  created_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>
+spec:
+  column: done
+  order: 0.5
+  tags: [feature, 'epic:license', 'feature:license-check', 'product:contracts']
+  description: "## Why\n\nThe owner chose on 27 Nov: `<app> license list` lists every license, and `<app> license show` gives the app's state with its active license, so each field of a license has one home (ADR-L8). Breaking for v2.2.0's mankit/v3 license-show, which no released app reads (mankit pins v0.46.0, e-designer v0.42.0, nw-license v0.41.1), so CT-RULE-1 does not freeze it and mankit/v3 is corrected in place.\n\n## What\n\n- mankit/v3/license-list.schema.json (`LicenseList`): every license taken, one row each, at most one active, and every refused file with its reason and the id `license remove <id>` names (the file name, never its unsigned metadata.id; absent for an old single file, which goes by its path).\n- mankit/v3/license-show.schema.json (`LicenseShow`): state, warn, endedOn, sentence, the active license in the list's row (absent when none), the trial, build, counts and features; no license list, no refused files.\n- mankit/v3/license.schema.json (`License`): `license show <id>`, one license in the list's row.\n- UpgradeLicenseShow: an answer with no license upgrades; one that lists a license or a refused file is refused.\n\n## Done when\n\n- [x] schemas, samples, good and bad testdata, upgrade pairs\n- [x] README\n- [x] go test ./... passes\n\n## Open\n\nnone\n"
+  work:
+    agent: claude-opus-5-5
+    branch: feat/license-list/license-check
+  lifecycle:
+    done_at: 2026-11-27T19:10:35.595Z
+    done_by: elderlygate-ai <311350033+elderlygate-ai@users.noreply.github.com>

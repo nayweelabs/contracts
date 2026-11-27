@@ -155,7 +155,7 @@ var (
 	licenseFromV3  = map[string]string{"trial": "trial", "none": "none"}
 )
 
-// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes. A v2 license has no id or place, which v3 gives every license, so an answer that lists one (an org, product or person's trial key) is refused rather than guessed.
+// UpgradeLicenseShow is the step from mankit/v2 to mankit/v3 for LicenseShow, the one answer mankit/v3 changes. A v2 license has no id or place, which v3 gives every license, so an answer that lists one (an org, product or person's trial key) is refused rather than guessed. v3's license show lists no license and no refused file, as license list gives those (license-list.schema.json), so an answer that names a refused file is refused too, rather than dropping it.
 // A release-trial is not a license in v3 (ADR-L9): a started one becomes data.trial, its trialEnds the trial's until; one not started is dropped, as v3's trial always has a start, and when its offer had ended v2's sentence is dropped too, as v3 never says a trial offer ended, unless a started trial is in data.trial, as the sentence is then about that trial. Two started trials are refused.
 // Each word becomes v3's (licenseStateV3, licenseFromV3); warn and the rest mean the same in both, so they stay; endedOn cannot occur, as a v2 answer with an ended license is refused and v3 gives endedOn only beside one. A word v3 has none for, and a feature id v3 refuses (G-STACK-17), are refused.
 // The app's own apiVersion and contract are untouched, as with UpgradeMankit: the app's own step names its contract.
@@ -168,6 +168,10 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 		return nil, err
 	}
 	data := doc["data"].(map[string]any)
+	if len(data["refused"].([]any)) > 0 {
+		return nil, fmt.Errorf("mankit/v3's license show names no refused file, which license list gives")
+	}
+	delete(data, "refused")
 	endedOffer := false
 	for _, l := range data["licenses"].([]any) {
 		license := l.(map[string]any)
@@ -193,7 +197,7 @@ func UpgradeLicenseShow(v2 []byte) ([]byte, error) {
 	if _, ok := data["trial"]; !ok && endedOffer {
 		delete(data, "sentence")
 	}
-	data["licenses"] = []any{}
+	delete(data, "licenses")
 	state, ok := licenseStateV3[data["state"].(string)]
 	if !ok {
 		return nil, fmt.Errorf("a %s state has no mankit/v3 word", data["state"])

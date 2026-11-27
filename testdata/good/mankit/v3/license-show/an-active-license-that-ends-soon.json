@@ -12,28 +12,25 @@
     "build": {
       "release": true
     },
-    "licenses": [
-      {
-        "id": "lic-20261201-ada",
-        "place": "app",
-        "for": "ada@acme.example",
-        "issued": "2026-01-01",
-        "until": "2026-12-20",
-        "daysLeft": 5,
-        "ended": false,
-        "keyId": "test-2026",
-        "active": true,
-        "window": {
-          "of": 30
-        }
+    "license": {
+      "id": "lic-20261201-ada",
+      "place": "app",
+      "for": "ada@acme.example",
+      "issued": "2026-01-01",
+      "until": "2026-12-20",
+      "daysLeft": 5,
+      "ended": false,
+      "keyId": "test-2026",
+      "active": true,
+      "window": {
+        "of": 30
       }
-    ],
+    },
     "trial": {
       "until": "2026-12-14",
       "daysLeft": 0,
       "ended": true
     },
-    "refused": [],
     "counts": {
       "free": 1,
       "enterprise": 3,
